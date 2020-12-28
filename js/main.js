@@ -1,4 +1,4 @@
-import { skills, shouldSkillBeActive } from './skills.js';
+import { skills, shouldSkillBeActive, createSubSkillButtons } from './skills.js';
 import { player } from './player.js';
 
 window.onload = function() {
@@ -19,6 +19,7 @@ function createSkillButton(skill) {
     if(!document.getElementById(skill.name + 'Wrapper')) {
         let wrapper = document.createElement('div');
         wrapper.id = skill.name + 'Wrapper';
+        wrapper.classList.add('skill');
         let button = document.createElement('button');
         button.id = skill.name;
         button.innerHTML = skill.name;
@@ -129,6 +130,12 @@ function tick() {
     checkForNewSkills();
     for(let skill of skillList) {
         createSkillButton(skill);
+    }
+    let shownElement = document.getElementsByClassName('show');
+    if(shownElement[0]) {
+        let shownSkill = shownElement[0].id.slice(0, -7);
+        createSubSkillButtons(skills[shownSkill])
+        
     }
 }
 

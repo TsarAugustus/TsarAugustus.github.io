@@ -8,17 +8,38 @@
 #left {
     border: 1px solid black;
     display: flex;
-    flex-grow: 1;
     height: 100vh;
+    width: 30%;
 }
+
+/* ===================== */
 
 #skills {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
+.skill {
+    display: flex;
+    flex-direction: column;
+}
+
+.show {
+    border: 1px solid red;
+}
+
+.skill button {
+    min-width: 100%;
+}
+
+.subSkill {
+    margin: 0 auto;
+    width: 70%;
+}
+/* ======================== */
 #right {
     border: 1px solid black;
     display: flex;
-    flex-grow: 3;
+    width: 70%;
 }

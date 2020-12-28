@@ -41,33 +41,37 @@ let skills = {
             let thisWrapper = document.getElementById(this.name + 'Wrapper');
             thisWrapper.classList.toggle('show');
             if(thisWrapper.classList.contains('show')) {
-                checkIfSubSkillIsAvailable(this.subSkills);
-                for(let subSkill in this.subSkills) {
-                    
-                    if(this.subSkills[subSkill].active && !document.getElementById(subSkill + 'Wrapper')) {
-                        let subSkillWrapper = document.createElement('div');
-                        subSkillWrapper.id = subSkill + 'Wrapper';
-                        subSkillWrapper.classList.add(this.name);
-                        subSkillWrapper.classList.add('subSkill');
-                        let subSkillButton = document.createElement('button');
-                        subSkillButton.innerHTML = subSkill;
-                        subSkillButton.name = this.name;
-                        subSkillButton.id = subSkill;
-                        subSkillButton.onclick = function() {
-                            let thisSubSkill = skills[this.name].subSkills[this.id];
-                            createSubSkillScreen(this.name, this.id, thisSubSkill);
-                            
-                        }
-                        subSkillWrapper.appendChild(subSkillButton);
-                        thisWrapper.appendChild(subSkillWrapper);
-                    }
-                }
+                createSubSkillButtons(this);
             } else {
                 let subSkills = document.getElementsByClassName(this.name);
                 while(subSkills.length > 0){
                     subSkills[0].parentNode.removeChild(subSkills[0]);
                 }
             }
+        }
+    }
+}
+
+function createSubSkillButtons(thisSkill) {
+    checkIfSubSkillIsAvailable(thisSkill.subSkills);
+    let thisWrapper = document.getElementById(thisSkill.name + 'Wrapper');
+    for(let subSkill in thisSkill.subSkills) {
+        if(thisSkill.subSkills[subSkill].active && !document.getElementById(subSkill + 'Wrapper')) {
+            let subSkillWrapper = document.createElement('div');
+            subSkillWrapper.id = subSkill + 'Wrapper';
+            subSkillWrapper.classList.add(thisSkill.name);
+            subSkillWrapper.classList.add('subSkill');
+            let subSkillButton = document.createElement('button');
+            subSkillButton.innerHTML = subSkill;
+            subSkillButton.name = thisSkill.name;
+            subSkillButton.id = subSkill;
+            subSkillButton.onclick = function() {
+                let thisSubSkill = skills[thisSkill.name].subSkills[thisSkill.id];
+                createSubSkillScreen(thisSkill.name, thisSkill.id, thisSubSkill);
+                
+            }
+            subSkillWrapper.appendChild(subSkillButton);
+            thisWrapper.appendChild(subSkillWrapper);
         }
     }
 }
@@ -99,4 +103,4 @@ function shouldSkillBeActive(skill) {
     }
 }
 
-export { skills, shouldSkillBeActive }
+export { skills, shouldSkillBeActive, createSubSkillButtons }
