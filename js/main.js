@@ -62,7 +62,6 @@ function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
     subSkillScreen.id = 'subSkillScreen';
     subSkillScreen.classList.add(mainSkill);
     document.getElementById('right').appendChild(subSkillScreen);
-
     for(let sub in subSkillInformation[subSkillName]) {
         if(subSkillInformation[subSkillName].active || shouldSkillBeActive(subSkillInformation[subSkillName][sub])) {
             createSubButtons(sub, subSkillName, subSkillInformation);

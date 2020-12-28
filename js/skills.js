@@ -66,8 +66,8 @@ function createSubSkillButtons(thisSkill) {
             subSkillButton.name = thisSkill.name;
             subSkillButton.id = subSkill;
             subSkillButton.onclick = function() {
-                let thisSubSkill = skills[thisSkill.name].subSkills[thisSkill.id];
-                createSubSkillScreen(thisSkill.name, thisSkill.id, thisSubSkill);
+                let thisSubSkill = skills[thisSkill.name].subSkills[subSkill];
+                createSubSkillScreen(thisSkill.name, subSkill, thisSubSkill);
                 
             }
             subSkillWrapper.appendChild(subSkillButton);
