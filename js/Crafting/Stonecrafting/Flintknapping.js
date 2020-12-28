@@ -2,7 +2,7 @@ export let Flintknapping = {
     active: false,
     required: {
         item: {
-            Wood: 20
+            Wood: 10
         }
     },
     allows: {

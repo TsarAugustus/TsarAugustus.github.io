@@ -54,11 +54,7 @@ function updatePlayer() {
 
 function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
     if(document.getElementById('subSkillScreen')) { 
-        let screenToRemove = document.getElementById('subSkillScreen');
-        while(screenToRemove.firstChild) {
-            screenToRemove.removeChild(screenToRemove.lastChild)
-        }
-        screenToRemove.parentNode.removeChild(screenToRemove);
+        removeElementAndChildren('subSkillScreen');
     }
 
     let subSkillScreen = document.createElement('div');
@@ -68,11 +64,63 @@ function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
 
     for(let sub in subSkillInformation[subSkillName]) {
         if(subSkillInformation[subSkillName].active || shouldSkillBeActive(subSkillInformation[subSkillName][sub])) {
-            let btn = document.createElement('button');
-            btn.innerHTML = sub;
-            document.getElementById('subSkillScreen').appendChild(btn);
+            createSubButtons(sub, subSkillName, subSkillInformation);
         }
     }
+}
+
+function createSubButtons(sub, subSkillName, subSkillInformation) {
+    let subButton = document.createElement('button');
+    subButton.innerHTML = sub;
+    subButton.onclick = function() {
+        if(document.getElementById('subAllows')) {
+            removeElementAndChildren('subAllows');
+        }
+        let subAllows = document.createElement('div');
+        subAllows.id = 'subAllows';
+        document.getElementById('subSkillScreen').appendChild(subAllows);
+
+        for(let allow in subSkillInformation[subSkillName][sub].allows) {
+            let subAllowsButton = document.createElement('button');
+            let text = `${allow}`
+            for(let reqText in subSkillInformation[subSkillName][sub].allows[allow].required) {
+                let val = subSkillInformation[subSkillName][sub].allows[allow].required[reqText];
+                text += `</br>${reqText}: ${val}`
+            }
+            subAllowsButton.innerHTML = text;
+            subAllowsButton.onclick = function() {
+                craftItem(subSkillInformation[subSkillName][sub].allows[allow].required, allow);
+            }
+            document.getElementById('subAllows').appendChild(subAllowsButton);
+        }
+    }
+    document.getElementById('subSkillScreen').appendChild(subButton);
+}
+
+function craftItem(requiredItems, newItem) {
+    let reqContainer = [];
+    for(let item in requiredItems) {
+        if(player[item] && player[item].amount >= requiredItems[item]) {
+            reqContainer.push(true);
+        }
+    }
+    if(reqContainer.length === Object.values(requiredItems).length) {
+        for(let item in requiredItems) {
+            player[item].amount -= requiredItems[item];
+        }
+        if(!player[newItem]) {
+            player[newItem] = { amount: 0 };
+        }
+        player[newItem].amount++;
+    }
+}
+
+function removeElementAndChildren(el) {
+    let elName = document.getElementById(el);
+    while(elName.firstChild) {
+        elName.removeChild(elName.lastChild);
+    }
+    elName.parentNode.removeChild(elName);
 }
 
 function tick() {

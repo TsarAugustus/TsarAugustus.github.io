@@ -14,6 +14,10 @@ let skills = {
                 player.Wood = { amount: 0 }
             }
             player.Wood.amount++;
+            if(!player.Stone) {
+                player.Stone = { amount: 0 }
+            }
+            player.Stone.amount++;
             if(this.currentXP >= this.XPToLevel) {
                 this.level++;
                 this.currentXP = 0;
