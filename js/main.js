@@ -9,7 +9,6 @@ function updatePlayer() {
     let playerDiv = document.getElementById('player');
     for(let item in player) {
         if(!document.getElementById(item)) {
-            console.log(player[item])
             if(!document.getElementById(player[item].type + 'InventoryWrapper')) {
                 let typeDiv = document.createElement('div');
                 typeDiv.id = player[item].type + 'InventoryWrapper';

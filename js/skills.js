@@ -54,7 +54,7 @@ let skills = {
 }
 
 function createSubSkillButtons(thisSkill) {
-    checkIfSubSkillIsAvailable(thisSkill.subSkills);
+    checkIfSubSkillIsAvailable(thisSkill.subSkills)
     let thisWrapper = document.getElementById(thisSkill.name + 'Wrapper');
     for(let subSkill in thisSkill.subSkills) {
         if(thisSkill.subSkills[subSkill].active && !document.getElementById(subSkill + 'Wrapper')) {
@@ -69,7 +69,13 @@ function createSubSkillButtons(thisSkill) {
             subSkillButton.onclick = function() {
                 let thisSubSkill = skills[thisSkill.name].subSkills[subSkill];
                 createSubSkillScreen(thisSkill.name, subSkill, thisSubSkill);
-                
+                let clickedSubSkillButtons = document.getElementsByClassName('clicked');
+                if(clickedSubSkillButtons.length > 0) {
+                    for(let item of clickedSubSkillButtons) {
+                        item.classList.remove('clicked');
+                    }
+                }
+                this.classList.add('clicked');
             }
             subSkillWrapper.appendChild(subSkillButton);
             thisWrapper.appendChild(subSkillWrapper);
@@ -114,7 +120,8 @@ function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
     subSkillScreen.classList.add(mainSkill);
     document.getElementById('right').appendChild(subSkillScreen);
     for(let sub in subSkillInformation[subSkillName]) {
-        if(subSkillInformation[subSkillName].active || shouldSkillBeActive(subSkillInformation[subSkillName][sub])) {
+        shouldSkillBeActive(subSkillInformation[subSkillName][sub]);
+        if(subSkillInformation[subSkillName][sub].active) {
             createSubButtons(sub, subSkillName, subSkillInformation);
         }
     }
@@ -132,13 +139,23 @@ function createSubButtons(sub, subSkillName, subSkillInformation) {
         if(document.getElementById('subAllows')) {
             removeElementAndChildren('subAllows');
         }
+        let clickedSubAllowButton = document.getElementsByClassName('clickedSubAllowButton');
+        if(clickedSubAllowButton.length > 0) {
+            for(let item of clickedSubAllowButton) {
+                item.classList.remove('clickedSubAllowButton');
+            }
+        }
+        this.classList.add('clickedSubAllowButton');
         let subAllows = document.createElement('div');
         subAllows.id = 'subAllows';
         document.getElementById('subSkillScreen').appendChild(subAllows);
 
         for(let allow in subSkillInformation[subSkillName][sub].allows) {
+            let subAllowsButtonDiv = document.createElement('div');
+            subAllowsButtonDiv.id = allow + 'ButtonDiv';
+
             let subAllowsButton = document.createElement('button');
-            let text = `${allow}`
+            let text = `${allow}`;
             for(let reqText in subSkillInformation[subSkillName][sub].allows[allow].required) {
                 let val = subSkillInformation[subSkillName][sub].allows[allow].required[reqText];
                 text += `</br>${reqText}: ${val}`
@@ -147,7 +164,8 @@ function createSubButtons(sub, subSkillName, subSkillInformation) {
             subAllowsButton.onclick = function() {
                 craftItem(subSkillInformation[subSkillName][sub].allows[allow].required, allow, subSkillInformation[subSkillName][sub].allows[allow].type);
             }
-            document.getElementById('subAllows').appendChild(subAllowsButton);
+            subAllowsButtonDiv.appendChild(subAllowsButton);
+            document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
         }
     }
     document.getElementById('subButtonWrapper').appendChild(subButton);
@@ -178,9 +196,10 @@ function createSkillButton(skill) {
         wrapper.classList.add('skill');
         let button = document.createElement('button');
         button.id = skill.name;
-        button.innerHTML = skill.name;
+        button.innerHTML = `${skill.name}</br>${skill.skill.level}`;
         button.onclick = function() {
             skills[this.id].onclick();
+            this.innerHTML = `${skill.name}</br>${skill.skill.level}`;
         }
         wrapper.appendChild(button);
         document.getElementById('skills').appendChild(wrapper);
@@ -207,7 +226,6 @@ function craftItem(requiredItems, newItem, type) {
             player[item].amount -= requiredItems[item];
         }
         if(!player[newItem]) {
-            console.log(requiredItems, newItem);
             player[newItem] = { type: type, amount: 0 };
         }
         player[newItem].amount++;

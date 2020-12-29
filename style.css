@@ -1,5 +1,6 @@
 * {
     margin: 0;
+    outline: none;
 }
 #wrapper {
     display: flex;
@@ -10,6 +11,13 @@
     display: flex;
     height: 100vh;
     width: 30%;
+}
+.clicked {
+    border: 1px solid orange;
+}
+
+.clickedSubAllowButton {
+    border: 1px solid red;
 }
 
 /* ===================== */
