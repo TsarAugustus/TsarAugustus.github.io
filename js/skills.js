@@ -1,6 +1,7 @@
 import { player } from './player.js';
 import { Stonecrafting } from './Crafting/Stonecrafting.js';
 import { Woodcrafting } from './Crafting/Woodcrafting.js';
+import { craftItem } from './Crafting/craftItem.js';
 
 let skills = {
     Foraging: {
@@ -40,6 +41,7 @@ let skills = {
             Woodcrafting,
             Stonecrafting
         },
+        specialFunction: craftItem,
         onclick: function() {
             let thisWrapper = document.getElementById(this.name + 'Wrapper');
             thisWrapper.classList.toggle('show');
@@ -67,7 +69,7 @@ function createSubSkillButtons(thisSkill) {
             subSkillWrapper.classList.add('subSkill');
 
             let subSkillButton = document.createElement('button');
-            subSkillButton.innerHTML = subSkill;
+            subSkillButton.innerHTML = `${thisSkill.subSkills[subSkill].name}</br>${thisSkill.subSkills[subSkill].level}`;;
             subSkillButton.name = thisSkill.name;
             subSkillButton.id = subSkill;
             subSkillButton.onclick = function() {
@@ -102,13 +104,14 @@ function shouldSkillBeActive(skill) {
     let reqContainer = [];
     for(let req in skill.required) {
         let reqName = Object.keys(skill.required[req]);
-        if(req === 'level' && skills[reqName].level >= Object.values(skill.required[req])) {
+        if(req === 'subLevel' && skills[skill.parentSkill].subSkills[reqName].level >= skill.required[req][reqName]) {
+            reqContainer.push(true);
+        } else if (req === 'level' && skills[reqName].level >= Object.values(skill.required[req])) {
             reqContainer.push(true);
         } else if (req === 'item' && player[reqName] && player[reqName].amount >= Object.values(skill.required[req])) {
             reqContainer.push(true);
         }
     }
-
     if(reqContainer.length === Object.keys(skill.required).length) {
         skill.active = true;
         return true;
@@ -133,48 +136,50 @@ function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
 }
 
 function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
-    if(!document.getElementById('subButtonWrapper')) {
-        let subButtonWrapper = document.createElement('div');
-        subButtonWrapper.id = 'subButtonWrapper';
-        document.getElementById('subSkillScreen').appendChild(subButtonWrapper);
+    shouldSkillBeActive(skills[mainSkill].subSkills[subSkillName][subSkillName][sub]);
+    if(skills[mainSkill].subSkills[subSkillName][subSkillName][sub].active) {
+        if(!document.getElementById('subButtonWrapper')) {
+            let subButtonWrapper = document.createElement('div');
+            subButtonWrapper.id = 'subButtonWrapper';
+            document.getElementById('subSkillScreen').appendChild(subButtonWrapper);
+        }
+        let subButton = document.createElement('button');
+        subButton.id = sub + 'ButtonWrapper'
+        subButton.innerHTML = sub;
+        subButton.onclick = function() {
+            if(document.getElementById('subAllows')) {
+                removeElementAndChildren('subAllows');
+            }
+            let clickedSubAllowButton = document.getElementsByClassName('clickedSubAllowButton');
+            if(clickedSubAllowButton.length > 0) {
+                for(let item of clickedSubAllowButton) {
+                    item.classList.remove('clickedSubAllowButton');
+                }
+            }
+            this.classList.add('clickedSubAllowButton');
+            let subAllows = document.createElement('div');
+            subAllows.id = 'subAllows';
+            document.getElementById('subSkillScreen').appendChild(subAllows);
+            for(let allow in subSkillInformation[subSkillName][sub].allows) {
+                let subAllowsButtonDiv = document.createElement('div');
+                subAllowsButtonDiv.id = allow + 'ButtonDiv';
+    
+                let subAllowsButton = document.createElement('button');
+                let text = `${allow}`;
+                for(let reqText in subSkillInformation[subSkillName][sub].allows[allow].required) {
+                    let val = subSkillInformation[subSkillName][sub].allows[allow].required[reqText];
+                    text += `</br>${reqText}: ${val}`
+                }
+                subAllowsButton.innerHTML = text;
+                subAllowsButton.onclick = function() {
+                        skills[mainSkill].specialFunction(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill)
+                }
+                subAllowsButtonDiv.appendChild(subAllowsButton);
+                document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
+            }
+        }
+        document.getElementById('subButtonWrapper').appendChild(subButton);
     }
-    let subButton = document.createElement('button');
-    subButton.id = sub + 'ButtonWrapper'
-    subButton.innerHTML = sub;
-    subButton.onclick = function() {
-        if(document.getElementById('subAllows')) {
-            removeElementAndChildren('subAllows');
-        }
-        let clickedSubAllowButton = document.getElementsByClassName('clickedSubAllowButton');
-        if(clickedSubAllowButton.length > 0) {
-            for(let item of clickedSubAllowButton) {
-                item.classList.remove('clickedSubAllowButton');
-            }
-        }
-        this.classList.add('clickedSubAllowButton');
-        let subAllows = document.createElement('div');
-        subAllows.id = 'subAllows';
-        document.getElementById('subSkillScreen').appendChild(subAllows);
-
-        for(let allow in subSkillInformation[subSkillName][sub].allows) {
-            let subAllowsButtonDiv = document.createElement('div');
-            subAllowsButtonDiv.id = allow + 'ButtonDiv';
-
-            let subAllowsButton = document.createElement('button');
-            let text = `${allow}`;
-            for(let reqText in subSkillInformation[subSkillName][sub].allows[allow].required) {
-                let val = subSkillInformation[subSkillName][sub].allows[allow].required[reqText];
-                text += `</br>${reqText}: ${val}`
-            }
-            subAllowsButton.innerHTML = text;
-            subAllowsButton.onclick = function() {
-                craftItem(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill);
-            }
-            subAllowsButtonDiv.appendChild(subAllowsButton);
-            document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
-        }
-    }
-    document.getElementById('subButtonWrapper').appendChild(subButton);
 }
 
 function checkForNewSkills() {
@@ -218,41 +223,6 @@ function removeElementAndChildren(el) {
         elName.removeChild(elName.lastChild);
     }
     elName.parentNode.removeChild(elName);
-}
-
-function craftItem(itemPassed, newItem, mainSkill) {
-    let requiredItems = itemPassed.required;
-    let type = itemPassed.type;
-    let reqContainer = [];
-    for(let item in requiredItems) {
-        if(player[item] && player[item].amount >= requiredItems[item]) {
-            reqContainer.push(true);
-        }
-    }
-    if(reqContainer.length === Object.values(requiredItems).length) {
-        for(let item in requiredItems) {
-            player[item].amount -= requiredItems[item];
-        }
-        if(!player[newItem]) {
-            player[newItem] = { type: type, amount: 0 };
-        }
-        let subSkill = skills[mainSkill].subSkills[itemPassed.type];
-        subSkill.currentXP += itemPassed.return.XP;
-        skills[mainSkill].currentXP += itemPassed.return.XP;
-        
-        if(subSkill.currentXP >= subSkill.XPToLevel) {
-            subSkill.level++;
-            subSkill.currentXP = 0;
-            subSkill.XPToLevel *= 1.6;
-        } else if(skills[mainSkill].currentXP >= skills[mainSkill].XPToLevel) {
-            skills[mainSkill].level++;
-            skills[mainSkill].currentXP = 0;
-            skills[mainSkill].XPToLevel *= 1.6;
-        }
-        updateProgressBar({name: subSkill.name, skill: subSkill});
-        updateProgressBar({name: skills[mainSkill].name, skill: skills[mainSkill]});
-        player[newItem].amount += itemPassed.return.amount;
-    }
 }
 
 function updateProgressBar(skillInformation) {

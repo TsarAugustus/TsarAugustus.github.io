@@ -1,5 +1,6 @@
 export let Woodcrafting = {
     name: 'Woodcrafting',
+    parentSkill: 'Crafting',
     active: false,
     level: 0,
     currentXP: 0,

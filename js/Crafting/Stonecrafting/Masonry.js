@@ -1,8 +1,10 @@
 export let Masonry = {
     active: false,
+    parentSkill: 'Crafting',
+    name: 'Masonry',
     required: {
-        item: {
-            Stone: 20
+        subLevel: {
+            Stonecrafting: 1
         }
     },
     allows: {

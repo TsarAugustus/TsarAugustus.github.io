@@ -1,5 +1,7 @@
 export let Flintknapping = {
     active: false,
+    name: 'Flintknapping',
+    parentSkill: 'Crafting',
     required: {
         item: {
             Wood: 10
