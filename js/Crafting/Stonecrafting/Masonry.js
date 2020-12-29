@@ -10,6 +10,10 @@ export let Masonry = {
             type: 'Stonecrafting',
             required: {
                 Stone: 5
+            },
+            return: {
+                XP: 10,
+                amount: 1
             }
         }
     }

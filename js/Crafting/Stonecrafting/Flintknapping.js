@@ -7,23 +7,35 @@ export let Flintknapping = {
     },
     allows: {
         Hammerstone: {
-            type: 'Woodcrafting',
+            type: 'Stonecrafting',
             required: {
                 Stone: 5
+            },
+            return: {
+                XP: 10,
+                amount: 1
             }
         },
         Handaxe: {
-            type: 'Woodcrafting',
+            type: 'Stonecrafting',
             required: {
                 Hammerstone: 0.1,
                 Stone: 1
+            },
+            return: {
+                XP: 10,
+                amount: 1
             }
         },
         Handhoe: {
-            type: 'Woodcrafting',
+            type: 'Stonecrafting',
             required: {
                 Hammerstone: 0.1,
                 Stone: 1
+            },
+            return: {
+                XP: 10,
+                amount: 1
             }
         }
     }

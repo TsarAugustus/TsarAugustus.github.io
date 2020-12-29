@@ -1,4 +1,4 @@
-import { skills, updateProgressBar, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills} from './skills.js';
+import { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, createSubButtons } from './skills.js';
 import { player } from './player.js';
 
 window.onload = function() {
@@ -41,7 +41,29 @@ function tick() {
     if(shownElement[0]) {
         let shownSkill = shownElement[0].id.slice(0, -7);
         createSubSkillButtons(skills[shownSkill])
-        
+    }
+    let clickedSubSkillButtons = document.getElementsByClassName('clicked');
+    //activated when viewing an interactive screen, it will rewrite the interaction screen
+    if(clickedSubSkillButtons.length > 0) {
+        let subButtonWrapper = document.getElementById('subButtonWrapper');
+        let activeSkills = 0;
+
+        let mainSkill = clickedSubSkillButtons[0].name;
+        let subSkill = clickedSubSkillButtons[0].id;
+
+        for(let item in skills[mainSkill].subSkills) {
+            if(skills[mainSkill].subSkills[item].active) {
+                activeSkills++;
+            }
+        }
+        if(subButtonWrapper.children.length < activeSkills) {
+            for(let sub in skills[mainSkill].subSkills[subSkill][subSkill]) {
+                if(!document.getElementById(sub + 'ButtonWrapper')) {
+                    createSubButtons(sub, subSkill, skills[mainSkill].subSkills[subSkill], mainSkill)
+                }
+            }
+        }
+        activeSkills = 0;
     }
 }
 

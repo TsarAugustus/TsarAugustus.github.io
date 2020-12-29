@@ -31,6 +31,8 @@ let skills = {
         name: 'Crafting',
         active: false,
         level: 0,
+        currentXP: 0,
+        XPToLevel: 100,
         required: {
             level:  { Foraging: 1 }
         },
@@ -42,6 +44,7 @@ let skills = {
             let thisWrapper = document.getElementById(this.name + 'Wrapper');
             thisWrapper.classList.toggle('show');
             if(thisWrapper.classList.contains('show')) {
+                updateProgressBar({name: this.name, skill: this});
                 createSubSkillButtons(this);
             } else {
                 let subSkills = document.getElementsByClassName(this.name);
@@ -62,6 +65,7 @@ function createSubSkillButtons(thisSkill) {
             subSkillWrapper.id = subSkill + 'Wrapper';
             subSkillWrapper.classList.add(thisSkill.name);
             subSkillWrapper.classList.add('subSkill');
+
             let subSkillButton = document.createElement('button');
             subSkillButton.innerHTML = subSkill;
             subSkillButton.name = thisSkill.name;
@@ -79,6 +83,7 @@ function createSubSkillButtons(thisSkill) {
             }
             subSkillWrapper.appendChild(subSkillButton);
             thisWrapper.appendChild(subSkillWrapper);
+            updateProgressBar({name: skills[thisSkill.name].subSkills[subSkill].name, skill: skills[thisSkill.name].subSkills[subSkill]})
         }
     }
 }
@@ -122,18 +127,19 @@ function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
     for(let sub in subSkillInformation[subSkillName]) {
         shouldSkillBeActive(subSkillInformation[subSkillName][sub]);
         if(subSkillInformation[subSkillName][sub].active) {
-            createSubButtons(sub, subSkillName, subSkillInformation);
+            createSubButtons(sub, subSkillName, subSkillInformation, mainSkill);
         }
     }
 }
 
-function createSubButtons(sub, subSkillName, subSkillInformation) {
+function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
     if(!document.getElementById('subButtonWrapper')) {
         let subButtonWrapper = document.createElement('div');
         subButtonWrapper.id = 'subButtonWrapper';
         document.getElementById('subSkillScreen').appendChild(subButtonWrapper);
     }
     let subButton = document.createElement('button');
+    subButton.id = sub + 'ButtonWrapper'
     subButton.innerHTML = sub;
     subButton.onclick = function() {
         if(document.getElementById('subAllows')) {
@@ -162,7 +168,7 @@ function createSubButtons(sub, subSkillName, subSkillInformation) {
             }
             subAllowsButton.innerHTML = text;
             subAllowsButton.onclick = function() {
-                craftItem(subSkillInformation[subSkillName][sub].allows[allow].required, allow, subSkillInformation[subSkillName][sub].allows[allow].type);
+                craftItem(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill);
             }
             subAllowsButtonDiv.appendChild(subAllowsButton);
             document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
@@ -214,7 +220,9 @@ function removeElementAndChildren(el) {
     elName.parentNode.removeChild(elName);
 }
 
-function craftItem(requiredItems, newItem, type) {
+function craftItem(itemPassed, newItem, mainSkill) {
+    let requiredItems = itemPassed.required;
+    let type = itemPassed.type;
     let reqContainer = [];
     for(let item in requiredItems) {
         if(player[item] && player[item].amount >= requiredItems[item]) {
@@ -228,7 +236,22 @@ function craftItem(requiredItems, newItem, type) {
         if(!player[newItem]) {
             player[newItem] = { type: type, amount: 0 };
         }
-        player[newItem].amount++;
+        let subSkill = skills[mainSkill].subSkills[itemPassed.type];
+        subSkill.currentXP += itemPassed.return.XP;
+        skills[mainSkill].currentXP += itemPassed.return.XP;
+        
+        if(subSkill.currentXP >= subSkill.XPToLevel) {
+            subSkill.level++;
+            subSkill.currentXP = 0;
+            subSkill.XPToLevel *= 1.6;
+        } else if(skills[mainSkill].currentXP >= skills[mainSkill].XPToLevel) {
+            skills[mainSkill].level++;
+            skills[mainSkill].currentXP = 0;
+            skills[mainSkill].XPToLevel *= 1.6;
+        }
+        updateProgressBar({name: subSkill.name, skill: subSkill});
+        updateProgressBar({name: skills[mainSkill].name, skill: skills[mainSkill]});
+        player[newItem].amount += itemPassed.return.amount;
     }
 }
 
@@ -244,4 +267,4 @@ function updateProgressBar(skillInformation) {
     document.getElementById(skillInformation.name + 'ProgressBar').style.width = progressWidth + "%";
 }
 
-export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar }
+export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons }
