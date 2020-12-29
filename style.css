@@ -37,9 +37,60 @@
     margin: 0 auto;
     width: 70%;
 }
+
+.progressBar {
+    height: 0.2em;
+    background-color: green;
+}
 /* ======================== */
 #right {
     border: 1px solid black;
     display: flex;
+    flex-direction: row-reverse;
     width: 70%;
+}
+
+#player {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: flex-start;
+    text-align: center;
+    flex-basis: 50%;
+}
+
+#player div {
+    display: flex;
+    flex-direction: column;
+}
+
+#subSkillScreen {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 50%;
+}
+
+#subSkillScreen button {
+    margin-top: 1em;
+}
+
+#subButtonWrapper {
+    display: flex;
+}
+
+#subButtonWrapper button{
+   display: flex;
+   flex-grow: 1;
+   text-align: center;
+   justify-content: center;
+}
+
+#subAllows{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#subAllows button {
+    flex-grow: 1;
+    flex-basis: 33.33%;
 }

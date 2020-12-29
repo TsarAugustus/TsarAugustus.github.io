@@ -1,4 +1,5 @@
 import { Flintknapping } from './Stonecrafting/Flintknapping.js';
+import { Masonry } from './Stonecrafting/Masonry.js';
 
 
 export let Stonecrafting = {
@@ -10,6 +11,7 @@ export let Stonecrafting = {
         }
     },
     Stonecrafting: {
-        Flintknapping
+        Flintknapping,
+        Masonry
     }
 }
