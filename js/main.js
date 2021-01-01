@@ -8,7 +8,7 @@ window.onload = function() {
 function updatePlayer() {
     let playerDiv = document.getElementById('player');
     for(let item in player) {
-        if(!document.getElementById(item)) {
+        if(!document.getElementById(item + 'InventoryDiv')) {
             if(!document.getElementById(player[item].type + 'InventoryWrapper')) {
                 let typeDiv = document.createElement('div');
                 typeDiv.id = player[item].type + 'InventoryWrapper';
@@ -19,12 +19,12 @@ function updatePlayer() {
             }
             
             let itemDiv = document.createElement('span');
-            itemDiv.id = item;
+            itemDiv.id = item + 'InventoryDiv';
             itemDiv.innerHTML = `${item}: ${player[item].amount}`;
             
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
-            document.getElementById(item).innerHTML = `${item}: ${player[item].amount}`;
+            document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount}`;
         }
     }
 }

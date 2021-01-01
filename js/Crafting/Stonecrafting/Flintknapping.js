@@ -4,7 +4,7 @@ export let Flintknapping = {
     parentSkill: 'Crafting',
     required: {
         item: {
-            Wood: 10
+            Stone: 1
         }
     },
     allows: {
