@@ -102,3 +102,23 @@
     flex-grow: 1;
     flex-basis: 33.33%;
 }
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+.column > button {
+    display: flex;
+    flex: 1;
+    /* text-align: center; */
+    /* display: flex; */
+    color: red;
+}
+
+.focusButton {
+    height: 100%;
+}
+
+.focus {
+    border 1px solid red;
+}
