@@ -4,6 +4,7 @@ import { player } from '../player.js';
 export function craftItem(itemPassed, newItem, mainSkill) {
     let requiredItems = itemPassed.required;
     let type = itemPassed.type;
+    let toolType = itemPassed.toolType;
     let reqContainer = [];
     for(let item in requiredItems) {
         if(player[item] && player[item].amount >= requiredItems[item]) {
@@ -16,6 +17,9 @@ export function craftItem(itemPassed, newItem, mainSkill) {
         }
         if(!player[newItem]) {
             player[newItem] = { type: type, amount: 0 };
+            if(toolType) {
+                player[newItem].toolType = toolType;
+            }
         }
         let subSkill = skills[mainSkill].subSkills[itemPassed.type];
         subSkill.currentXP += itemPassed.return.XP;
@@ -30,7 +34,6 @@ export function craftItem(itemPassed, newItem, mainSkill) {
             skills[mainSkill].currentXP = 0;
             skills[mainSkill].XPToLevel *= 1.6;
         }
-        console.log()
         updateProgressBar({name: subSkill.name, skill: subSkill});
         updateProgressBar({name: skills[mainSkill].name, skill: skills[mainSkill]});
         document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>${skills[mainSkill].level}`;

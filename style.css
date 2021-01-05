@@ -115,6 +115,14 @@
     color: red;
 }
 
+.desc {
+    margin-top: 5em;
+    position: absolute;
+    background-color: white;
+    padding: 0.2em;
+    border: 1px solid black;
+}
+
 .focusButton {
     height: 100%;
 }

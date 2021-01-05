@@ -1,7 +1,8 @@
 import { player } from './player.js';
+import { craftItem } from './Crafting/craftItem.js';
 import { Stonecrafting } from './Crafting/Stonecrafting.js';
 import { Woodcrafting } from './Crafting/Woodcrafting.js';
-import { craftItem } from './Crafting/craftItem.js';
+import { Textile } from './Crafting/Textile.js';
 import { Cropfarming } from './Farming/Cropfarming.js';
 // import { Treefarming } from './Farming/Cropfarming.js';
 
@@ -19,14 +20,12 @@ let skills = {
         XPToLevel: 100,
         onclick: function() {
             this.currentXP += 10;
-            if(!player.Wood) {
-                player.Wood = { type: 'Basic', amount: 0 }
+            let basicItems = ['Wood', 'Stone', 'Leaves', 'Seeds'];
+            let pickedItem = basicItems[Math.floor(Math.random() * basicItems.length)];
+            if(!player[pickedItem]) {
+                player[pickedItem] = { type: 'Basic', amount: 0 }
             }
-            player.Wood.amount++;
-            if(!player.Stone) {
-                player.Stone = { type: 'Basic', amount: 0 }
-            }
-            player.Stone.amount++;
+            player[pickedItem].amount++;
             if(this.currentXP >= this.XPToLevel) {
                 this.level++;
                 this.currentXP = 0;
@@ -46,7 +45,8 @@ let skills = {
         },
         subSkills: {
             Woodcrafting,
-            Stonecrafting
+            Stonecrafting,
+            Textile
         },
         specialFunction: craftItem,
         onclick: function() {
@@ -63,31 +63,56 @@ let skills = {
             }
         }
     },
-    Farming: {
-        name: 'Farming',
+    // Farming: {
+    //     name: 'Farming',
+    //     active: false,
+    //     level: 0,
+    //     currentXP: 0,
+    //     XPToLevel: 100,
+    //     required: {
+    //         item: { Handhoe: 1 }
+    //     },
+    //     subSkills: {
+    //         Cropfarming
+    //     },
+    //     specialFunction: craftItem,
+    //     onclick: function() {
+    //         let thisWrapper = document.getElementById(this.name + 'Wrapper');
+    //         thisWrapper.classList.toggle('show');
+    //         if(thisWrapper.classList.contains('show')) {
+    //             updateProgressBar({name: this.name, skill: this});
+    //             createSubSkillButtons(this);
+    //         } else {
+    //             let subSkills = document.getElementsByClassName(this.name);
+    //             while(subSkills.length > 0){
+    //                 subSkills[0].parentNode.removeChild(subSkills[0]);
+    //             }
+    //         }
+    //     }
+    // },
+    Mining: {
+        name: 'Mining',
         active: false,
         level: 0,
         currentXP: 0,
         XPToLevel: 100,
         required: {
-            item: { Handhoe: 1 }
+            toolType: 'Axe'
         },
-        subSkills: {
-            Cropfarming
-        },
-        specialFunction: craftItem,
         onclick: function() {
-            let thisWrapper = document.getElementById(this.name + 'Wrapper');
-            thisWrapper.classList.toggle('show');
-            if(thisWrapper.classList.contains('show')) {
-                updateProgressBar({name: this.name, skill: this});
-                createSubSkillButtons(this);
-            } else {
-                let subSkills = document.getElementsByClassName(this.name);
-                while(subSkills.length > 0){
-                    subSkills[0].parentNode.removeChild(subSkills[0]);
-                }
+            this.currentXP += 10;
+            let basicItems = ['Coal', 'Stone', 'Ore', 'Clay'];
+            let pickedItem = basicItems[Math.floor(Math.random() * basicItems.length)];
+            if(!player[pickedItem]) {
+                player[pickedItem] = { type: 'Basic', amount: 0 }
             }
+            player[pickedItem].amount++;
+            if(this.currentXP >= this.XPToLevel) {
+                this.level++;
+                this.currentXP = 0;
+                this.XPToLevel *= 1.6;
+            }
+            updateProgressBar({name: this.name, skill: this});
         }
     }
 }
@@ -144,6 +169,12 @@ function shouldSkillBeActive(skill) {
             reqContainer.push(true);
         } else if (req === 'item' && player[reqName] && player[reqName].amount >= Object.values(skill.required[req])) {
             reqContainer.push(true);
+        } else if(req === 'toolType') {
+            for(let item in player) {
+                if(player[item].toolType === skill.required[req]) {
+                    reqContainer.push(true);
+                }
+            }
         }
     }
     if(reqContainer.length === Object.keys(skill.required).length) {
@@ -197,7 +228,7 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
             for(let allow in subSkillInformation[subSkillName][sub].allows) {
                 let subAllowsButtonDiv = document.createElement('div');
                 subAllowsButtonDiv.id = allow + 'ButtonDiv';
-                subAllowsButtonDiv.classList.add('column')
+                subAllowsButtonDiv.classList.add('column');
     
                 let subAllowsButton = document.createElement('button');
                 let text = `${allow}`;
@@ -210,7 +241,21 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 subAllowsButton.onclick = function() {
                         skills[mainSkill].specialFunction(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill);
                 }
+
+                let subAllowsButtonDescription = document.createElement('span');
+                subAllowsButtonDescription.classList.add('desc');
+                subAllowsButtonDescription.innerHTML = subSkillInformation[subSkillName][sub].allows[allow].desc;
+                subAllowsButtonDescription.style.display = "none";
+
+
                 subAllowsButtonDiv.appendChild(subAllowsButton);
+                subAllowsButtonDiv.appendChild(subAllowsButtonDescription);
+                subAllowsButton.onmouseover = function() {
+                    subAllowsButtonDescription.style.display = "block";
+                }
+                subAllowsButton.onmouseout = function() {
+                    subAllowsButtonDescription.style.display = "none";
+                }
                 let focusButton = document.createElement('button');
                 focusButton.id = allow + 'Focus';
                 focusButton.name = subSkillName;
@@ -226,26 +271,26 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 focusButton.onclick = function() {
                     // subFocusList[subSkillName].limit = skills[mainSkill].subSkills[subSkillName].level;
 
-                    let focusListSkill = subFocusList[subSkillName].focus.find(function(skillItem) {
-                        console.log(skillItem, allow)
-                        return skillItem === allow
-                    });
+                    // let focusListSkill = subFocusList[subSkillName].focus.find(function(skillItem) {
+                    //     console.log(skillItem, allow)
+                    //     return skillItem === allow
+                    // });
 
-                    if (focusListSkill) {
-                        let focusedSkillName = this.id.slice(0, -5);
-                        let skillInFocusList = subFocusList[this.name].focus.find(el => el === focusedSkillName);
-                        subFocusList[this.name].focus.splice(skillInFocusList, 1);
-                        this.innerHTML = `Focus ${allow}`;
-                        this.classList.remove('unfocusButton');
-                        this.classList.add('focusButton');
-                    }
+                    // if (focusListSkill) {
+                    //     let focusedSkillName = this.id.slice(0, -5);
+                    //     let skillInFocusList = subFocusList[this.name].focus.find(el => el === focusedSkillName);
+                    //     subFocusList[this.name].focus.splice(skillInFocusList, 1);
+                    //     this.innerHTML = `Focus ${allow}`;
+                    //     this.classList.remove('unfocusButton');
+                    //     this.classList.add('focusButton');
+                    // }
 
-                    if(!focusListSkill && subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit) {
-                        subFocusList[subSkillName].focus.push(allow);
-                        this.innerHTML = `Unfocus ${allow}`;
-                        this.classList.remove('focusButton');
-                        this.classList.add('unfocusButton');
-                    }
+                    // if(!focusListSkill && subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit) {
+                    //     subFocusList[subSkillName].focus.push(allow);
+                    //     this.innerHTML = `Unfocus ${allow}`;
+                    //     this.classList.remove('focusButton');
+                    //     this.classList.add('unfocusButton');
+                    // }
                     
                     // } else if(!focusListSkill && subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit) {
                     //     subFocusList[subSkillName].focus.push(allow);
@@ -277,7 +322,7 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                     // }
                 }
                 
-                subAllowsButtonDiv.appendChild(focusButton)
+                // subAllowsButtonDiv.appendChild(focusButton)
                 document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
             }
         }
