@@ -10,8 +10,8 @@ export let Textile = {
     currentXP: 0,
     XPToLevel: 100,
     required: { 
-        level: {
-            Crafting: 0
+        item: {
+            Leaves: 1
         }
     },
     Textile: {

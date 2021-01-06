@@ -20,17 +20,16 @@ function updatePlayer() {
             
             let itemDiv = document.createElement('span');
             itemDiv.id = item + 'InventoryDiv';
-            itemDiv.innerHTML = `${item}: ${player[item].amount}`;
+            itemDiv.innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
             
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
-            document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount}`;
+            document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
         }
     }
 }
 
 function tick() {
-    updatePlayer();
     let skillList = updateSkillList();
     checkForNewSkills();
     for(let skill of skillList) {
@@ -73,7 +72,7 @@ function init() {
     }, 1000)
 }
 
-export {  }
+export { updatePlayer }
 
 //gather seeds
 

@@ -7,10 +7,7 @@ export let Woodcrafting = {
     XPToLevel: 100,
     required: {
         level: {
-            Foraging: 2
-        },
-        item: {
-            Wood: 15
+            Crafting: 1
         }
     }
 }
