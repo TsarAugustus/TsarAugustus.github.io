@@ -5,6 +5,8 @@ window.onload = function() {
     init();
 }
 
+let focusList = [];
+
 function updatePlayer() {
     let playerDiv = document.getElementById('player');
     for(let item in player) {
@@ -64,6 +66,12 @@ function tick() {
         }
         activeSkills = 0;
     }
+
+    if(focusList.length > 0) {
+        for(let item of focusList) {
+            document.getElementById(item.name).click();
+        }
+    }
 }
 
 function init() {  
@@ -72,7 +80,7 @@ function init() {
     }, 1000)
 }
 
-export { updatePlayer }
+export { updatePlayer, focusList }
 
 //gather seeds
 

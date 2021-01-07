@@ -24,12 +24,12 @@ export function craftItem(itemPassed, newItem, mainSkill) {
         
         if(subSkill.currentXP >= subSkill.XPToLevel) {
             subSkill.level++;
-            subSkill.currentXP = 0;
+            subSkill.currentXP = (subSkill.currentXP - subSkill.XPToLevel);
             subSkill.XPToLevel *= 1.6;
         }
         if(skills[mainSkill].currentXP >= skills[mainSkill].XPToLevel) {
             skills[mainSkill].level++;
-            skills[mainSkill].currentXP = 0;
+            skills[mainSkill].currentXP = (skills[mainSkill].currentXP - skills[mainSkill].XPToLevel);
             skills[mainSkill].XPToLevel *= 1.6;
         }
         document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>

@@ -6,7 +6,7 @@ import { Textile } from './Crafting/Textile.js';
 import { Cropfarming } from './Farming/Cropfarming.js';
 // import { Treefarming } from './Farming/Cropfarming.js';
 
-import { updatePlayer } from './main.js';
+import { updatePlayer, focusList } from './main.js';
 
 let subFocusList = {
     //subname
@@ -21,6 +21,7 @@ let skills = {
         currentXP: 0,
         XPIncrease: 10,
         XPToLevel: 100,
+        focusUnlock: 2,
         toolType: 'Shoe',
         onclick: function() {
             let item = findSkillItem(this);
@@ -41,11 +42,15 @@ let skills = {
             }
             let newAmt = player[pickedItem].amount + itemAmountIncrease;
             player[pickedItem].amount = 1 + Math.round(newAmt*100)/100;
-
             if(this.currentXP >= this.XPToLevel) {
                 this.level++;
-                this.currentXP = 0;
+                this.currentXP = (this.currentXP - this.XPToLevel);
                 this.XPToLevel *= 1.6;
+                checkForNewSkills();
+            }
+
+            if(this.level >= this.focusUnlock) {
+                createFocusButton(this);
             }
             updateProgressBar({name: this.name, skill: this});
             updatePlayer();
@@ -59,7 +64,7 @@ let skills = {
         currentXP: 0,
         XPToLevel: 100,
         required: {
-            level:  { Foraging: 2 }
+            level:  { Foraging: 3 }
         },
         subSkills: {
             Woodcrafting,
@@ -92,6 +97,7 @@ let skills = {
         required: {
             toolType: 'Axe'
         },
+        focusUnlock: 2,
         toolType: 'Axe',
         onclick: function() {
             let item = findSkillItem(this);
@@ -115,8 +121,12 @@ let skills = {
 
             if(this.currentXP >= this.XPToLevel) {
                 this.level++;
-                this.currentXP = 0;
+                this.currentXP = (this.currentXP - this.XPToLevel);
                 this.XPToLevel *= 1.6;
+                checkForNewSkills();
+            }
+            if(this.level >= this.focusUnlock) {
+                createFocusButton(this);
             }
             updateProgressBar({name: this.name, skill: this});
             updatePlayer();
@@ -160,6 +170,7 @@ let skills = {
         required: {
             toolType: 'Pick'
         },
+        focusUnlock: 2,
         toolType: 'Pick',
         onclick: function() {
             let item = findSkillItem(this);
@@ -183,13 +194,44 @@ let skills = {
             player[pickedItem].amount = 1 + Math.round(newAmt*100)/100;
             if(this.currentXP >= this.XPToLevel) {
                 this.level++;
-                this.currentXP = 0;
+                this.currentXP = (this.currentXP - this.XPToLevel);
                 this.XPToLevel *= 1.6;
+                checkForNewSkills();
+            }
+            if(this.level >= this.focusUnlock) {
+                createFocusButton(this);
             }
             updateProgressBar({name: this.name, skill: this});
             updatePlayer();
         },
         desc: 'Strike the earth!'
+    }
+}
+
+function createFocusButton(itemToFocus) {
+    if(!document.getElementById(itemToFocus.name + 'Focus')) {
+        let focusButton = document.createElement('button');
+        focusButton.id = itemToFocus.name + 'Focus';
+        focusButton.classList.add('focus');
+        focusButton.innerHTML = `Focus ${itemToFocus.name}`;
+        focusButton.onclick = function() {
+            let isFocused = focusList.find(item => item === itemToFocus);          
+            if(!isFocused) {
+                focusList.push(itemToFocus);
+                this.innerHTML = `Unfocus ${itemToFocus.name}`;
+                document.getElementById(itemToFocus.name).classList.add('focused');
+            }
+            
+            if(isFocused) {
+                let focusedIndex = focusList.indexOf(isFocused);
+                focusList.splice(focusedIndex, 1);
+                this.innerHTML = `Focus ${itemToFocus.name}`;
+                document.getElementById(itemToFocus.name).classList.remove('focused');
+            }
+        }
+
+        let thisProgressBar = document.getElementById(itemToFocus.name + 'ProgressBar');
+        thisProgressBar.parentNode.insertBefore(focusButton, thisProgressBar);
     }
 }
 
@@ -486,7 +528,7 @@ function updateProgressBar(skillInformation) {
     }
     let progressWidth = (skillInformation.skill.currentXP / skillInformation.skill.XPToLevel) * 100;
     document.getElementById(skillInformation.name + 'ProgressBar').style.width = progressWidth + "%";
-    document.getElementById(skillInformation.name + 'ProgressBar').innerHTML = `${skillInformation.skill.currentXP}/${skillInformation.skill.XPToLevel.toFixed(2)}`
+    document.getElementById(skillInformation.name + 'ProgressBar').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`
 }
 
 export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons }
