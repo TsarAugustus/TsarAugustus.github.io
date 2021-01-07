@@ -2,6 +2,7 @@
     margin: 0;
     outline: none;
     font-family: monospace;
+    font-size: 1.02em;
 }
 
 body {
@@ -83,12 +84,19 @@ h3 {
 }
 
 .progressBar {
-    height: 1em;
+    height: inherit;
     background-color: green;
     border-radius: 0.2em;
     font-size: 0.7em;
     color: #ececec;
     text-align: center;
+}
+
+.progressBarWrapper {
+    height: 1em;
+    background-color: #30475e;
+    border-radius: 0.2em;
+    border: 1px solid #16213e;
 }
 /* ======================== */
 #right {
@@ -156,9 +164,12 @@ h3 {
     flex-grow: 1;
     flex-basis: 33.33%;
     background-color: #30475e;
-    border: 1px solid #16213e;
+    border: 1px solid #1a1a2e;
     color: #ececec;
     align-items: center;
+}
+#subAllows button:active {
+    background-color: #16213e;
 }
 
 .column {

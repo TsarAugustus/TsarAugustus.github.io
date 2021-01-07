@@ -1,4 +1,3 @@
-// import { Flintknapping } from './Stonecrafting/Flintknapping.js';
 import { Spinning } from './Textile/Spinning.js';
 
 

@@ -3,15 +3,10 @@ import { craftItem } from './Crafting/craftItem.js';
 import { Stonecrafting } from './Crafting/Stonecrafting.js';
 import { Woodcrafting } from './Crafting/Woodcrafting.js';
 import { Textile } from './Crafting/Textile.js';
-import { Cropfarming } from './Farming/Cropfarming.js';
+import { Firecrafting } from './Crafting/Firecrafting.js';
 // import { Treefarming } from './Farming/Cropfarming.js';
 
 import { updatePlayer, focusList } from './main.js';
-
-let subFocusList = {
-    //subname
-    //sublimit (equal to sub level)
-}
 
 let skills = {
     Foraging: {
@@ -69,7 +64,8 @@ let skills = {
         subSkills: {
             Woodcrafting,
             Stonecrafting,
-            Textile
+            Textile,
+            Firecrafting
         },
         specialFunction: craftItem,
         onclick: function() {
@@ -133,33 +129,6 @@ let skills = {
         },
         desc: 'Whack trees for profit.'
     },
-    // Farming: {
-    //     name: 'Farming',
-    //     active: false,
-    //     level: 0,
-    //     currentXP: 0,
-    //     XPToLevel: 100,
-    //     required: {
-    //         item: { Handhoe: 1 }
-    //     },
-    //     subSkills: {
-    //         Cropfarming
-    //     },
-    //     specialFunction: craftItem,
-    //     onclick: function() {
-    //         let thisWrapper = document.getElementById(this.name + 'Wrapper');
-    //         thisWrapper.classList.toggle('show');
-    //         if(thisWrapper.classList.contains('show')) {
-    //             updateProgressBar({name: this.name, skill: this});
-    //             createSubSkillButtons(this);
-    //         } else {
-    //             let subSkills = document.getElementsByClassName(this.name);
-    //             while(subSkills.length > 0){
-    //                 subSkills[0].parentNode.removeChild(subSkills[0]);
-    //             }
-    //         }
-    //     }
-    // },
     Mining: {
         name: 'Mining',
         active: false,
@@ -230,7 +199,7 @@ function createFocusButton(itemToFocus) {
             }
         }
 
-        let thisProgressBar = document.getElementById(itemToFocus.name + 'ProgressBar');
+        let thisProgressBar = document.getElementById(itemToFocus.name + 'ProgressBarWrapper');
         thisProgressBar.parentNode.insertBefore(focusButton, thisProgressBar);
     }
 }
@@ -342,16 +311,19 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
             if(document.getElementById('subAllows')) {
                 removeElementAndChildren('subAllows');
             }
+            
             let clickedSubAllowButton = document.getElementsByClassName('clickedSubAllowButton');
             if(clickedSubAllowButton.length > 0) {
                 for(let item of clickedSubAllowButton) {
                     item.classList.remove('clickedSubAllowButton');
                 }
             }
+
             this.classList.add('clickedSubAllowButton');
             let subAllows = document.createElement('div');
             subAllows.id = 'subAllows';
             document.getElementById('subSkillScreen').appendChild(subAllows);
+
             for(let allow in subSkillInformation[subSkillName][sub].allows) {
                 let subAllowsButtonDiv = document.createElement('div');
                 subAllowsButtonDiv.id = allow + 'ButtonDiv';
@@ -383,73 +355,6 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 subAllowsButton.onmouseout = function() {
                     subAllowsButtonDescription.style.display = "none";
                 }
-                // let focusButton = document.createElement('button');
-                // focusButton.id = allow + 'Focus';
-                // focusButton.name = subSkillName;
-                // focusButton.innerHTML = `Focus ${allow}`;
-                // focusButton.classList.add('focusButton');
-
-                // if(!subFocusList[subSkillName]) {
-                //     subFocusList[subSkillName] = {
-                //         limit: skills[mainSkill].subSkills[subSkillName].level + 2,
-                //         focus: []
-                //     };
-                // }
-                // focusButton.onclick = function() {
-                    // subFocusList[subSkillName].limit = skills[mainSkill].subSkills[subSkillName].level;
-
-                    // let focusListSkill = subFocusList[subSkillName].focus.find(function(skillItem) {
-                    //     console.log(skillItem, allow)
-                    //     return skillItem === allow
-                    // });
-
-                    // if (focusListSkill) {
-                    //     let focusedSkillName = this.id.slice(0, -5);
-                    //     let skillInFocusList = subFocusList[this.name].focus.find(el => el === focusedSkillName);
-                    //     subFocusList[this.name].focus.splice(skillInFocusList, 1);
-                    //     this.innerHTML = `Focus ${allow}`;
-                    //     this.classList.remove('unfocusButton');
-                    //     this.classList.add('focusButton');
-                    // }
-
-                    // if(!focusListSkill && subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit) {
-                    //     subFocusList[subSkillName].focus.push(allow);
-                    //     this.innerHTML = `Unfocus ${allow}`;
-                    //     this.classList.remove('focusButton');
-                    //     this.classList.add('unfocusButton');
-                    // }
-                    
-                    // } else if(!focusListSkill && subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit) {
-                    //     subFocusList[subSkillName].focus.push(allow);
-                    //     this.innerHTML = `Unfocus ${allow}`;
-                    //     this.classList.remove('focusButton');
-                    //     this.classList.add('unfocusButton');
-                    //     // this.classList.add('focus');
-                    //     // console.log(allow)
-                    //     // makeUnfocusButton(allow, subSkillName);
-                    // }
-                    // if (subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit){
-                    //     let focusElements = document.getElementsByClassName('focusButton');
-                    //     console.log('just right', subFocusList[subSkillName].focus)
-                    //     for(let item of focusElements) {
-                    //         item.disabled = false;
-                    //     }
-                    // }
-
-                    // if(subFocusList[subSkillName].focus.length >= subFocusList[subSkillName].limit) {
-                    //     let focusElements = document.getElementsByClassName('focusButton');
-                    //     console.log('too much')
-                    //     for(let item of focusElements) {
-                    //         item.disabled = true;
-                    //     }
-                    // } 
-
-                    // if(subFocusList[subSkillName].focus.length < subFocusList[subSkillName].limit) {
-                        
-                    // }
-                // }
-                
-                // subAllowsButtonDiv.appendChild(focusButton)
                 document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
             }
         }
@@ -486,8 +391,8 @@ function createSkillButton(skill) {
                             Level: ${skill.skill.level}`;
         button.onclick = function() {
             skills[this.id].onclick();
-        this.innerHTML = `${skill.name}</br>
-                        Level: ${skill.skill.level}`;
+            this.innerHTML = `${skill.name}</br>
+                                Level: ${skill.skill.level}`;
         }
         wrapper.appendChild(button);
         document.getElementById('skills').appendChild(wrapper);
@@ -519,16 +424,22 @@ function removeElementAndChildren(el) {
 }
 
 function updateProgressBar(skillInformation) {
-    let progressBar = document.getElementById(skillInformation.name + 'ProgressBar');
-    if(!progressBar) {
+    if(!document.getElementById(skillInformation.name + 'ProgressBarWrapper')) {
+        let progressBarWrapper = document.createElement('div');
+        progressBarWrapper.id = skillInformation.name + 'ProgressBarWrapper';
+        progressBarWrapper.classList.add('progressBarWrapper');
+
         let progressBar = document.createElement('div');
         progressBar.id = skillInformation.name + 'ProgressBar';
         progressBar.classList.add('progressBar');
-        document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBar);
-    }
+        progressBarWrapper.appendChild(progressBar);
+
+        document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBarWrapper);
+    } 
+
     let progressWidth = (skillInformation.skill.currentXP / skillInformation.skill.XPToLevel) * 100;
-    document.getElementById(skillInformation.name + 'ProgressBar').style.width = progressWidth + "%";
-    document.getElementById(skillInformation.name + 'ProgressBar').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`
+    document.getElementById(skillInformation.name + 'ProgressBar').style.width = `${progressWidth}%`;
+    document.getElementById(skillInformation.name + 'ProgressBar').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
 }
 
 export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons }
