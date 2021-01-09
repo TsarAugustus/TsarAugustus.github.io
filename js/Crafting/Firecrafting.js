@@ -9,9 +9,9 @@ export let Firecrafting = {
     currentXP: 0,
     XPToLevel: 100,
     required: { 
-        // item: {
-        //     Leaves: 1
-        // }
+        item: {
+            Wood: 1
+        }
     },
     Firecrafting: {
         Primitive

@@ -62,7 +62,7 @@ let skills = {
         currentXP: 0,
         XPToLevel: 100,
         required: {
-            level:  { Foraging: 0 }
+            level:  { Foraging: 2 }
         },
         subSkills: {
             Woodcrafting,
@@ -185,7 +185,7 @@ let skills = {
         currentXP: 0,
         XPToLevel: 100,
         required: {
-            // toolType: 'Fire'
+            toolType: 'Fire'
         },
         subSkills: {
            Basic

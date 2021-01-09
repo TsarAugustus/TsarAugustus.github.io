@@ -12,7 +12,9 @@ export let Primitive = {
             type: 'Firecrafting',
             toolType: 'Fire',
             required: {
-                Stone: 5
+                Stone: 5,
+                Wood: 5,
+                Coal: 1
             },
             return: {
                 XP: 10,

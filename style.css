@@ -12,7 +12,9 @@ body {
 #wrapper {
     display: flex;
     flex-direction: row;
+    overflow: hidden;
 }
+  
 #left {
     /* border: 1px solid black; */
     display: flex;
@@ -43,6 +45,25 @@ h3 {
     display: flex;
     flex-direction: column;
     width: 95%;
+    overflow-y: scroll;
+}
+
+#skills::-webkit-scrollbar-track {
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+    border-radius: 1em;
+    background-color: #16213e;
+  }
+  
+#skills::-webkit-scrollbar {
+    width: 0.5em;
+    background-color: #16213e;
+    border-radius: 1em;
+}
+  
+#skills::-webkit-scrollbar-thumb {
+    border-radius: 1em;
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
+    background-color: #30475e;
 }
 
 #skills h3 {
