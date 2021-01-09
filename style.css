@@ -83,20 +83,32 @@ h3 {
     width: 70%;
 }
 
-.progressBar {
-    height: inherit;
-    background-color: green;
-    border-radius: 0.2em;
-    font-size: 0.7em;
-    color: #ececec;
-    text-align: center;
-}
 
 .progressBarWrapper {
     height: 1em;
     background-color: #30475e;
     border-radius: 0.2em;
     border: 1px solid #16213e;
+    position: relative;
+}
+.progressBar {
+    height: inherit;
+    background-color: green;
+    border-radius: 0.2em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    
+}
+
+.progressSpan {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+    font-size: 0.7em;
+    color: #ececec;
 }
 /* ======================== */
 #right {
@@ -190,6 +202,7 @@ h3 {
     color: #ececec;
     border: 1px solid #16213e;
     text-align: center;
+    z-index: 99;
 }
 
 .focus {

@@ -1,10 +1,13 @@
 import { player } from './player.js';
+
 import { craftItem } from './Crafting/craftItem.js';
 import { Stonecrafting } from './Crafting/Stonecrafting.js';
 import { Woodcrafting } from './Crafting/Woodcrafting.js';
 import { Textile } from './Crafting/Textile.js';
 import { Firecrafting } from './Crafting/Firecrafting.js';
-// import { Treefarming } from './Farming/Cropfarming.js';
+
+import { addFuel } from './Firekeeping/addFuel.js';
+import { Basic } from './Firekeeping/Basic.js';
 
 import { updatePlayer, focusList } from './main.js';
 
@@ -59,7 +62,7 @@ let skills = {
         currentXP: 0,
         XPToLevel: 100,
         required: {
-            level:  { Foraging: 3 }
+            level:  { Foraging: 0 }
         },
         subSkills: {
             Woodcrafting,
@@ -174,6 +177,34 @@ let skills = {
             updatePlayer();
         },
         desc: 'Strike the earth!'
+    },
+    Firekeeping: {
+        name: 'Firekeeping',
+        active: false,
+        level: 0,
+        currentXP: 0,
+        XPToLevel: 100,
+        required: {
+            // toolType: 'Fire'
+        },
+        subSkills: {
+           Basic
+        },
+        specialFunction: addFuel,
+        onclick: function() {
+            let thisWrapper = document.getElementById(this.name + 'Wrapper');
+            thisWrapper.classList.toggle('show');
+            if(thisWrapper.classList.contains('show')) {
+                updateProgressBar({name: this.name, skill: this});
+                createSubSkillButtons(this);
+            } else {
+                let subSkills = document.getElementsByClassName(this.name);
+                while(subSkills.length > 0){
+                    subSkills[0].parentNode.removeChild(subSkills[0]);
+                }
+            }
+        },
+        desc: 'The Fire fades.'
     }
 }
 
@@ -429,6 +460,11 @@ function updateProgressBar(skillInformation) {
         progressBarWrapper.id = skillInformation.name + 'ProgressBarWrapper';
         progressBarWrapper.classList.add('progressBarWrapper');
 
+        let progressSpan = document.createElement('span');
+        progressSpan.id = skillInformation.name + 'progressSpan';
+        progressSpan.classList.add('progressSpan');
+        progressBarWrapper.appendChild(progressSpan);
+
         let progressBar = document.createElement('div');
         progressBar.id = skillInformation.name + 'ProgressBar';
         progressBar.classList.add('progressBar');
@@ -436,10 +472,11 @@ function updateProgressBar(skillInformation) {
 
         document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBarWrapper);
     } 
+    
 
     let progressWidth = (skillInformation.skill.currentXP / skillInformation.skill.XPToLevel) * 100;
     document.getElementById(skillInformation.name + 'ProgressBar').style.width = `${progressWidth}%`;
-    document.getElementById(skillInformation.name + 'ProgressBar').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
+    document.getElementById(skillInformation.name + 'progressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
 }
 
 export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons }

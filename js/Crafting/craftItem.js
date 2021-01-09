@@ -18,6 +18,14 @@ export function craftItem(itemPassed, newItem, mainSkill) {
         if(!player[newItem]) {
             player[newItem] = { type: type, amount: 0 , toolType: itemPassed.toolType };
         }
+        if(itemPassed.special) {
+            player[newItem].special = {
+                max: itemPassed.special.max * (player[newItem].amount + 1),
+                min: itemPassed.special.min,
+                current: itemPassed.special.max,
+                inc: itemPassed.special.inc
+            }
+        }
         let subSkill = skills[mainSkill].subSkills[itemPassed.type];
         subSkill.currentXP += itemPassed.return.XP;
         skills[mainSkill].currentXP += itemPassed.return.XP;

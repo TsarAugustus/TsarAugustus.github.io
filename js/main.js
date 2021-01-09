@@ -1,9 +1,5 @@
 import { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, createSubButtons } from './skills.js';
-import { player } from './player.js';
-
-window.onload = function() {
-    init();
-}
+import { player, specialItems } from './player.js';
 
 let focusList = [];
 
@@ -22,16 +18,26 @@ function updatePlayer() {
             
             let itemDiv = document.createElement('span');
             itemDiv.id = item + 'InventoryDiv';
-            itemDiv.innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
+            if(player[item].special) {
+                itemDiv.innerHTML = `${item}: ${player[item].amount} </br>
+                                    ${player[item].special.current}/${player[item].special.max}`;
+            } else {
+                itemDiv.innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
+            }
             
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
-            document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
+            if(!player[item].special) {
+                document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
+            } 
         }
     }
 }
 
+
+
 function tick() {
+    specialItems();
     let skillList = updateSkillList();
     checkForNewSkills();
     for(let skill of skillList) {
@@ -78,6 +84,10 @@ function init() {
     setInterval(function() {
         tick();
     }, 1000)
+}
+
+window.onload = function() {
+    init();
 }
 
 export { updatePlayer, focusList }
