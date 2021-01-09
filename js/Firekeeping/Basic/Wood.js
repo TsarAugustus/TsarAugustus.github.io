@@ -1,13 +1,13 @@
 export let Wood = {
     active: false,
     name: 'Wood',
-    parentSkill: 'Crafting',
+    parentSkill: 'Firekeeping',
     required: {
         // item: { Wood: 1}
     },
     allows: {
         'Wood Fuel': {
-            type: 'Firecrafting',
+            type: 'Basic',
             toolType: 'Fire',
             required: {
                 Wood: 1
