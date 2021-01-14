@@ -74,6 +74,18 @@ function tick() {
     }
 
     if(focusList.length > 0) {
+        let focusButtons = document.getElementsByClassName('focus');
+        if(focusList.length >= 1) {
+            for(let focusBtn of focusButtons) {
+                if(!focusBtn.classList.contains('focused')) {
+                    document.getElementById(focusBtn.id).disabled = true;
+                }
+            }
+        } else {
+            for(let focusBtn of focusButtons) {
+                document.getElementById(focusBtn.id).disabled = false;
+            }
+        }
         for(let item of focusList) {
             document.getElementById(item.name).click();
         }

@@ -81,6 +81,7 @@ body {
     padding-right: 0.3em;
 }
 
+
 .show > button:first-of-type {
     background-color: #16213e;
 }
@@ -241,6 +242,13 @@ body {
     /* Very dumb */
     min-width: 50% !important;
     max-width: 50% !important;
+}
+
+.focus:disabled {
+    /* background-color: #ffffff; */
+    opacity: 0.5;
+    transition: opacity .5s;
+    /* border: 1px solid red !important;  */
 }
 
 .focused {

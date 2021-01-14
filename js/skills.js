@@ -214,12 +214,14 @@ function createFocusButton(itemToFocus) {
         focusButton.id = itemToFocus.name + 'Focus';
         focusButton.classList.add('focus');
         focusButton.innerHTML = `Focus ${itemToFocus.name}`;
+        
         focusButton.onclick = function() {
             let isFocused = focusList.find(item => item === itemToFocus);          
             if(!isFocused) {
                 focusList.push(itemToFocus);
                 this.innerHTML = `Unfocus ${itemToFocus.name}`;
                 document.getElementById(itemToFocus.name).classList.add('focused');
+                document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
             }
             
             if(isFocused) {
@@ -227,6 +229,7 @@ function createFocusButton(itemToFocus) {
                 focusList.splice(focusedIndex, 1);
                 this.innerHTML = `Focus ${itemToFocus.name}`;
                 document.getElementById(itemToFocus.name).classList.remove('focused');
+                document.getElementById(itemToFocus.name + 'Focus').classList.remove('focused');
             }
         }
 
