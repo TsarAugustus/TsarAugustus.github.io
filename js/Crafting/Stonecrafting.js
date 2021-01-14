@@ -1,4 +1,4 @@
-import { Flintknapping } from './Stonecrafting/Flintknapping.js';
+import { Knapping } from './Stonecrafting/Knapping.js';
 import { Masonry } from './Stonecrafting/Masonry.js';
 
 
@@ -15,7 +15,7 @@ export let Stonecrafting = {
         }
     },
     Stonecrafting: {
-        Flintknapping,
+        Knapping,
         Masonry
     }
 }

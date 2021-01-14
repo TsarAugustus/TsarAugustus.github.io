@@ -10,7 +10,7 @@ export let Firecrafting = {
     XPToLevel: 100,
     required: { 
         item: {
-            Wood: 1
+            Coal: 1
         }
     },
     Firecrafting: {

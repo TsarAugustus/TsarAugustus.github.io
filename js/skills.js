@@ -62,7 +62,7 @@ let skills = {
         currentXP: 0,
         XPToLevel: 100,
         required: {
-            level:  { Foraging: 2 }
+            level:  { Foraging: 3 }
         },
         subSkills: {
             Woodcrafting,

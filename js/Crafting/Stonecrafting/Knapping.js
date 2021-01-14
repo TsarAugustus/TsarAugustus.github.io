@@ -1,6 +1,6 @@
-export let Flintknapping = {
+export let Knapping = {
     active: false,
-    name: 'Flintknapping',
+    name: 'Knapping',
     parentSkill: 'Crafting',
     required: {
         item: {
