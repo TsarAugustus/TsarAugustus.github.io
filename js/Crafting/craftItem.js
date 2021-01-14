@@ -23,7 +23,7 @@ export function craftItem(itemPassed, newItem, mainSkill) {
                 max: itemPassed.special.max * (player[newItem].amount + 1),
                 min: itemPassed.special.min,
                 current: itemPassed.special.max,
-                inc: itemPassed.special.inc
+                inc: itemPassed.special.inc / (player[newItem].amount + 1)
             }
         }
         let subSkill = skills[mainSkill].subSkills[itemPassed.type];

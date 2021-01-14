@@ -16,7 +16,7 @@ function getInfo(toolType) {
         totalAmt += item.special.max;
         currentAmt += item.special.current;
     }
-    return `${toolType}: ${currentAmt}/${totalAmt}`;
+    return `${toolType}: ${currentAmt.toFixed(2)}/${totalAmt.toFixed(2)}`;
 }
 
 function specialItems() {    
