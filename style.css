@@ -254,3 +254,11 @@ body {
 .focused {
     border: 3px solid #f2a365 !important;
 }
+
+
+/* #StoneInventoryDiv {
+    background-image: url(svg/stone.svg);
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-position: right;
+} */

@@ -2,10 +2,12 @@ import { skills, updateSkillList, createSkillButton, createSubSkillButtons, chec
 import { player, specialItems } from './player.js';
 
 let focusList = [];
+let focusLimit = 2;
 
 function updatePlayer() {
     let playerDiv = document.getElementById('player');
     for(let item in player) {
+        console.log(player[item])
         if(!document.getElementById(item + 'InventoryDiv')) {
             if(!document.getElementById(player[item].type + 'InventoryWrapper')) {
                 let typeDiv = document.createElement('div');
@@ -28,6 +30,7 @@ function updatePlayer() {
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
             if(!player[item].special) {
+                console.log(player[item])
                 document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
             } 
         }
@@ -73,22 +76,23 @@ function tick() {
         activeSkills = 0;
     }
 
-    if(focusList.length > 0) {
-        let focusButtons = document.getElementsByClassName('focus');
-        if(focusList.length >= 1) {
-            for(let focusBtn of focusButtons) {
-                if(!focusBtn.classList.contains('focused')) {
-                    document.getElementById(focusBtn.id).disabled = true;
-                }
-            }
-        } else {
-            for(let focusBtn of focusButtons) {
-                document.getElementById(focusBtn.id).disabled = false;
+    let focusButtons = document.getElementsByClassName('focus');
+    if(focusList.length < focusLimit) {
+        for(let focusBtn of focusButtons) {
+            document.getElementById(focusBtn.id).disabled = false;
+        }
+    } else {
+        for(let focusBtn of focusButtons) {
+            if(!focusBtn.classList.contains('focused')) {
+                document.getElementById(focusBtn.id).disabled = true;
             }
         }
+    }
+    
+    if(focusList.length > 0) {
         for(let item of focusList) {
             document.getElementById(item.name).click();
-        }
+        } 
     }
 }
 
@@ -102,7 +106,7 @@ window.onload = function() {
     init();
 }
 
-export { updatePlayer, focusList }
+export { updatePlayer, focusList, focusLimit }
 
 //gather seeds
 

@@ -9,7 +9,7 @@ import { Firecrafting } from './Crafting/Firecrafting.js';
 import { addFuel } from './Firekeeping/addFuel.js';
 import { Basic } from './Firekeeping/Basic.js';
 
-import { updatePlayer, focusList } from './main.js';
+import { updatePlayer, focusList, focusLimit } from './main.js';
 
 let skills = {
     Foraging: {
@@ -216,20 +216,21 @@ function createFocusButton(itemToFocus) {
         focusButton.innerHTML = `Focus ${itemToFocus.name}`;
         
         focusButton.onclick = function() {
-            let isFocused = focusList.find(item => item === itemToFocus);          
-            if(!isFocused) {
-                focusList.push(itemToFocus);
-                this.innerHTML = `Unfocus ${itemToFocus.name}`;
-                document.getElementById(itemToFocus.name).classList.add('focused');
-                document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
-            }
-            
+            let isFocused = focusList.find(item => item === itemToFocus);     
             if(isFocused) {
                 let focusedIndex = focusList.indexOf(isFocused);
                 focusList.splice(focusedIndex, 1);
                 this.innerHTML = `Focus ${itemToFocus.name}`;
                 document.getElementById(itemToFocus.name).classList.remove('focused');
                 document.getElementById(itemToFocus.name + 'Focus').classList.remove('focused');
+            }     
+            if(focusList.length < focusLimit) {
+                if(!isFocused) {
+                    focusList.push(itemToFocus);
+                    this.innerHTML = `Unfocus ${itemToFocus.name}`;
+                    document.getElementById(itemToFocus.name).classList.add('focused');
+                    document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
+                }
             }
         }
 
@@ -372,7 +373,7 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 subAllowsButton.innerHTML = text;
                 subAllowsButton.id = allow;
                 subAllowsButton.onclick = function() {
-                        skills[mainSkill].specialFunction(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill);
+                    skills[mainSkill].specialFunction(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill);
                 }
 
                 let subAllowsButtonDescription = document.createElement('span');

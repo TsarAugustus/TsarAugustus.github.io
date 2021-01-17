@@ -6,6 +6,7 @@ export function craftItem(itemPassed, newItem, mainSkill) {
     let requiredItems = itemPassed.required;
     let type = itemPassed.type;
     let reqContainer = [];
+
     for(let item in requiredItems) {
         if(player[item] && player[item].amount >= requiredItems[item]) {
             reqContainer.push(true);
@@ -26,6 +27,7 @@ export function craftItem(itemPassed, newItem, mainSkill) {
                 inc: itemPassed.special.inc / (player[newItem].amount + 1)
             }
         }
+
         let subSkill = skills[mainSkill].subSkills[itemPassed.type];
         subSkill.currentXP += itemPassed.return.XP;
         skills[mainSkill].currentXP += itemPassed.return.XP;
@@ -39,6 +41,16 @@ export function craftItem(itemPassed, newItem, mainSkill) {
             skills[mainSkill].level++;
             skills[mainSkill].currentXP = (skills[mainSkill].currentXP - skills[mainSkill].XPToLevel);
             skills[mainSkill].XPToLevel *= 1.6;
+        }
+
+        let thisCraft = skills[mainSkill].subSkills[itemPassed.type][itemPassed.type][itemPassed.parent];
+        if(thisCraft.specialReturn) {
+            let item = thisCraft.specialReturn[Math.floor(Math.random() * thisCraft.specialReturn.length)];
+            if(!player[item]) {
+                player[item] = { type: type, amount: 1}
+            } else {
+                player[item].amount++;
+            }
         }
         document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>
                                                         Level: ${skills[mainSkill].level}`;

@@ -7,6 +7,7 @@ export let Knapping = {
             Stone: 1
         }
     },
+    specialReturn: ['Blade', 'Flake'],
     allows: {
         Hammerstone: {
             type: 'Stonecrafting',
@@ -18,7 +19,8 @@ export let Knapping = {
                 XP: 10,
                 amount: 1
             },
-            desc: 'The basis of tools.'
+            desc: 'The basis of tools.',
+            parent: 'Knapping'
         },
         Handaxe: {
             type: 'Stonecrafting',
@@ -31,7 +33,8 @@ export let Knapping = {
                 XP: 10,
                 amount: 1
             },
-            desc: 'A primitive Axe.</br>Unlocks Woodcutting'
+            desc: 'A primitive Axe.</br>Unlocks Woodcutting',
+            parent: 'Knapping'
         },
         Handhoe: {
             type: 'Stonecrafting',
@@ -44,7 +47,8 @@ export let Knapping = {
                 XP: 10,
                 amount: 1
             },
-            desc: 'A primitive Hoe.'
+            desc: 'A primitive Hoe.',
+            parent: 'Knapping'
         },
         Handpick: {
             type: 'Stonecrafting',
@@ -57,7 +61,8 @@ export let Knapping = {
                 XP: 10,
                 amount: 1
             },
-            desc: 'A primitive Pick.'
+            desc: 'A primitive Pick.',
+            parent: 'Knapping'
         }
     }
 }
