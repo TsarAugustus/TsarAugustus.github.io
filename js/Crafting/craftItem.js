@@ -18,16 +18,34 @@ export function craftItem(itemPassed, newItem, mainSkill) {
         }
         if(!player[newItem]) {
             player[newItem] = { type: type, amount: 0 , toolType: itemPassed.toolType };
-        }
-        if(itemPassed.special) {
-            player[newItem].special = {
-                max: itemPassed.special.max * (player[newItem].amount + 1),
-                min: itemPassed.special.min,
-                current: itemPassed.special.max,
-                inc: itemPassed.special.inc / (player[newItem].amount + 1)
+            if(itemPassed.special) {
+                player[newItem].special = {
+                    max: itemPassed.special.max,
+                    min: itemPassed.special.min,
+                    current: itemPassed.special.current,
+                    inc: itemPassed.special.inc
+                }
+            }
+        } else {
+            if(itemPassed.special) {
+                if(itemPassed.special.inc > 0) {
+                    player[newItem].special = {
+                        max: player[newItem].special.max + ((player[newItem].special.max / player[newItem].amount) * 0.5),
+                        min: itemPassed.special.min,
+                        current: player[newItem].special.current,
+                        inc: itemPassed.special.inc + (itemPassed.special.inc / player[newItem].amount)
+                    }
+                } else {
+                    player[newItem].special = {
+                        max: itemPassed.special.max * (player[newItem].amount + 1),
+                        min: itemPassed.special.min,
+                        current: player[newItem].special.current,
+                        inc: itemPassed.special.inc / (player[newItem].amount + 1)
+                    }
+                }
             }
         }
-
+        
         let subSkill = skills[mainSkill].subSkills[itemPassed.type];
         subSkill.currentXP += itemPassed.return.XP;
         skills[mainSkill].currentXP += itemPassed.return.XP;
@@ -42,7 +60,6 @@ export function craftItem(itemPassed, newItem, mainSkill) {
             skills[mainSkill].currentXP = (skills[mainSkill].currentXP - skills[mainSkill].XPToLevel);
             skills[mainSkill].XPToLevel *= 1.6;
         }
-        console.log(skills[mainSkill].subSkills[itemPassed.type][itemPassed.type][itemPassed.parent])
         let thisCraft = skills[mainSkill].subSkills[itemPassed.type][itemPassed.type][itemPassed.parent];
         if(thisCraft) {
             let item = thisCraft.specialReturn[Math.floor(Math.random() * thisCraft.specialReturn.length)];

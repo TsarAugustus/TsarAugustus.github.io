@@ -7,7 +7,6 @@ let focusLimit = 2;
 function updatePlayer() {
     let playerDiv = document.getElementById('player');
     for(let item in player) {
-        console.log(player[item])
         if(!document.getElementById(item + 'InventoryDiv')) {
             if(!document.getElementById(player[item].type + 'InventoryWrapper')) {
                 let typeDiv = document.createElement('div');
@@ -30,7 +29,6 @@ function updatePlayer() {
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
             if(!player[item].special) {
-                console.log(player[item])
                 document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
             } 
         }

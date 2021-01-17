@@ -13,8 +13,9 @@ function getInfo(toolType) {
     let totalAmt = 0;
     let currentAmt = 0;
     for(let item of typeInfo) {
-        totalAmt += item.special.max;
-        currentAmt += item.special.current;
+        console.log(item.special)
+        totalAmt = item.special.max;
+        currentAmt = item.special.current;
     }
     return `${toolType}: ${currentAmt.toFixed(2)}/${totalAmt.toFixed(2)}`;
 }

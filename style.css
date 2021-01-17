@@ -255,6 +255,20 @@ body {
     border: 3px solid #f2a365 !important;
 }
 
+#stats {
+    color: #ececec;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+}
+
+#WaterWrapper {
+    color: rgb(24, 24, 148);
+}
+
+#FireWrapper {
+    color: red;
+}
 
 /* #StoneInventoryDiv {
     background-image: url(svg/stone.svg);
