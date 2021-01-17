@@ -107,8 +107,16 @@ body {
 }
 
 .subSkill {
-    margin: 0 auto;
-    width: 70%;
+    display: flex;
+    width: 80%;
+    align-self: center;
+    flex-direction: column;
+    font-size: 0.75em;
+}
+
+.subSkill button {
+    text-align: center;
+    padding: 0.1em;
 }
 
 
@@ -241,7 +249,7 @@ body {
     align-self: center;
     /* Very dumb */
     min-width: 50% !important;
-    max-width: 50% !important;
+    max-width: 100% !important;
 }
 
 .focus:disabled {
