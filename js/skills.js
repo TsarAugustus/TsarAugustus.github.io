@@ -223,7 +223,8 @@ function createFocusButton(itemToFocus) {
                 this.innerHTML = `Focus ${itemToFocus.name}`;
                 document.getElementById(itemToFocus.name).classList.remove('focused');
                 document.getElementById(itemToFocus.name + 'Focus').classList.remove('focused');
-            }     
+            }
+               
             if(focusList.length < focusLimit) {
                 if(!isFocused) {
                     focusList.push(itemToFocus);
