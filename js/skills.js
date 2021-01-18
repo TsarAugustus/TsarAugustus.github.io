@@ -213,7 +213,7 @@ function createFocusButton(itemToFocus) {
         let focusButton = document.createElement('button');
         focusButton.id = itemToFocus.name + 'Focus';
         focusButton.classList.add('focus');
-        focusButton.innerHTML = `Focus ${itemToFocus.name}`;
+        focusButton.innerHTML = `Focus`;
         
         focusButton.onclick = function() {
             let isFocused = focusList.find(item => item === itemToFocus);     
@@ -385,12 +385,13 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
 
                 subAllowsButtonDiv.appendChild(subAllowsButton);
                 subAllowsButtonDiv.appendChild(subAllowsButtonDescription);
+
                 subAllowsButton.onmouseover = function() {
                     subAllowsButtonDescription.style.display = "block";
-                }
+                };
                 subAllowsButton.onmouseout = function() {
                     subAllowsButtonDescription.style.display = "none";
-                }
+                };
                 document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
             }
         }
