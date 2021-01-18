@@ -13,7 +13,6 @@ function getInfo(toolType) {
     let totalAmt = 0;
     let currentAmt = 0;
     for(let item of typeInfo) {
-        console.log(item.special)
         totalAmt = item.special.max;
         currentAmt = item.special.current;
     }

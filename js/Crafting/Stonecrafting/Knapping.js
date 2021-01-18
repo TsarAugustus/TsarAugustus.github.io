@@ -3,9 +3,9 @@ export let Knapping = {
     name: 'Knapping',
     parentSkill: 'Crafting',
     required: {
-        item: {
-            Stone: 1
-        }
+        // item: {
+        //     Stone: 1
+        // }
     },
     specialReturn: ['Blade', 'Flake'],
     allows: {

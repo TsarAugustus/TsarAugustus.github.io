@@ -1,211 +1,18 @@
 import { player } from './player.js';
+import { Foraging } from './skills/Foraging.js';
+import { Crafting } from './skills/Crafting.js';
+import { Woodcutting } from './skills/Woodcutting.js';
+import { Mining } from './skills/Mining.js';
+import { Firekeeping } from './skills/Firekeeping.js';
 
-import { craftItem } from './Crafting/craftItem.js';
-import { Stonecrafting } from './Crafting/Stonecrafting.js';
-import { Woodcrafting } from './Crafting/Woodcrafting.js';
-import { Textile } from './Crafting/Textile.js';
-import { Firecrafting } from './Crafting/Firecrafting.js';
-
-import { addFuel } from './Firekeeping/addFuel.js';
-import { Basic } from './Firekeeping/Basic.js';
-
-import { updatePlayer, focusList, focusLimit } from './main.js';
+import { focusList, focusLimit } from './main.js';
 
 let skills = {
-    Foraging: {
-        name: 'Foraging',
-        active: true,
-        level: 0,
-        currentXP: 0,
-        XPIncrease: 10,
-        XPToLevel: 100,
-        focusUnlock: 2,
-        toolType: 'Shoe',
-        onclick: function() {
-            let item = findSkillItem(this);
-            let itemXPIncrease;
-            let itemAmountIncrease;
-            if(item === undefined) {
-                itemXPIncrease = 0;
-                itemAmountIncrease = 0;
-            } else {
-                itemXPIncrease = item.amount
-                itemAmountIncrease = (100 * item.amount) / 1000;
-            }
-            this.currentXP += (this.XPIncrease + itemXPIncrease);
-            let basicItems = ['Stone', 'Fruit', 'Seeds'];
-            let pickedItem = basicItems[Math.floor(Math.random() * basicItems.length)];
-            if(!player[pickedItem]) {
-                player[pickedItem] = { type: 'Basic', amount: 0 }
-            }
-            let newAmt = player[pickedItem].amount + itemAmountIncrease;
-            player[pickedItem].amount = 1 + Math.round(newAmt*100)/100;
-            if(this.currentXP >= this.XPToLevel) {
-                this.level++;
-                this.currentXP = (this.currentXP - this.XPToLevel);
-                this.XPToLevel *= 1.6;
-                checkForNewSkills();
-            }
-
-            if(this.level >= this.focusUnlock) {
-                createFocusButton(this);
-            }
-            updateProgressBar({name: this.name, skill: this});
-            updatePlayer();
-        },
-        desc: 'Forage for materials.'
-    },
-    Crafting: {
-        name: 'Crafting',
-        active: false,
-        level: 0,
-        currentXP: 0,
-        XPToLevel: 100,
-        required: {
-            level:  { Foraging: 3 }
-        },
-        subSkills: {
-            Woodcrafting,
-            Stonecrafting,
-            Textile,
-            Firecrafting
-        },
-        specialFunction: craftItem,
-        onclick: function() {
-            let thisWrapper = document.getElementById(this.name + 'Wrapper');
-            thisWrapper.classList.toggle('show');
-            if(thisWrapper.classList.contains('show')) {
-                updateProgressBar({name: this.name, skill: this});
-                createSubSkillButtons(this);
-            } else {
-                let subSkills = document.getElementsByClassName(this.name);
-                while(subSkills.length > 0){
-                    subSkills[0].parentNode.removeChild(subSkills[0]);
-                }
-            }
-        },
-        desc: 'Craft items and tools.'
-    }, 
-    Woodcutting: {
-        name: 'Woodcutting',
-        active: false,
-        level: 0,
-        currentXP: 0,
-        XPIncrease: 10,
-        XPToLevel: 100,
-        required: {
-            toolType: 'Axe'
-        },
-        focusUnlock: 2,
-        toolType: 'Axe',
-        onclick: function() {
-            let item = findSkillItem(this);
-            let itemXPIncrease;
-            let itemAmountIncrease;
-            if(item === undefined) {
-                itemXPIncrease = 0;
-                itemAmountIncrease = 0;
-            } else {
-                itemXPIncrease = item.amount - 1;
-                itemAmountIncrease = (100 * item.amount) / 1000 - .1;
-            }
-            this.currentXP += (this.XPIncrease + itemXPIncrease);
-            let basicItems = ['Wood', 'Leaves', 'Fruit'];
-            let pickedItem = basicItems[Math.floor(Math.random() * basicItems.length)];
-            if(!player[pickedItem]) {
-                player[pickedItem] = { type: 'Basic', amount: 0 }
-            }
-            let newAmt = player[pickedItem].amount + itemAmountIncrease;
-            player[pickedItem].amount = 1 + Math.round(newAmt*100)/100;
-
-            if(this.currentXP >= this.XPToLevel) {
-                this.level++;
-                this.currentXP = (this.currentXP - this.XPToLevel);
-                this.XPToLevel *= 1.6;
-                checkForNewSkills();
-            }
-            if(this.level >= this.focusUnlock) {
-                createFocusButton(this);
-            }
-            updateProgressBar({name: this.name, skill: this});
-            updatePlayer();
-        },
-        desc: 'Whack trees for profit.'
-    },
-    Mining: {
-        name: 'Mining',
-        active: false,
-        level: 0,
-        currentXP: 0,
-        XPIncrease: 10,
-        XPToLevel: 100,
-        required: {
-            toolType: 'Pick'
-        },
-        focusUnlock: 2,
-        toolType: 'Pick',
-        onclick: function() {
-            let item = findSkillItem(this);
-            let itemXPIncrease;
-            let itemAmountIncrease;
-            if(item === undefined) {
-                itemXPIncrease = 0;
-                itemAmountIncrease = 0;
-            } else {
-                itemXPIncrease = item.amount - 1;
-                itemAmountIncrease = (100 * item.amount) / 1000 - .1;
-            }
-
-            this.currentXP += (this.XPIncrease + itemXPIncrease);
-            let basicItems = ['Coal', 'Stone', 'Ore', 'Clay'];
-            let pickedItem = basicItems[Math.floor(Math.random() * basicItems.length)];
-            if(!player[pickedItem]) {
-                player[pickedItem] = { type: 'Basic', amount: 0 }
-            }
-            let newAmt = player[pickedItem].amount + itemAmountIncrease ;
-            player[pickedItem].amount = 1 + Math.round(newAmt*100)/100;
-            if(this.currentXP >= this.XPToLevel) {
-                this.level++;
-                this.currentXP = (this.currentXP - this.XPToLevel);
-                this.XPToLevel *= 1.6;
-                checkForNewSkills();
-            }
-            if(this.level >= this.focusUnlock) {
-                createFocusButton(this);
-            }
-            updateProgressBar({name: this.name, skill: this});
-            updatePlayer();
-        },
-        desc: 'Strike the earth!'
-    },
-    Firekeeping: {
-        name: 'Firekeeping',
-        active: false,
-        level: 0,
-        currentXP: 0,
-        XPToLevel: 100,
-        required: {
-            toolType: 'Fire'
-        },
-        subSkills: {
-           Basic
-        },
-        specialFunction: addFuel,
-        onclick: function() {
-            let thisWrapper = document.getElementById(this.name + 'Wrapper');
-            thisWrapper.classList.toggle('show');
-            if(thisWrapper.classList.contains('show')) {
-                updateProgressBar({name: this.name, skill: this});
-                createSubSkillButtons(this);
-            } else {
-                let subSkills = document.getElementsByClassName(this.name);
-                while(subSkills.length > 0){
-                    subSkills[0].parentNode.removeChild(subSkills[0]);
-                }
-            }
-        },
-        desc: 'The Fire fades.'
-    }
+    Foraging,
+    Crafting, 
+    Woodcutting,
+    Mining,
+    Firekeeping
 }
 
 function createFocusButton(itemToFocus) {
@@ -485,4 +292,4 @@ function updateProgressBar(skillInformation) {
     document.getElementById(skillInformation.name + 'progressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
 }
 
-export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons }
+export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons, findSkillItem, createFocusButton }

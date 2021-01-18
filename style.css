@@ -166,6 +166,36 @@ body {
     color: #ececec;
 }
 
+
+@media screen and (min-width: 601px) {
+    #player span {
+        font-size: 1vw;
+    }
+    #skills button {
+        font-size: 1vw;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #player span {
+        font-size: 3vw;
+    }
+    #skills button {
+        font-size: 2.5vw;
+    }
+    #subSkillScreen button {
+        font-size: 2.5vw;
+    }
+    #stats {
+        font-size: 2vw;
+    }
+    .progressBarWrapper {
+        height: 1vh;
+        font-size: 2vw;
+        line-height: 1.5;
+    }
+}
+
 #player div {
     display: flex;
     flex-direction: column;
@@ -206,11 +236,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    justify-content: space-evenly;
 }
 
 #subAllows button {
     flex-grow: 1;
-    flex-basis: 33.33%;
+    flex-basis: 30%;
     background-color: #30475e;
     border: 1px solid #1a1a2e;
     color: #ececec;
@@ -280,11 +311,11 @@ body {
 }
 
 #WaterWrapper {
-    color: rgb(24, 24, 148);
+    color: rgb(28, 28, 192);
 }
 
 #FireWrapper {
-    color: red;
+    color: rgb(221, 66, 66);
 }
 
 /* #StoneInventoryDiv {
