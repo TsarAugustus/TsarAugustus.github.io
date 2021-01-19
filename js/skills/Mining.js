@@ -44,7 +44,7 @@ export let Mining = {
             createFocusButton(this);
         }
         updateProgressBar({name: this.name, skill: this});
-        updatePlayer();
+        // updatePlayer();
     },
     desc: 'Strike the earth!'
 }

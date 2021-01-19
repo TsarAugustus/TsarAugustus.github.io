@@ -4,6 +4,10 @@ import { player, specialItems } from './player.js';
 let focusList = [];
 let focusLimit = 2;
 
+function getNumberAfterCharacter(stringToSplit, delimiter) {
+    return parseInt(stringToSplit.split(delimiter)[1].replace(/\s/g, ''), 10);
+}
+
 function updatePlayer() {
     let playerDiv = document.getElementById('player');
     for(let item in player) {
@@ -29,15 +33,43 @@ function updatePlayer() {
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
             if(!player[item].special) {
-                document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
+                let previousDiv =  document.getElementById(item + 'InventoryDiv').innerHTML;
+                let previousNum = getNumberAfterCharacter(previousDiv, ':');
+
+                let difference = player[item].amount - previousNum;
+                document.getElementById(item + 'InventoryDiv').innerHTML = `${item}: ${player[item].amount.toFixed(1)} ${difference.toFixed(1)}/s`;
             } 
         }
     }
 }
 
 
-
+let yearNum = 0;
+let dayNum = 0;
+let season = null;
 function tick() {
+    dayNum++;
+    if(dayNum >= 365) {
+        yearNum++;
+        dayNum = 0;
+    }
+
+    if(dayNum >= 355 || dayNum <= 79) {
+        season = 'Winter';
+    } else if(dayNum < 171) {
+        season = 'Spring';
+    } else if(dayNum < 265) {
+        season = 'Summer';
+    } else {
+        season = 'Autumn';
+    }
+    if(!document.getElementById('time')) {
+        let timeDoc = document.createElement('span');
+        timeDoc.id = 'time';
+        document.getElementById('stats').appendChild(timeDoc);
+    }
+    document.getElementById('time').innerHTML = `Year ${yearNum} Day ${dayNum}</br>${season}`;
+
     specialItems();
     let skillList = updateSkillList();
     checkForNewSkills();
@@ -92,6 +124,7 @@ function tick() {
             document.getElementById(item.name).click();
         } 
     }
+    updatePlayer();
 }
 
 function init() {  

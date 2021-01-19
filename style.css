@@ -37,6 +37,10 @@ body {
     flex-basis: 100%;
 }
 
+#time {
+    text-align: center;
+}
+
 #wrapper h3 {
     color: #f2a365;
     border-bottom: 1px solid #1a1a2e;

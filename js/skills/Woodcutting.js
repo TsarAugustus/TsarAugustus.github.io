@@ -44,7 +44,7 @@ export let Woodcutting = {
             createFocusButton(this);
         }
         updateProgressBar({name: this.name, skill: this});
-        updatePlayer();
+        // updatePlayer();
     },
     desc: 'Whack trees for profit.'
 }

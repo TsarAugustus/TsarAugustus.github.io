@@ -41,7 +41,7 @@ export let Foraging = {
             createFocusButton(this);
         }
         updateProgressBar({name: this.name, skill: this});
-        updatePlayer();
+        // updatePlayer();
     },
     desc: 'Forage for materials.'
 }
