@@ -11,7 +11,7 @@ export let Stonecrafting = {
     XPToLevel: 100,
     required: { 
         level: {
-            Foraging: 2
+            Foraging: 0
         }
     },
     Stonecrafting: {

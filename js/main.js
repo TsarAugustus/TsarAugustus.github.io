@@ -47,6 +47,20 @@ function updatePlayer() {
 let yearNum = 0;
 let dayNum = 0;
 let season = null;
+
+function shouldButtonBeDisabled(itemInfo) {
+    let itemArray = [];
+    for(let reqItem in itemInfo.required) {
+        if(player[reqItem] && player[reqItem].amount >= itemInfo.required[reqItem]) {
+            itemArray.push(true);
+        }
+    }
+    if(itemArray.length === Object.keys(itemInfo.required).length) {
+        return true
+    } else {
+        return false;
+    }
+}
 function tick() {
     dayNum++;
     if(dayNum >= 365) {
@@ -69,6 +83,23 @@ function tick() {
         document.getElementById('stats').appendChild(timeDoc);
     }
     document.getElementById('time').innerHTML = `Year ${yearNum} Day ${dayNum}</br>${season}`;
+
+
+    let subAllows = document.getElementById('subAllows');
+    if(subAllows) {
+        for(let item of subAllows.childNodes) {
+            let itemName = item.id.slice(0, -9);
+            let mainSkillName = item.firstChild.name;
+            let subSkillName = item.firstChild.value;
+            let subCategory = item.firstChild.classList[0];
+            let itemInfo = skills[mainSkillName].subSkills[subSkillName][subSkillName][subCategory].allows[itemName];
+            if(shouldButtonBeDisabled(itemInfo)) {
+                item.firstChild.disabled = false;
+            } else {
+                item.firstChild.disabled = true;
+            }
+        }
+    }
 
     specialItems();
     let skillList = updateSkillList();
@@ -137,7 +168,7 @@ window.onload = function() {
     init();
 }
 
-export { updatePlayer, focusList, focusLimit }
+export { updatePlayer, focusList, focusLimit, shouldButtonBeDisabled }
 
 //gather seeds
 

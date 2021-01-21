@@ -5,7 +5,7 @@ import { Woodcutting } from './skills/Woodcutting.js';
 import { Mining } from './skills/Mining.js';
 import { Firekeeping } from './skills/Firekeeping.js';
 
-import { focusList, focusLimit } from './main.js';
+import { focusList, focusLimit, shouldButtonBeDisabled } from './main.js';
 
 let skills = {
     Foraging,
@@ -180,6 +180,9 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 }
                 subAllowsButton.innerHTML = text;
                 subAllowsButton.id = allow;
+                subAllowsButton.name = mainSkill;
+                subAllowsButton.value = subSkillName;
+                subAllowsButton.classList.add(sub)
                 subAllowsButton.onclick = function() {
                     skills[mainSkill].specialFunction(subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill);
                 }
@@ -192,6 +195,11 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
 
                 subAllowsButtonDiv.appendChild(subAllowsButton);
                 subAllowsButtonDiv.appendChild(subAllowsButtonDescription);
+                if(shouldButtonBeDisabled(subSkillInformation[subSkillName][sub].allows[allow])) {
+                    subAllowsButton.disabled = false;
+                } else {
+                    subAllowsButton.disabled = true;
+                }
 
                 subAllowsButton.onmouseover = function() {
                     subAllowsButtonDescription.style.display = "block";
