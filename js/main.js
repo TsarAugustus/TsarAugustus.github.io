@@ -152,7 +152,14 @@ function tick() {
     
     if(focusList.length > 0) {
         for(let item of focusList) {
-            document.getElementById(item.name).click();
+            if(!item.functionParams) {
+                item.functionToClick(item.itemToFocus.name, item.itemToFocus);
+            } else {
+                let itemPassed = item.functionParams[0]
+                let newItem = item.functionParams[1]
+                let mainSkill = item.functionParams[2]
+                item.functionToClick(itemPassed, newItem, mainSkill)
+            }
         } 
     }
     updatePlayer();

@@ -15,15 +15,20 @@ let skills = {
     Firekeeping
 }
 
-function createFocusButton(itemToFocus) {
+function createFocusButton(itemToFocus, progressBool, functionToClick, functionParams) {
     if(!document.getElementById(itemToFocus.name + 'Focus')) {
         let focusButton = document.createElement('button');
         focusButton.id = itemToFocus.name + 'Focus';
         focusButton.classList.add('focus');
         focusButton.innerHTML = `Focus`;
         
-        focusButton.onclick = function() {
-            let isFocused = focusList.find(item => item === itemToFocus);     
+        focusButton.onclick = function() {  
+            let isFocused = focusList.find((item) => {
+                if(item.itemToFocus.name === itemToFocus.name) {
+                    return item;
+                }
+            });
+
             if(isFocused) {
                 let focusedIndex = focusList.indexOf(isFocused);
                 focusList.splice(focusedIndex, 1);
@@ -34,16 +39,30 @@ function createFocusButton(itemToFocus) {
                
             if(focusList.length < focusLimit) {
                 if(!isFocused) {
-                    focusList.push(itemToFocus);
+                    focusList.push({itemToFocus, functionToClick, functionParams});
                     this.innerHTML = `Unfocus`;
                     document.getElementById(itemToFocus.name).classList.add('focused');
                     document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
                 }
             }
         }
+        if(progressBool) {
+            let thisProgressBar = document.getElementById(itemToFocus.name + 'ProgressBarWrapper');
+            thisProgressBar.parentNode.insertBefore(focusButton, thisProgressBar);
+        } else if(!progressBool) {  
+            let isFocused = focusList.find((item) => {
+                if(item.itemToFocus.name === itemToFocus.name) {
+                    return item;
+                }
+            });
+            document.getElementById(itemToFocus.name).parentNode.appendChild(focusButton)
+            if(isFocused) {
+                document.getElementById(itemToFocus.name + 'Focus').innerHTML = `Unfocus`;
+                document.getElementById(itemToFocus.name).classList.add('focused');
+                document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
+            }
 
-        let thisProgressBar = document.getElementById(itemToFocus.name + 'ProgressBarWrapper');
-        thisProgressBar.parentNode.insertBefore(focusButton, thisProgressBar);
+        }
     }
 }
 
@@ -195,6 +214,7 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
 
                 subAllowsButtonDiv.appendChild(subAllowsButton);
                 subAllowsButtonDiv.appendChild(subAllowsButtonDescription);
+
                 if(shouldButtonBeDisabled(subSkillInformation[subSkillName][sub].allows[allow])) {
                     subAllowsButton.disabled = false;
                 } else {
@@ -208,6 +228,13 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                     subAllowsButtonDescription.style.display = "none";
                 };
                 document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
+
+                if(skills[mainSkill].subSkills[subSkillName].level >= 0) {
+                    createFocusButton({name: allow}, false, 
+                        skills[mainSkill].specialFunction,
+                        [subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill]
+                    )
+                }
             }
         }
         document.getElementById('subButtonWrapper').appendChild(subButton);
@@ -291,13 +318,18 @@ function updateProgressBar(skillInformation) {
         progressBar.classList.add('progressBar');
         progressBarWrapper.appendChild(progressBar);
 
-        document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBarWrapper);
+        if(document.getElementById(skillInformation.name + 'Wrapper')) {
+            document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBarWrapper);
+        }
     } 
     
 
     let progressWidth = (skillInformation.skill.currentXP / skillInformation.skill.XPToLevel) * 100;
-    document.getElementById(skillInformation.name + 'ProgressBar').style.width = `${progressWidth}%`;
-    document.getElementById(skillInformation.name + 'progressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
+
+    if(document.getElementById(skillInformation.name + 'ProgressBar')) {
+        document.getElementById(skillInformation.name + 'ProgressBar').style.width = `${progressWidth}%`;
+        document.getElementById(skillInformation.name + 'progressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
+    }
 }
 
 export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons, findSkillItem, createFocusButton }

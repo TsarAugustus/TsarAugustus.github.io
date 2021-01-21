@@ -71,8 +71,10 @@ export function craftItem(itemPassed, newItem, mainSkill) {
         }
         document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>
                                                         Level: ${skills[mainSkill].level}`;
-        document.getElementById(subSkill.name).innerHTML = `${subSkill.name}</br>
-                                                        Level: ${subSkill.level}`;
+        if(document.getElementById(subSkill.name)) {
+            document.getElementById(subSkill.name).innerHTML = `${subSkill.name}</br>
+                                                            Level: ${subSkill.level}`;
+        }
         player[newItem].amount += Math.round(itemPassed.return.amount*100)/100;
         updateProgressBar({name: subSkill.name, skill: subSkill});
         updateProgressBar({name: skills[mainSkill].name, skill: skills[mainSkill]});

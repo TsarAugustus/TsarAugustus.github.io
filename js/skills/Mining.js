@@ -14,8 +14,15 @@ export let Mining = {
     },
     focusUnlock: 2,
     toolType: 'Pick',
-    onclick: function() {
-        let item = findSkillItem(this);
+    onclick: function(nameInfo, skillInfo) {
+        if(!skillInfo) {
+            skillInfo = this;
+        }
+        if(!nameInfo) {
+            nameInfo = this.name
+        }
+
+        let item = findSkillItem(skillInfo);
         let itemXPIncrease;
         let itemAmountIncrease;
         if(item === undefined) {
@@ -26,7 +33,7 @@ export let Mining = {
             itemAmountIncrease = (100 * item.amount) / 1000 - .1;
         }
 
-        this.currentXP += (this.XPIncrease + itemXPIncrease);
+        skillInfo.currentXP += (skillInfo.XPIncrease + itemXPIncrease);
         let basicItems = ['Coal', 'Stone', 'Ore', 'Clay'];
         let pickedItem = basicItems[Math.floor(Math.random() * basicItems.length)];
         if(!player[pickedItem]) {
@@ -34,16 +41,16 @@ export let Mining = {
         }
         let newAmt = player[pickedItem].amount + itemAmountIncrease ;
         player[pickedItem].amount = 1 + Math.round(newAmt*100)/100;
-        if(this.currentXP >= this.XPToLevel) {
-            this.level++;
-            this.currentXP = (this.currentXP - this.XPToLevel);
-            this.XPToLevel *= 1.6;
+        if(skillInfo.currentXP >= skillInfo.XPToLevel) {
+            skillInfo.level++;
+            skillInfo.currentXP = (skillInfo.currentXP - skillInfo.XPToLevel);
+            skillInfo.XPToLevel *= 1.6;
             checkForNewSkills();
         }
-        if(this.level >= this.focusUnlock) {
-            createFocusButton(this);
+        if(skillInfo.level >= skillInfo.focusUnlock) {
+            createFocusButton(skillInfo, true, skillInfo.onclick);
         }
-        updateProgressBar({name: this.name, skill: this});
+        updateProgressBar({name: skillInfo.name, skill: skillInfo});
         // updatePlayer();
     },
     desc: 'Strike the earth!'
