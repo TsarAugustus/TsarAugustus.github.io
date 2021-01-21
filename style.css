@@ -29,16 +29,6 @@ body {
     border: 2px solid #1a1a2e !important;
 }
 
-#subAllows button:disabled {
-    opacity: 0.5;
-    /* transition: opacity .5s; */
-}
-
-#subAllows button {
-    opacity: 1;
-    /* transition: opacity .5s; */
-}
-
 /* ===================== */
 
 #stats {
@@ -248,20 +238,54 @@ body {
 #subAllows{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     justify-content: space-evenly;
+    font-size: 1vw;
+    /* font-size: 0.9em; */
+}
+
+#subAllows div {
+    flex-basis: 30%;
+    align-items: flex-start;
+    /* height: 20vh; */
+    /* border: 1px solid black; */
 }
 
 #subAllows button {
-    flex-grow: 1;
-    flex-basis: 30%;
+    width: 100%;
+    align-items: center;
     background-color: #30475e;
     border: 1px solid #1a1a2e;
     color: #ececec;
-    align-items: center;
+    flex-direction: column;
 }
+
+#subAllows button:first-of-type {
+    justify-content: flex-start;
+    flex-basis: 90%;
+    min-width: 10vw;
+}
+
+#subAllows button span {
+    /* font-size: 0.95vw; */
+}
+
+#subAllows button span:first-of-type {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 #subAllows button:active {
     background-color: #16213e;
+}
+
+#subAllows button:disabled {
+    opacity: 0.5;
+    transition: opacity .5s;
+}
+
+#subAllows button {
+    opacity: 1;
+    transition: opacity .5s;
 }
 
 .column {
@@ -306,14 +330,12 @@ body {
 }
 
 .focus:disabled {
-    /* background-color: #ffffff; */
     opacity: 0.5;
     transition: opacity .5s;
-    /* border: 1px solid red !important;  */
 }
 
 .focused {
-    border: 3px solid #f2a365 !important;
+    border: 2px solid #f2a365 !important;
 }
 
 #stats {
@@ -330,10 +352,3 @@ body {
 #FireWrapper {
     color: rgb(221, 66, 66);
 }
-
-/* #StoneInventoryDiv {
-    background-image: url(svg/stone.svg);
-    background-repeat: no-repeat;
-    background-attachment: local;
-    background-position: right;
-} */

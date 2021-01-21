@@ -192,12 +192,18 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 subAllowsButtonDiv.classList.add('column');
     
                 let subAllowsButton = document.createElement('button');
-                let text = `${allow}`;
+
+                let nameText = document.createElement('span');
+                nameText.innerHTML = `${allow}`;
+                let reqText = document.createElement('span');
+                let text = '';
                 for(let reqText in subSkillInformation[subSkillName][sub].allows[allow].required) {
                     let val = subSkillInformation[subSkillName][sub].allows[allow].required[reqText];
                     text += `</br>${reqText}: ${val}`
                 }
-                subAllowsButton.innerHTML = text;
+                reqText.innerHTML = text
+                subAllowsButton.appendChild(nameText);
+                subAllowsButton.appendChild(reqText);
                 subAllowsButton.id = allow;
                 subAllowsButton.name = mainSkill;
                 subAllowsButton.value = subSkillName;
