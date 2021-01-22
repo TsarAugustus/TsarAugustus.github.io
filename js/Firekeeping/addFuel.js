@@ -31,10 +31,14 @@ export function addFuel(itemPassed, newItem, mainSkill) {
                     skills[mainSkill].currentXP = (skills[mainSkill].currentXP - skills[mainSkill].XPToLevel);
                     skills[mainSkill].XPToLevel *= 1.6;
                 }
-                document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>
-                                                                Level: ${skills[mainSkill].level}`;
-                document.getElementById(subSkill.name).innerHTML = `${subSkill.name}</br>
-                                                                    Level: ${subSkill.level}`;
+                if(document.getElementById(mainSkill)) {
+                    document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>
+                                                                    Level: ${skills[mainSkill].level}`;
+                }
+                if(document.getElementById(subSkill.name)) {
+                    document.getElementById(subSkill.name).innerHTML = `${subSkill.name}</br>
+                                                                        Level: ${subSkill.level}`;    
+                }
 
                 updateProgressBar({name: subSkill.name, skill: subSkill});
                 updateProgressBar({name: skills[mainSkill].name, skill: skills[mainSkill]});

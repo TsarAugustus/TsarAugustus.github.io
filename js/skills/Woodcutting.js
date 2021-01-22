@@ -1,9 +1,11 @@
 import { findSkillItem, updateProgressBar, checkForNewSkills, createFocusButton } from '../skills.js';
 import { updatePlayer } from '../main.js';
 import { player } from '../player.js';
+import { skills } from '../skills.js';
 
 export let Woodcutting = {
     name: 'Woodcutting',
+    category: 'Basic',
     active: false,
     level: 0,
     currentXP: 0,
@@ -15,9 +17,7 @@ export let Woodcutting = {
     focusUnlock: 2,
     toolType: 'Axe',
     onclick: function(nameInfo, skillInfo) {
-        if(!skillInfo) {
-            skillInfo = this;
-        }
+        skillInfo = skills.Woodcutting;
         if(!nameInfo) {
             nameInfo = this.name
         }

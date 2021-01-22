@@ -1,9 +1,9 @@
-import { Wood } from './Basic/Wood.js';
+import { Wood } from './Primitive/Wood.js';
 // import { Coal } from './Firecrafting/Primitive.js';
 
 
-export let Basic = {
-    name: 'Basic',
+export let Primitive = {
+    name: 'Primitive',
     parentSkill: 'Firekeeping',
     active: false,
     level: 0,
@@ -14,7 +14,7 @@ export let Basic = {
         //     Leaves: 1
         // }
     },
-    Basic: {
+    Primitive: {
         Wood
     }
 }

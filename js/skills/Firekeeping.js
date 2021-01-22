@@ -1,7 +1,7 @@
 import { createSubSkillButtons, updateProgressBar } from '../skills.js';
 
 import { addFuel } from '../Firekeeping/addFuel.js';
-import { Basic } from '../Firekeeping/Basic.js';
+import { Primitive } from '../Firekeeping/Primitive.js';
 
 export let Firekeeping = {
     name: 'Firekeeping',
@@ -13,7 +13,7 @@ export let Firekeeping = {
         toolType: 'Fire'
     },
     subSkills: {
-       Basic
+       Primitive
     },
     specialFunction: addFuel,
     onclick: function() {

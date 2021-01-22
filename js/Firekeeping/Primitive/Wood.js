@@ -7,7 +7,7 @@ export let Wood = {
     },
     allows: {
         'Wood Fuel': {
-            type: 'Basic',
+            type: 'Primitive',
             toolType: 'Fire',
             required: {
                 Wood: 1

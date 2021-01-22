@@ -8,6 +8,7 @@ import { Firecrafting } from '../Crafting/Firecrafting.js';
 
 export let Crafting = {
     name: 'Crafting',
+    // category: 'Special',
     active: false,
     level: 0,
     currentXP: 0,

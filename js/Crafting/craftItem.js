@@ -69,8 +69,10 @@ export function craftItem(itemPassed, newItem, mainSkill) {
                 player[item].amount++;
             }
         }
-        document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>
-                                                        Level: ${skills[mainSkill].level}`;
+        if(document.getElementById(mainSkill)) {
+            document.getElementById(mainSkill).innerHTML = `${mainSkill}</br>
+                                                            Level: ${skills[mainSkill].level}`;
+        }
         if(document.getElementById(subSkill.name)) {
             document.getElementById(subSkill.name).innerHTML = `${subSkill.name}</br>
                                                             Level: ${subSkill.level}`;

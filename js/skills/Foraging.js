@@ -1,9 +1,11 @@
 import { findSkillItem, updateProgressBar, checkForNewSkills, createFocusButton } from '../skills.js';
 import { updatePlayer } from '../main.js';
 import { player } from '../player.js';
+import { skills } from '../skills.js';
 
 export let Foraging = {
     name: 'Foraging',
+    category: 'Basic',
     active: true,
     level: 0,
     currentXP: 0,
@@ -12,11 +14,13 @@ export let Foraging = {
     focusUnlock: 2,
     toolType: 'Shoe',
     onclick: function(nameInfo, skillInfo) {
-        if(!skillInfo) {
-            skillInfo = this;
-        }
+        skillInfo = skills.Foraging;
         if(!nameInfo) {
             nameInfo = this.name
+        }
+        
+        if(skillInfo.level >= skillInfo.focusUnlock) {
+            createFocusButton(skillInfo, true, skillInfo.onclick);
         }
 
         let item = findSkillItem(skillInfo);
@@ -42,10 +46,6 @@ export let Foraging = {
             skillInfo.currentXP = (skillInfo.currentXP - skillInfo.XPToLevel);
             skillInfo.XPToLevel *= 1.6;
             checkForNewSkills();
-        }
-
-        if(skillInfo.level >= skillInfo.focusUnlock) {
-            createFocusButton(skillInfo, true, skillInfo.onclick);
         }
         
         updateProgressBar({name: nameInfo, skill: skillInfo});

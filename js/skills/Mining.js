@@ -1,9 +1,11 @@
 import { findSkillItem, updateProgressBar, checkForNewSkills, createFocusButton } from '../skills.js';
 import { updatePlayer } from '../main.js';
 import { player } from '../player.js';
+import { skills } from '../skills.js';
 
 export let Mining = {
     name: 'Mining',
+    category: 'Basic',
     active: false,
     level: 0,
     currentXP: 0,
@@ -15,9 +17,7 @@ export let Mining = {
     focusUnlock: 2,
     toolType: 'Pick',
     onclick: function(nameInfo, skillInfo) {
-        if(!skillInfo) {
-            skillInfo = this;
-        }
+        skillInfo = skills.Mining;
         if(!nameInfo) {
             nameInfo = this.name
         }

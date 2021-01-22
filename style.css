@@ -20,8 +20,36 @@ body {
     display: flex;
     height: 95vh;
     width: 30%;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-direction: column;
 }
+
+
+.categoryWrapper {
+    border: 1px solid black;
+    /* display: flex; */
+    /* flex-direction: column-reverse; */
+}
+
+#containerInfo {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#containerInfo h3 {
+    flex-basis: 100%;
+    text-decoration: none !important;
+}
+
+/* #specialSkill {
+
+}
+
+#specialSkills {
+    border: 1px solid black;
+    display: flex;
+    flex-basis: 10%;
+} */
 
 
 .clickedSubAllowButton {
@@ -49,10 +77,15 @@ body {
     align-self: center;
 }
 
+#basicSkillWrapper {
+    border: 1px solid red;
+}
+
 #skills {
     display: flex;
     flex-direction: column;
     width: 95%;
+    height: 90vh;
     overflow-y: scroll;
 }
 
@@ -110,8 +143,9 @@ body {
 }
 
 .subSkill {
+    margin-top: 1em;
     display: flex;
-    width: 80%;
+    /* width: 80%; */
     align-self: center;
     flex-direction: column;
     font-size: 0.75em;
@@ -124,6 +158,7 @@ body {
 
 
 .progressBarWrapper {
+    width: 100%;
     height: 1em;
     background-color: #30475e;
     border-radius: 0.2em;

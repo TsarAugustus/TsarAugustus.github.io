@@ -1,4 +1,4 @@
-import { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, createSubButtons } from './skills.js';
+import { skills, shouldSkillBeActive, createSkillButton, updateSkillList, createSkillTabs, createSubSkillButtons, checkForNewSkills, createSubButtons } from './skills.js';
 import { player, specialItems } from './player.js';
 
 let focusList = [];
@@ -102,39 +102,46 @@ function tick() {
     }
 
     specialItems();
+
     let skillList = updateSkillList();
+    let skillCategories = [];
     checkForNewSkills();
     for(let skill of skillList) {
-        createSkillButton(skill);
-        // updateProgressBar(skill);
+        let skillCategoryFind = skillCategories.find(item => item === skill.skill.category);
+        if(!skillCategoryFind) {
+            skillCategories.push(skill.skill.category ? skill.skill.category : skill.name)
+        }
     }
-    let shownElement = document.getElementsByClassName('show');
-    if(shownElement[0]) {
-        let shownSkill = shownElement[0].id.slice(0, -7);
-        createSubSkillButtons(skills[shownSkill])
-    }
-    let clickedSubSkillButtons = document.getElementsByClassName('clicked');
-    //activated when viewing an interactive screen, it will rewrite the interaction screen
-    if(clickedSubSkillButtons.length > 0) {
-        let subButtonWrapper = document.getElementById('subButtonWrapper');
-        let activeSkills = 0;
-
-        let mainSkill = clickedSubSkillButtons[0].name;
-        let subSkill = clickedSubSkillButtons[0].id;
-
-        for(let item in skills[mainSkill].subSkills) {
-            if(skills[mainSkill].subSkills[item].active) {
-                activeSkills++;
+    let categoryWrapper = document.getElementsByClassName('categoryWrapper');
+    if(categoryWrapper.length > 0) {
+        let categoryName = categoryWrapper[0].id.slice(0, -7);
+        let skillFilter = skillList.filter(el => el.skill.category === categoryName);
+        if(categoryWrapper[0].childElementCount - 1 < skillFilter.length) {
+            for(let skillItem of skillFilter) {
+                createSkillButton(skillItem)
             }
         }
-        if(subButtonWrapper.children.length < activeSkills) {
-            for(let sub in skills[mainSkill].subSkills[subSkill][subSkill]) {
-                if(!document.getElementById(sub + 'ButtonWrapper')) {
-                    createSubButtons(sub, subSkill, skills[mainSkill].subSkills[subSkill], mainSkill)
-                }
+    }
+
+    for(let skillCategory of skillCategories) {
+        createSkillTabs(skillCategory);
+    }
+
+    if(document.getElementById('subButtonWrapper')) {
+        let x = document.getElementById('subSkillScreen');
+        let y = x.classList[0];
+        let z = x.getAttribute('name');
+        
+        for(let sub in skills[y].subSkills[z][z]) {
+            shouldSkillBeActive(skills[y].subSkills[z][z][sub]);
+            if(skills[y].subSkills[z][z][sub].active && !document.getElementById(sub+'ButtonWrapper')) {
+                createSubButtons(
+                    sub,
+                    z,
+                    skills[y].subSkills[z],
+                    skills[y].name)
             }
         }
-        activeSkills = 0;
     }
 
     let focusButtons = document.getElementsByClassName('focus');
@@ -152,13 +159,11 @@ function tick() {
     
     if(focusList.length > 0) {
         for(let item of focusList) {
-            if(!item.functionParams) {
-                item.functionToClick(item.itemToFocus.name, item.itemToFocus);
-            } else {
-                let itemPassed = item.functionParams[0]
-                let newItem = item.functionParams[1]
-                let mainSkill = item.functionParams[2]
+            if(item.functionToClick.length > 1) {
+                let [itemPassed, newItem, mainSkill] = item.functionParams;
                 item.functionToClick(itemPassed, newItem, mainSkill)
+            } else {
+                item.functionParams(item.itemToFocus.name, item.itemToFocus);
             }
         } 
     }

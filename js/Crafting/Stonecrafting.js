@@ -8,7 +8,7 @@ export let Stonecrafting = {
     active: false,
     level: 0,
     currentXP: 0,
-    XPToLevel: 100,
+    XPToLevel: 10,
     required: { 
         level: {
             Foraging: 0

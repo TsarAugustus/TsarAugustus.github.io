@@ -15,8 +15,8 @@ let skills = {
     Firekeeping
 }
 
-function createFocusButton(itemToFocus, progressBool, functionToClick, functionParams) {
-    if(!document.getElementById(itemToFocus.name + 'Focus')) {
+function createFocusButton(itemToFocus, functionToClick, functionParams) {
+    if(document.getElementById(itemToFocus.name) && !document.getElementById(itemToFocus.name + 'Focus')) {
         let focusButton = document.createElement('button');
         focusButton.id = itemToFocus.name + 'Focus';
         focusButton.classList.add('focus');
@@ -46,22 +46,13 @@ function createFocusButton(itemToFocus, progressBool, functionToClick, functionP
                 }
             }
         }
-        if(progressBool) {
-            let thisProgressBar = document.getElementById(itemToFocus.name + 'ProgressBarWrapper');
-            thisProgressBar.parentNode.insertBefore(focusButton, thisProgressBar);
-        } else if(!progressBool) {  
-            let isFocused = focusList.find((item) => {
-                if(item.itemToFocus.name === itemToFocus.name) {
-                    return item;
-                }
-            });
-            document.getElementById(itemToFocus.name).parentNode.appendChild(focusButton)
-            if(isFocused) {
-                document.getElementById(itemToFocus.name + 'Focus').innerHTML = `Unfocus`;
-                document.getElementById(itemToFocus.name).classList.add('focused');
-                document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
-            }
 
+        document.getElementById(itemToFocus.name).parentNode.appendChild(focusButton)
+        let isFocused = focusList.find(item => item.itemToFocus.name === itemToFocus.name);  
+        if(isFocused) {
+            document.getElementById(itemToFocus.name + 'Focus').innerHTML = `Unfocus`;
+            document.getElementById(itemToFocus.name).classList.add('focused');
+            document.getElementById(itemToFocus.name + 'Focus').classList.add('focused');
         }
     }
 }
@@ -75,7 +66,7 @@ function findSkillItem(skill) {
 }
 
 function createSubSkillButtons(thisSkill) {
-    checkIfSubSkillIsAvailable(thisSkill.subSkills)
+    checkIfSubSkillIsAvailable(thisSkill.subSkills);
     let thisWrapper = document.getElementById(thisSkill.name + 'Wrapper');
     for(let subSkill in thisSkill.subSkills) {
         if(thisSkill.subSkills[subSkill].active && !document.getElementById(subSkill + 'Wrapper')) {
@@ -149,6 +140,7 @@ function createSubSkillScreen(mainSkill, subSkillName, subSkillInformation) {
     let subSkillScreen = document.createElement('div');
     subSkillScreen.id = 'subSkillScreen';
     subSkillScreen.classList.add(mainSkill);
+    subSkillScreen.setAttribute('name', subSkillName);
     document.getElementById('right').appendChild(subSkillScreen);
     for(let sub in subSkillInformation[subSkillName]) {
         shouldSkillBeActive(subSkillInformation[subSkillName][sub]);
@@ -236,7 +228,7 @@ function createSubButtons(sub, subSkillName, subSkillInformation, mainSkill) {
                 document.getElementById('subAllows').appendChild(subAllowsButtonDiv);
 
                 if(skills[mainSkill].subSkills[subSkillName].level >= 0) {
-                    createFocusButton({name: allow}, false, 
+                    createFocusButton({name: allow}, 
                         skills[mainSkill].specialFunction,
                         [subSkillInformation[subSkillName][sub].allows[allow], allow, mainSkill]
                     )
@@ -265,7 +257,65 @@ function updateSkillList() {
     return skillList;
 }
 
-function createSkillButton(skill) {
+function createSkillTabs(tabName) {
+    if(!document.getElementById(tabName+'Button')) {
+        let tab = document.createElement('button');
+        tab.id = tabName+'Button';
+        tab.innerHTML = tabName;
+
+        tab.onclick = function() {
+            if(skills[tabName]) {
+                updateProgressBar({name: skills[tabName].name, skill: skills[tabName]});
+            }
+            let categoryWrapList = document.getElementsByClassName('categoryWrapper');
+            for(let item of categoryWrapList) {
+                item.parentNode.removeChild(item)
+            }
+            let skillList = updateSkillList();
+            // console.log(tabName)
+            checkForNewSkills();
+
+            for(let skill of skillList) {
+                if(skill.skill.category === tabName) {
+                    createSkillButton(skill);
+                } else if(skill.name === tabName) {
+                    let categoryWrapper = document.createElement('div');
+                    categoryWrapper.id = `${skill.name}Wrapper`;
+                    categoryWrapper.classList.add('categoryWrapper');
+
+                    document.getElementById('left').appendChild(categoryWrapper);
+                    if(document.getElementById(`${skill.name}Wrapper`)) {
+                        createSubSkillButtons(skill.skill)
+                    }
+                }
+            }
+
+            if(!document.getElementById('containerInfo')) {
+                let wrapContainer = document.getElementById(categoryWrapList[0].id);
+                let containerInfo = document.createElement('div');
+                containerInfo.id = 'containerInfo';
+
+                let containerHeader = document.createElement('h3');
+                containerHeader.id = 'containerHeader';
+                containerHeader.innerHTML = tabName;
+
+                containerInfo.appendChild(containerHeader);
+                wrapContainer.insertBefore(containerInfo, wrapContainer.firstChild)
+            }
+        }
+
+        document.getElementById('skillButtonList').appendChild(tab);
+    }
+}
+
+function createSkillButton(skill) {  
+    if(!document.getElementById(`${skill.skill.category}Wrapper`)) {
+        let categoryWrapper = document.createElement('div');
+        categoryWrapper.id = `${skill.skill.category}Wrapper`;
+        categoryWrapper.classList.add('categoryWrapper');
+        document.getElementById('left').appendChild(categoryWrapper);
+    }
+    
     if(!document.getElementById(skill.name + 'Wrapper')) {
         let wrapper = document.createElement('div');
         wrapper.id = skill.name + 'Wrapper';
@@ -280,15 +330,14 @@ function createSkillButton(skill) {
                                 Level: ${skill.skill.level}`;
         }
         wrapper.appendChild(button);
-        document.getElementById('skills').appendChild(wrapper);
-        updateProgressBar(skill);
-
+        document.getElementById(`${skill.skill.category}Wrapper`).appendChild(wrapper);
+        
         let skillButtonDescription = document.createElement('span');
         skillButtonDescription.classList.add('desc');
         skillButtonDescription.innerHTML = skill.skill.desc;
         skillButtonDescription.style.display = "none";
-
-
+        
+        
         
         wrapper.appendChild(skillButtonDescription);
         button.onmouseover = function() {
@@ -297,6 +346,10 @@ function createSkillButton(skill) {
         button.onmouseout = function() {
             skillButtonDescription.style.display = "none";
         }
+        if(skill.skill.level >= skill.skill.focusUnlock) {
+            createFocusButton({name: skill.name}, true, skill.skill.onclick)
+        }
+        updateProgressBar(skill);
     }
 }
 
@@ -309,6 +362,8 @@ function removeElementAndChildren(el) {
 }
 
 function updateProgressBar(skillInformation) {
+    let categoryWrapper = document.getElementsByClassName('categoryWrapper');
+
     if(!document.getElementById(skillInformation.name + 'ProgressBarWrapper')) {
         let progressBarWrapper = document.createElement('div');
         progressBarWrapper.id = skillInformation.name + 'ProgressBarWrapper';
@@ -324,18 +379,34 @@ function updateProgressBar(skillInformation) {
         progressBar.classList.add('progressBar');
         progressBarWrapper.appendChild(progressBar);
 
-        if(document.getElementById(skillInformation.name + 'Wrapper')) {
+        if(categoryWrapper.length > 0 && categoryWrapper[0].id.slice(0, -7) === skillInformation.name) {
+            let mainContainer = document.getElementById(categoryWrapper[0].id);
+            if(!document.getElementById('containerInfo')) {
+                let containerInfo = document.createElement('div');
+                containerInfo.id = 'containerInfo';
+                mainContainer.insertBefore(containerInfo, mainContainer.firstChild);
+            }
+
+            let containerHeader = document.createElement('h3');
+            containerHeader.innerHTML = categoryWrapper[0].id.slice(0, -7);
+
+            document.getElementById('containerInfo').appendChild(containerHeader);
+            document.getElementById('containerInfo').appendChild(progressBarWrapper);
+        } else if(document.getElementById(skillInformation.name + 'Wrapper')) {
             document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBarWrapper);
         }
     } 
     
-
+    
+    if(categoryWrapper.length > 0 && !document.getElementById(categoryWrapper[0].id.slice(0, -7) + 'ProgressBar') && skills[categoryWrapper[0].id.slice(0, -7)]) {
+        let categoryName = categoryWrapper[0].id.slice(0, -7);
+        updateProgressBar({name: categoryWrapper[0].id.slice(0, -7), skill: skills[categoryName]});
+    }
     let progressWidth = (skillInformation.skill.currentXP / skillInformation.skill.XPToLevel) * 100;
-
     if(document.getElementById(skillInformation.name + 'ProgressBar')) {
         document.getElementById(skillInformation.name + 'ProgressBar').style.width = `${progressWidth}%`;
         document.getElementById(skillInformation.name + 'progressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
     }
 }
 
-export { skills, updateSkillList, createSkillButton, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons, findSkillItem, createFocusButton }
+export { skills, shouldSkillBeActive, createSkillButton, updateSkillList, createSkillTabs, createSubSkillButtons, checkForNewSkills, updateProgressBar, createSubButtons, findSkillItem, createFocusButton }
