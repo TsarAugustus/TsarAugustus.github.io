@@ -96,6 +96,12 @@ function createSubSkillButtons(thisSkill) {
             updateProgressBar({name: skills[thisSkill.name].subSkills[subSkill].name, skill: skills[thisSkill.name].subSkills[subSkill]})
         }
     }
+    if(document.getElementById('subSkillScreen')) {
+        let subSkillName = document.getElementById('subSkillScreen').getAttribute('name');
+        if(document.getElementById(subSkillName)) {
+            document.getElementById(subSkillName).classList.add('clicked');
+        }
+    }
 }
 
 function checkIfSubSkillIsAvailable(subSkills) {
@@ -370,7 +376,7 @@ function updateProgressBar(skillInformation) {
         progressBarWrapper.classList.add('progressBarWrapper');
 
         let progressSpan = document.createElement('span');
-        progressSpan.id = skillInformation.name + 'progressSpan';
+        progressSpan.id = skillInformation.name + 'ProgressSpan';
         progressSpan.classList.add('progressSpan');
         progressBarWrapper.appendChild(progressSpan);
 
@@ -391,21 +397,30 @@ function updateProgressBar(skillInformation) {
             containerHeader.innerHTML = categoryWrapper[0].id.slice(0, -7);
 
             document.getElementById('containerInfo').appendChild(containerHeader);
-            document.getElementById('containerInfo').appendChild(progressBarWrapper);
+            document.getElementById('containerInfo').appendChild(progressBarWrapper); 
         } else if(document.getElementById(skillInformation.name + 'Wrapper')) {
             document.getElementById(skillInformation.name + 'Wrapper').appendChild(progressBarWrapper);
         }
     } 
     
-    
     if(categoryWrapper.length > 0 && !document.getElementById(categoryWrapper[0].id.slice(0, -7) + 'ProgressBar') && skills[categoryWrapper[0].id.slice(0, -7)]) {
         let categoryName = categoryWrapper[0].id.slice(0, -7);
         updateProgressBar({name: categoryWrapper[0].id.slice(0, -7), skill: skills[categoryName]});
     }
+
     let progressWidth = (skillInformation.skill.currentXP / skillInformation.skill.XPToLevel) * 100;
     if(document.getElementById(skillInformation.name + 'ProgressBar')) {
         document.getElementById(skillInformation.name + 'ProgressBar').style.width = `${progressWidth}%`;
-        document.getElementById(skillInformation.name + 'progressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
+        document.getElementById(skillInformation.name + 'ProgressSpan').innerHTML = `${skillInformation.skill.currentXP.toFixed(2)}/${skillInformation.skill.XPToLevel.toFixed(2)}`;
+    }
+    
+    if(categoryWrapper[0].id.slice(0, -7) === skillInformation.name && !document.getElementById(skillInformation.name + 'LevelInfo')) {
+        let levelInfo = document.createElement('h4');
+        levelInfo.id = skillInformation.name + 'LevelInfo';
+        levelInfo.innerHTML = `Level: ${skillInformation.skill.level}`;
+        document.getElementById('containerInfo').insertBefore(levelInfo, document.getElementById('containerInfo').lastChild);
+    } else if(categoryWrapper[0].id.slice(0, -7) === skillInformation.name && document.getElementById(skillInformation.name + 'LevelInfo')) {
+        document.getElementById(skillInformation.name + 'LevelInfo').innerHTML = `Level: ${skillInformation.skill.level}`;
     }
 }
 

@@ -20,16 +20,18 @@ function updatePlayer() {
                 typeDiv.appendChild(header)
                 playerDiv.appendChild(typeDiv);
             }
+            let itemDiv = document.createElement('div');
+            itemDiv.classList.add('itemDiv');
             
-            let itemDiv = document.createElement('span');
-            itemDiv.id = item + 'InventoryDiv';
+            let itemSpan = document.createElement('span');
+            itemSpan.id = item + 'InventoryDiv';
             if(player[item].special) {
-                itemDiv.innerHTML = `${item}: ${player[item].amount} </br>
+                itemSpan.innerHTML = `${item}: ${player[item].amount} </br>
                                     ${player[item].special.current}/${player[item].special.max}`;
             } else {
-                itemDiv.innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
+                itemSpan.innerHTML = `${item}: ${player[item].amount.toFixed(1)}`;
             }
-            
+            itemDiv.appendChild(itemSpan);
             document.getElementById(player[item].type + 'InventoryWrapper').appendChild(itemDiv);
         } else {
             if(!player[item].special) {

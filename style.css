@@ -1,7 +1,7 @@
 * {
     margin: 0;
     outline: none;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 1.02em;
 }
 
@@ -15,7 +15,109 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
 }
-  
+
+@media screen and (min-width: 601px) {
+ 
+}
+
+@media screen and (max-width: 600px) {
+    #left {
+        flex-basis: 39%;
+        padding-right: 1%;
+    }
+
+    #stats {
+        font-size: 2vw;
+    }
+    
+    #skillButtonList{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #skillButtonList button {
+        /* border: 1px solid red; */
+        color: #ececec;
+        border: 2px solid #1a1a2e !important;
+        background-color: #30475e;
+        flex-basis: 50% !important;
+        font-size: 2vw;
+    }
+    #skillButtonList button:active {
+        background-color: #16213e;
+    }
+    #right {
+        flex-wrap: wrap;
+        align-content: flex-start;
+        flex-basis: 60%;
+    }
+    #player {
+        font-size: 2vw;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        flex-basis: 100% !important;
+        max-height: 50vh;
+        order: 2;
+        /* border-top: 1px solid #1a1a2e; */
+    }
+    #player span {
+        white-space: nowrap;
+        font-size: 2vw;
+    }
+    .itemDiv {
+        display: inline-block;
+        flex-basis: 100%;
+    }
+    #subSkillScreen {
+        display: flex;
+        order: 1;
+        flex-basis: 100% !important;
+        /* flex-shrink: 1; */
+        height: 30vh;
+    }
+    #subButtonWrapper {
+        flex-wrap: wrap;
+    }
+    #subButtonWrapper button {
+        font-size: 3vw;
+        flex-basis: 50%;
+    }
+    #subAllows {
+        width: 100%;
+    }
+    #subAllows div {
+        flex-basis: 45% !important;
+    }
+    #subAllows button {
+        font-size: 2vw;
+    }
+    .categoryWrapper {
+        font-size: 3vw;
+    }
+    .progressBarWrapper{
+        width: 99% !important;
+    }
+    .skill {
+        font-size: 2.5vw;
+        /* border: 1px solid red; */
+    }
+    .subSkill {
+        /* border: 1px solid red; */
+    }
+    .subSkill button {
+
+    }
+    #containerInfo h4 {
+        font-size: 3vw !important;
+    }
+    #containerInfo .progressSpan {
+        font-size: 3vw !important;
+    }
+    .progressSpan {
+        font-size: 2vw !important;
+    }
+}
+
 #left {
     display: flex;
     height: 95vh;
@@ -24,9 +126,59 @@ body {
     flex-direction: column;
 }
 
+#skillButtonList {
+
+}
+
+#player {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: flex-start;
+    text-align: center;
+    flex-basis: 50%;
+}
+
+#player span {
+    color: #ececec;
+}
+
+#player div {
+    display: flex;
+    flex-direction: column;
+}
+/* .options > div:not(:first-child) select { background:yellow;} */
+#player > div:nth-child(n + 2) {
+    width: 90%;
+    align-self: center;
+}
+
+.clicked {
+    border: 2px solid #30475e;
+    background-color: #1a1a2e !important;
+
+}
+
+.subSkill {
+    margin-top: 1em;
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+    font-size: 0.75em;
+}
+
+.subSkill button {
+    background-color: #30475e;
+    border: 2px solid #1a1a2e;
+    text-align: center;
+    padding: 0.1em;
+    color: #ececec;
+}
+
+
 
 .categoryWrapper {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     /* display: flex; */
     /* flex-direction: column-reverse; */
 }
@@ -39,6 +191,10 @@ body {
 #containerInfo h3 {
     flex-basis: 100%;
     text-decoration: none !important;
+}
+#containerInfo h4 {
+    /* font-size: 3vw; */
+    color: #ececec;
 }
 
 /* #specialSkill {
@@ -122,13 +278,6 @@ body {
     background-color: #16213e;
 }
 
-.clicked {
-    /* color: red; */
-    /* font-size: 10em; */
-    /* border: 1px solid #e94560; */
-    background-color: #16213e !important;
-}
-
 .skill button {
     min-width: 100%;
     background-color: #30475e;
@@ -142,19 +291,7 @@ body {
     background-color: #16213e;
 }
 
-.subSkill {
-    margin-top: 1em;
-    display: flex;
-    /* width: 80%; */
-    align-self: center;
-    flex-direction: column;
-    font-size: 0.75em;
-}
 
-.subSkill button {
-    text-align: center;
-    padding: 0.1em;
-}
 
 
 .progressBarWrapper {
@@ -189,59 +326,6 @@ body {
     display: flex;
     flex-direction: row-reverse;
     width: 70%;
-}
-
-#player {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: flex-start;
-    text-align: center;
-    flex-basis: 50%;
-}
-
-#player span {
-    color: #ececec;
-}
-
-
-@media screen and (min-width: 601px) {
-    #player span {
-        font-size: 1vw;
-    }
-    #skills button {
-        font-size: 1vw;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    #player span {
-        font-size: 3vw;
-    }
-    #skills button {
-        font-size: 2.5vw;
-    }
-    #subSkillScreen button {
-        font-size: 2.5vw;
-    }
-    #stats {
-        font-size: 2vw;
-    }
-    .progressBarWrapper {
-        height: 1vh;
-        font-size: 2vw;
-        line-height: 1.5;
-    }
-}
-
-#player div {
-    display: flex;
-    flex-direction: column;
-}
-/* .options > div:not(:first-child) select { background:yellow;} */
-#player > div:nth-child(n + 2) {
-    width: 90%;
-    align-self: center;
 }
 
 #subSkillScreen {
