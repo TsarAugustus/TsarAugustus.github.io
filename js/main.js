@@ -63,6 +63,7 @@ function shouldButtonBeDisabled(itemInfo) {
         return false;
     }
 }
+
 function tick() {
     dayNum++;
     if(dayNum >= 365) {
@@ -78,11 +79,6 @@ function tick() {
         season = 'Summer';
     } else {
         season = 'Autumn';
-    }
-    if(!document.getElementById('time')) {
-        let timeDoc = document.createElement('span');
-        timeDoc.id = 'time';
-        document.getElementById('stats').appendChild(timeDoc);
     }
     document.getElementById('time').innerHTML = `Year ${yearNum} Day ${dayNum}</br>${season}`;
 
@@ -173,6 +169,22 @@ function tick() {
 }
 
 function init() {  
+
+    if(!document.getElementById('time')) {
+        let timeDoc = document.createElement('span');
+        timeDoc.id = 'time';
+        document.getElementById('stats').appendChild(timeDoc);
+    }
+
+    if(!document.getElementById('ticker')) {
+        let tickDoc = document.createElement('div');
+        tickDoc.id = 'ticker';
+        let tickInfo = document.createElement('span');
+        tickInfo.innerHTML = 'aye';
+        tickDoc.appendChild(tickInfo);
+        document.getElementById('wrapper').insertBefore(tickDoc, document.getElementById('wrapper').firstChild)
+    }
+
     setInterval(function() {
         tick();
     }, 1000)

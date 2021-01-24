@@ -16,6 +16,26 @@ body {
     flex-wrap: wrap;
 }
 
+@keyframes tick {
+    0% {
+        transform: translate3d(100%, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+#ticker {
+    /* border: 1px solid red; */
+    width: 100%;
+    text-align: right;
+    animation-iteration-count: infinite;
+    animation-name: tick;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+}
+
 @media screen and (min-width: 601px) {
  
 }
@@ -49,6 +69,7 @@ body {
         flex-wrap: wrap;
         align-content: flex-start;
         flex-basis: 60%;
+        /* flex-direction: ; */
     }
     #player {
         font-size: 2vw;
@@ -57,7 +78,7 @@ body {
         flex-wrap: nowrap;
         flex-basis: 100% !important;
         max-height: 50vh;
-        order: 2;
+        order: 1;
         /* border-top: 1px solid #1a1a2e; */
     }
     #player span {
@@ -70,7 +91,7 @@ body {
     }
     #subSkillScreen {
         display: flex;
-        order: 1;
+        order: 2;
         flex-basis: 100% !important;
         /* flex-shrink: 1; */
         height: 30vh;
