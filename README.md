@@ -4,3 +4,5 @@
 [Try it here](https://tsaraugustus.github.io)
 
 [A roadmap of sorts.](https://tsaraugustus.github.io/future/list.html)
+
+[Trello](https://trello.com/b/abj8Lrhu/idle)
