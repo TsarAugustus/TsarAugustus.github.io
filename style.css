@@ -2,7 +2,7 @@
     margin: 0;
     outline: none;
     font-family: 'Courier New', monospace;
-    font-size: 1.02em;
+    /* font-size: 1.02em; */
 }
 
 body {
@@ -16,7 +16,7 @@ body {
     flex-wrap: wrap;
 }
 
-@keyframes tick {
+/* @keyframes tick {
     0% {
         transform: translate3d(100%, 0, 0);
     }
@@ -27,17 +27,229 @@ body {
 }
 
 #ticker {
-    /* border: 1px solid red; */
     width: 100%;
     text-align: right;
     animation-iteration-count: infinite;
     animation-name: tick;
     animation-duration: 30s;
     animation-timing-function: linear;
-}
+} */
 
 @media screen and (min-width: 601px) {
- 
+    #left {
+        display: flex;
+        height: 95vh;
+        width: 30%;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+    
+    
+    .clicked {
+        border: 2px solid #30475e;
+        background-color: #1a1a2e !important;
+    
+    }
+
+    #skillButtonList{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #skillButtonList button {
+        color: #ececec;
+        border: 2px solid #1a1a2e !important;
+        background-color: #30475e;
+        flex-basis: 33% !important;
+        /* font-size: 2.5vw; */
+    }
+    #skillButtonList button:active {
+        background-color: #16213e;
+    }
+    
+    .subSkill {
+        margin-top: 1em;
+        display: flex;
+        align-self: center;
+        flex-direction: column;
+        font-size: 0.75em;
+    }
+    
+    .subSkill button {
+        background-color: #30475e;
+        border: 2px solid #1a1a2e;
+        text-align: center;
+        padding: 0.1em;
+        color: #ececec;
+    }
+    
+    .skill button {
+        letter-spacing: 0.1vw;
+        /* font-weight: bold !important; */
+    }
+    
+    .categoryWrapper {
+        margin-top: 0.5em;
+        /* border: 1px solid black; */
+        /* display: flex; */
+        /* flex-direction: column-reverse; */
+    }
+    
+    #containerInfo {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    #containerInfo h3 {
+        flex-basis: 100%;
+        
+        text-decoration: none !important;
+    }
+    #containerInfo h4 {
+        /* font-size: 2.3vw; */
+        color: #ececec;
+    }
+    
+    /* #specialSkill {
+    
+    }
+    
+    #specialSkills {
+        border: 1px solid black;
+        display: flex;
+        flex-basis: 10%;
+    } */
+    
+    
+    .clickedSubAllowButton {
+        background-color: #16213e !important;
+        border: 2px solid #1a1a2e !important;
+    }
+    /* ======================== */
+
+    #right {
+        display: flex;
+        flex-direction: row-reverse;
+        flex-basis: 70%;
+        /* width: 70%; */
+    }
+
+    #subSkillScreen {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 50%;
+        align-items: center;
+    }
+
+    #subSkillScreen button {
+        margin-top: 1em;
+    }
+
+    #subButtonWrapper {
+        display: flex;
+        width: 90%;
+        font-size: 2vw;
+    }
+
+    #subButtonWrapper button{
+    display: flex;
+    flex-grow: 1;
+    background-color: #30475e;
+    justify-content: center;
+    color: #ececec;
+    border: 3px solid #16213e;
+    }
+
+    #subAllows{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        /* font-size: 1vw; */
+        /* font-size: 0.9em; */
+    }
+
+    #subAllows div {
+        flex-basis: 30%;
+        align-items: flex-start;
+        /* height: 20vh; */
+        /* border: 1px solid black; */
+    }
+
+    #subAllows button {
+        width: 100%;
+        align-items: center;
+        background-color: #30475e;
+        border: 1px solid #1a1a2e;
+        color: #ececec;
+        flex-direction: column;
+        /* font-size: 2vw; */
+    }
+
+    #subAllows button:first-of-type {
+        justify-content: flex-start;
+        flex-basis: 90%;
+        min-width: 10vw;
+    }
+
+    #subAllows button span {
+        /* font-size: 1.7vw */
+        
+    }
+
+    #subAllows button span:first-of-type {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    #subAllows button:active {
+        background-color: #16213e;
+    }
+
+    #subAllows button:disabled {
+        opacity: 0.5;
+        transition: opacity .5s;
+    }
+
+    #subAllows button {
+        opacity: 1;
+        transition: opacity .5s;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+    }
+    .column > button {
+        display: flex;
+        flex: 1;
+    }
+    #player {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-self: flex-start;
+        text-align: center;
+        flex-basis: 50%;
+    }
+
+    /* inventory h3 */
+    #player > h3:first-child {
+        /* font-size: 2.5vw; */
+    }
+
+    #player h3 {
+        /* font-size: 2.3vw; */
+        font-weight: lighter;
+    }
+    
+    #player span {
+        /* font-size: 2vw; */
+        color: #ececec;
+    }
+    
+    #player div {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -55,7 +267,6 @@ body {
         flex-wrap: wrap;
     }
     #skillButtonList button {
-        /* border: 1px solid red; */
         color: #ececec;
         border: 2px solid #1a1a2e !important;
         background-color: #30475e;
@@ -79,7 +290,9 @@ body {
         flex-basis: 100% !important;
         max-height: 50vh;
         order: 1;
-        /* border-top: 1px solid #1a1a2e; */
+        height: 30vh;
+        max-height: 30vh;
+        overflow-y: scroll;
     }
     #player span {
         white-space: nowrap;
@@ -137,101 +350,6 @@ body {
     .progressSpan {
         font-size: 2vw !important;
     }
-}
-
-#left {
-    display: flex;
-    height: 95vh;
-    width: 30%;
-    justify-content: flex-start;
-    flex-direction: column;
-}
-
-#skillButtonList {
-
-}
-
-#player {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: flex-start;
-    text-align: center;
-    flex-basis: 50%;
-}
-
-#player span {
-    color: #ececec;
-}
-
-#player div {
-    display: flex;
-    flex-direction: column;
-}
-/* .options > div:not(:first-child) select { background:yellow;} */
-#player > div:nth-child(n + 2) {
-    width: 90%;
-    align-self: center;
-}
-
-.clicked {
-    border: 2px solid #30475e;
-    background-color: #1a1a2e !important;
-
-}
-
-.subSkill {
-    margin-top: 1em;
-    display: flex;
-    align-self: center;
-    flex-direction: column;
-    font-size: 0.75em;
-}
-
-.subSkill button {
-    background-color: #30475e;
-    border: 2px solid #1a1a2e;
-    text-align: center;
-    padding: 0.1em;
-    color: #ececec;
-}
-
-
-
-.categoryWrapper {
-    /* border: 1px solid black; */
-    /* display: flex; */
-    /* flex-direction: column-reverse; */
-}
-
-#containerInfo {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-#containerInfo h3 {
-    flex-basis: 100%;
-    text-decoration: none !important;
-}
-#containerInfo h4 {
-    /* font-size: 3vw; */
-    color: #ececec;
-}
-
-/* #specialSkill {
-
-}
-
-#specialSkills {
-    border: 1px solid black;
-    display: flex;
-    flex-basis: 10%;
-} */
-
-
-.clickedSubAllowButton {
-    background-color: #16213e !important;
-    border: 2px solid #1a1a2e !important;
 }
 
 /* ===================== */
@@ -341,100 +459,6 @@ body {
     z-index: 2;
     font-size: 0.7em;
     color: #ececec;
-}
-/* ======================== */
-#right {
-    display: flex;
-    flex-direction: row-reverse;
-    width: 70%;
-}
-
-#subSkillScreen {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 50%;
-    align-items: center;
-}
-
-#subSkillScreen button {
-    margin-top: 1em;
-}
-
-#subButtonWrapper {
-    display: flex;
-    width: 90%;
-
-}
-
-#subButtonWrapper button{
-   display: flex;
-   flex-grow: 1;
-   background-color: #30475e;
-   justify-content: center;
-   color: #ececec;
-   border: 3px solid #16213e;
-}
-
-#subAllows{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    font-size: 1vw;
-    /* font-size: 0.9em; */
-}
-
-#subAllows div {
-    flex-basis: 30%;
-    align-items: flex-start;
-    /* height: 20vh; */
-    /* border: 1px solid black; */
-}
-
-#subAllows button {
-    width: 100%;
-    align-items: center;
-    background-color: #30475e;
-    border: 1px solid #1a1a2e;
-    color: #ececec;
-    flex-direction: column;
-}
-
-#subAllows button:first-of-type {
-    justify-content: flex-start;
-    flex-basis: 90%;
-    min-width: 10vw;
-}
-
-#subAllows button span {
-    /* font-size: 0.95vw; */
-}
-
-#subAllows button span:first-of-type {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-#subAllows button:active {
-    background-color: #16213e;
-}
-
-#subAllows button:disabled {
-    opacity: 0.5;
-    transition: opacity .5s;
-}
-
-#subAllows button {
-    opacity: 1;
-    transition: opacity .5s;
-}
-
-.column {
-    display: flex;
-    flex-direction: column;
-}
-.column > button {
-    display: flex;
-    flex: 1;
 }
 
 .desc {

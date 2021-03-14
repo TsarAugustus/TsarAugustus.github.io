@@ -176,14 +176,15 @@ function init() {
         document.getElementById('stats').appendChild(timeDoc);
     }
 
-    if(!document.getElementById('ticker')) {
-        let tickDoc = document.createElement('div');
-        tickDoc.id = 'ticker';
-        let tickInfo = document.createElement('span');
-        tickInfo.innerHTML = 'aye';
-        tickDoc.appendChild(tickInfo);
-        document.getElementById('wrapper').insertBefore(tickDoc, document.getElementById('wrapper').firstChild)
-    }
+    // TODO: Fix ticker
+    // if(!document.getElementById('ticker')) {
+    //     let tickDoc = document.createElement('div');
+    //     tickDoc.id = 'ticker';
+    //     let tickInfo = document.createElement('span');
+    //     tickInfo.innerHTML = '';
+    //     tickDoc.appendChild(tickInfo);
+    //     document.getElementById('wrapper').insertBefore(tickDoc, document.getElementById('wrapper').firstChild)
+    // }
 
     setInterval(function() {
         tick();
