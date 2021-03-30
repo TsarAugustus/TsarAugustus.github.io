@@ -13,7 +13,9 @@ let Player = {
     //the function that will run the skill
 //requirements
     //skill: skill requirements require skills to be at a certain level before activating
-    //item: item requirements require items to exists in the Players inventory before activating    
+    //item: item requirements require items to exists in the Players inventory before activating 
+//category
+    //category to sort the skills by
 
 
 let skills = {
@@ -23,6 +25,7 @@ let skills = {
         level: 0,
         currentXP: 0,
         XPToLevel: 100,
+        category: 'Basic',
         onclick: function() {
             thisSkill = skills.Forage;
             thisSkill.currentXP += 25;
@@ -45,9 +48,10 @@ let skills = {
         level: 0,
         currentXP: 0,
         XPToLevel: 100,
+        category: 'Wood',
         requirements: {
-            skill: { Forage: 2 },
-            item: { Seed: 5}
+            skill: { Forage: 1 }
+            // item: { Seed: 5}
         },
         onclick: function() {
             
@@ -87,7 +91,31 @@ function returnButtonInfo(skill, init) {
     return newSkillButton;
 }
 
-function createSkillButton(skill) {
+function createCategoryButtons(skill) {
+    if(!document.getElementById(`${skill.category}Button`)) {
+        const categoryButton = document.createElement('button');
+        
+        categoryButton.id = `${skill.category}Button`;
+        categoryButton.innerHTML = skill.category;
+        categoryButton.onclick = function() {
+            const previousFocus = document.getElementsByClassName('CategoryFocus');
+            for(let i=0; i<previousFocus.length; i++) {
+                previousFocus[i].classList.remove('CategoryFocus');
+            }
+            categoryButton.classList.add(`CategoryFocus`);
+            document.getElementById('skills').innerHTML = '';
+
+            for(let i=0; i<Object.values(skills).length; i++) {
+                if(Object.values(skills)[i].category === skill.category && Object.values(skills)[i].active) {
+                    createSkillButtons(Object.values(skills)[i])
+                }
+            }
+        }
+        document.getElementById('skillCategories').appendChild(categoryButton);
+    }
+}
+
+function createSkillButtons(skill) {
     if(!document.getElementById(`${skill.displayName}Button`)) {
         const buttonInfo = returnButtonInfo(skill, true);
         const newSkillButton = document.createElement('button');
@@ -95,7 +123,6 @@ function createSkillButton(skill) {
         newSkillButton.id = buttonInfo.id;
         newSkillButton.innerHTML = buttonInfo.innerHTML;
         newSkillButton.onclick = buttonInfo.onclick;
-
         document.getElementById('skills').appendChild(newSkillButton);
     }
 }
@@ -115,7 +142,7 @@ function checkIfSkillShouldBeActive(thisSkill) {
                 }
             }
             if(skillReqCounter === Object.keys(skillReq.skill).length) {
-                fullSkillCounter++;
+                fullSkillCounter++; 
             }
         } else if(Object.keys(thisSkill.requirements)[k] === 'item') {
             const itemReq = thisSkill.requirements;
@@ -141,7 +168,7 @@ function checkSkills() {
     for(let i=0; i<Object.keys(skills).length; i++) {
         const thisSkill = Object.values(skills)[i];
         if(thisSkill.active) {
-            createSkillButton(thisSkill);
+            createCategoryButtons(thisSkill);
         } else {
             checkIfSkillShouldBeActive(thisSkill);
         }
