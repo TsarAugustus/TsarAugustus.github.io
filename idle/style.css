@@ -1,0 +1,21 @@
+.New {
+    color: red;
+}
+
+#wrapper {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+}
+#skillCategories {
+    align-self: flex-start;
+}
+#skills {
+    display: flex;
+    width: 10em;
+    flex-direction: column;
+}
+#inventory {
+    display: flex;
+    flex-direction: column;
+}

@@ -27,7 +27,7 @@ let skills = {
         XPToLevel: 100,
         category: 'Basic',
         onclick: function() {
-            thisSkill = skills.Forage;
+            const thisSkill = skills.Forage;
             thisSkill.currentXP += 25;
             if(thisSkill.currentXP >= thisSkill.XPToLevel) {
                 thisSkill.level++;
@@ -40,6 +40,7 @@ let skills = {
             Player.inventory.Seed.amount++;
 
             updateButton(thisSkill);
+            updateInventory();
         }
     },
     Woodcutting: {
@@ -51,25 +52,93 @@ let skills = {
         category: 'Wood',
         requirements: {
             skill: { Forage: 1 }
-            // item: { Seed: 5}
         },
         onclick: function() {
-            
+            const thisSkill = skills.Woodcutting;
+            thisSkill.currentXP += 25;
+
+            if(thisSkill.currentXP >= thisSkill.XPToLevel) {
+                thisSkill.level++;
+                thisSkill.currentXP = 0;
+                thisSkill.XPToLevel *= 2;
+            }
+            if(!Player.inventory.Wood) {
+                Player.inventory.Wood = { amount: 0 };
+            }
+            Player.inventory.Wood.amount++;
+
+            updateButton(thisSkill);
+            updateInventory();
+        }
+    },
+    //CRAFTING BASED SKILLS
+    Woodcrafting: {
+        displayName: 'Woodcrafting',
+        active: undefined,
+        level: 0,
+        currentXP: 0,
+        XPToLevel: 100,
+        category: 'Crafting',
+        requirements: {
+            item: { Wood: 1 }
+        },
+        onclick: function() {
+            const craftableItems = {
+                Log: { Wood: 2 },
+                Plank: { Wood: 2 },
+                Chair: { Log: 4, Plank: 2 } 
+            }
+
+            const interaction = document.getElementById('interaction');
+            const craftKeys = Object.keys(craftableItems);
+            interaction.innerHTML = '';
+            for(let i=0; i<craftKeys.length; i++) {
+                if(!document.getElementById(craftKeys[i])) {
+                    const thisCraftItem = document.createElement('button');
+                    thisCraftItem.id = craftKeys[i];
+                    thisCraftItem.innerHTML = `${craftKeys[i]}<br>`;
+
+                    for(let j=0; j<Object.keys(craftableItems[craftKeys[i]]).length; j++) {
+                        thisCraftItem.innerHTML += `${Object.keys(craftableItems[craftKeys[i]])[j]}:
+                                                    ${Object.values(craftableItems[craftKeys[i]])[j]}<br>`;
+                    }
+                    thisCraftItem.onclick = function() {
+                        let craftCounter = 0;
+                        const craftKey = Object.keys(craftableItems[craftKeys[i]]);
+                        const craftValue = Object.values(craftableItems[craftKeys[i]]);
+                        for(let j=0; j<craftKey.length; j++) {
+                            console.log(craftValue[j])
+                            if(Player.inventory[craftKey[j]] && Player.inventory[craftKey[j]].amount >= craftValue[j]) {
+                                craftCounter++;
+                            }
+                        }
+                        if(craftCounter === craftKey.length) {
+                            for(let j=0; j<craftKey.length; j++) {
+                                Player.inventory[craftKey[j]].amount -= craftValue[j];
+                            }
+                            if(!Player.inventory[craftKeys[i]]) {
+                                Player.inventory[craftKeys[i]] = { amount: 0 }
+                            }
+                            Player.inventory[craftKeys[i]].amount++;
+                            updateInventory();
+                        }
+                    }
+                    interaction.appendChild(thisCraftItem)
+                }
+            }
+        }
+    },
+    Stonecrafting: {
+        displayName: 'Stonecrafting',
+        active: undefined,
+        level: 0,
+        currentXP: 0,
+        XPToLevel: 100,
+        category: 'Crafting',
+        requirements: {
+            item: { Stone: 1 }
         }
     }
-    // Farming: {
-    //     displayName: 'Farming',
-    //     active: undefined,
-    //     level: 0,
-    //     currentXP: 0,
-    //     XPToLevel: 100,
-    //     requirements: {
-    //         item: { Seed: 1 }
-    //     },
-    //     onclick: function() {
-            
-    //     }
-    // }
 }
 
 function updateButton(skill) {
@@ -91,13 +160,20 @@ function returnButtonInfo(skill, init) {
     return newSkillButton;
 }
 
-function createCategoryButtons(skill) {
-    if(!document.getElementById(`${skill.category}Button`)) {
+function createCategoryButtons(skill, New) {
+    const thisSkillButton = document.getElementById(`${skill.category}Button`);
+    if(!thisSkillButton) {
         const categoryButton = document.createElement('button');
         
         categoryButton.id = `${skill.category}Button`;
         categoryButton.innerHTML = skill.category;
+        categoryButton.classList.add('New');
         categoryButton.onclick = function() {
+            document.getElementById('interaction').innerHTML = '';
+            if(categoryButton.classList.contains('New')){
+                categoryButton.classList.remove('New')
+            }
+
             const previousFocus = document.getElementsByClassName('CategoryFocus');
             for(let i=0; i<previousFocus.length; i++) {
                 previousFocus[i].classList.remove('CategoryFocus');
@@ -112,6 +188,8 @@ function createCategoryButtons(skill) {
             }
         }
         document.getElementById('skillCategories').appendChild(categoryButton);
+    } else if(New) {
+        thisSkillButton.classList.add('New');
     }
 }
 
@@ -161,6 +239,7 @@ function checkIfSkillShouldBeActive(thisSkill) {
     }
     if(Object.keys(thisSkill.requirements).length === fullSkillCounter+fullItemCounter){
         thisSkill.active = true;
+        createCategoryButtons(thisSkill, true)
     }
 }
 
@@ -175,8 +254,27 @@ function checkSkills() {
     }
 }
 
+function updateInventory() {
+    for(let i=0; i<Object.keys(Player.inventory).length; i++) {
+        const thisItem = Object.keys(Player.inventory)[i];
+        const thisItemAmount = Object.values(Player.inventory)[i];
+        const inventoryDiv = document.getElementById('inventory');
+        const thisSpan = document.getElementById(`${thisItem}Span`);
+        if(!thisSpan) {
+            const thisItemElement = document.createElement('span');
+            thisItemElement.id = `${thisItem}Span`;
+            thisItemElement.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
+            inventoryDiv.appendChild(thisItemElement);
+        } else {
+            thisSpan.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
+        }
+    }
+}
+
 function tick() {
     checkSkills();
+    //perhaps should only be called seldomly
+    // updateInventory();
 }
 
 function init() {
