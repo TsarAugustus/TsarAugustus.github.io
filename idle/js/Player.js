@@ -1,0 +1,3 @@
+export let Player = {
+    inventory: {}
+};

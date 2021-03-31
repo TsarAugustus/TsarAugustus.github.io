@@ -1,6 +1,5 @@
-let Player = {
-    inventory: {}
-};
+import { Player } from './Player.js';
+import { returnButtonInfo } from './returnButtonInfo.js';   
 
 //displayName
     //sets the display name for the skill button
@@ -18,146 +17,15 @@ let Player = {
     //category to sort the skills by
 
 
+import { Forage } from './skills/Forage.js';
+import { Woodcutting } from './skills/Woodcutting.js';
+import { Woodcrafting } from './skills/Woodcrafting.js';
+
 let skills = {
-    Forage: {
-        displayName: 'Forage',
-        active: true,
-        level: 0,
-        currentXP: 0,
-        XPToLevel: 100,
-        category: 'Basic',
-        onclick: function() {
-            const thisSkill = skills.Forage;
-            thisSkill.currentXP += 25;
-            if(thisSkill.currentXP >= thisSkill.XPToLevel) {
-                thisSkill.level++;
-                thisSkill.currentXP = 0;
-                thisSkill.XPToLevel *= 2;
-            }
-            if(!Player.inventory.Seed) {
-                Player.inventory.Seed = { amount: 0 };
-            }
-            Player.inventory.Seed.amount++;
-
-            updateButton(thisSkill);
-            updateInventory();
-        }
-    },
-    Woodcutting: {
-        displayName: 'Woodcutting',
-        active: undefined,
-        level: 0,
-        currentXP: 0,
-        XPToLevel: 100,
-        category: 'Wood',
-        requirements: {
-            skill: { Forage: 1 }
-        },
-        onclick: function() {
-            const thisSkill = skills.Woodcutting;
-            thisSkill.currentXP += 25;
-
-            if(thisSkill.currentXP >= thisSkill.XPToLevel) {
-                thisSkill.level++;
-                thisSkill.currentXP = 0;
-                thisSkill.XPToLevel *= 2;
-            }
-            if(!Player.inventory.Wood) {
-                Player.inventory.Wood = { amount: 0 };
-            }
-            Player.inventory.Wood.amount++;
-
-            updateButton(thisSkill);
-            updateInventory();
-        }
-    },
+    Forage,
+    Woodcutting,
     //CRAFTING BASED SKILLS
-    Woodcrafting: {
-        displayName: 'Woodcrafting',
-        active: undefined,
-        level: 0,
-        currentXP: 0,
-        XPToLevel: 100,
-        category: 'Crafting',
-        requirements: {
-            item: { Wood: 1 }
-        },
-        onclick: function() {
-            const craftableItems = {
-                Log: { Wood: 2 },
-                Plank: { Wood: 2 },
-                Chair: { Log: 4, Plank: 2 } 
-            }
-
-            const interaction = document.getElementById('interaction');
-            const craftKeys = Object.keys(craftableItems);
-            interaction.innerHTML = '';
-            for(let i=0; i<craftKeys.length; i++) {
-                if(!document.getElementById(craftKeys[i])) {
-                    const thisCraftItem = document.createElement('button');
-                    thisCraftItem.id = craftKeys[i];
-                    thisCraftItem.innerHTML = `${craftKeys[i]}<br>`;
-
-                    for(let j=0; j<Object.keys(craftableItems[craftKeys[i]]).length; j++) {
-                        thisCraftItem.innerHTML += `${Object.keys(craftableItems[craftKeys[i]])[j]}:
-                                                    ${Object.values(craftableItems[craftKeys[i]])[j]}<br>`;
-                    }
-                    thisCraftItem.onclick = function() {
-                        let craftCounter = 0;
-                        const craftKey = Object.keys(craftableItems[craftKeys[i]]);
-                        const craftValue = Object.values(craftableItems[craftKeys[i]]);
-                        for(let j=0; j<craftKey.length; j++) {
-                            console.log(craftValue[j])
-                            if(Player.inventory[craftKey[j]] && Player.inventory[craftKey[j]].amount >= craftValue[j]) {
-                                craftCounter++;
-                            }
-                        }
-                        if(craftCounter === craftKey.length) {
-                            for(let j=0; j<craftKey.length; j++) {
-                                Player.inventory[craftKey[j]].amount -= craftValue[j];
-                            }
-                            if(!Player.inventory[craftKeys[i]]) {
-                                Player.inventory[craftKeys[i]] = { amount: 0 }
-                            }
-                            Player.inventory[craftKeys[i]].amount++;
-                            updateInventory();
-                        }
-                    }
-                    interaction.appendChild(thisCraftItem)
-                }
-            }
-        }
-    },
-    Stonecrafting: {
-        displayName: 'Stonecrafting',
-        active: undefined,
-        level: 0,
-        currentXP: 0,
-        XPToLevel: 100,
-        category: 'Crafting',
-        requirements: {
-            item: { Stone: 1 }
-        }
-    }
-}
-
-function updateButton(skill) {
-    const skillButton = document.getElementById(`${skill.displayName}Button`);
-    const skillButtonInfo = returnButtonInfo(skill);
-    skillButton.innerHTML = skillButtonInfo.innerHTML;
-}
-
-function returnButtonInfo(skill, init) {
-    const newSkillButton = {};
-    newSkillButton.id = `${skill.displayName}Button`;
-    newSkillButton.innerHTML = `${skill.displayName}<br> 
-                                Level: ${skill.level}<br>
-                                ${skill.currentXP}/${skill.XPToLevel}`;
-    
-    if(init) {
-        newSkillButton.onclick = skill.onclick;
-    }
-    return newSkillButton;
+    Woodcrafting
 }
 
 function createCategoryButtons(skill, New) {
@@ -250,23 +118,6 @@ function checkSkills() {
             createCategoryButtons(thisSkill);
         } else {
             checkIfSkillShouldBeActive(thisSkill);
-        }
-    }
-}
-
-function updateInventory() {
-    for(let i=0; i<Object.keys(Player.inventory).length; i++) {
-        const thisItem = Object.keys(Player.inventory)[i];
-        const thisItemAmount = Object.values(Player.inventory)[i];
-        const inventoryDiv = document.getElementById('inventory');
-        const thisSpan = document.getElementById(`${thisItem}Span`);
-        if(!thisSpan) {
-            const thisItemElement = document.createElement('span');
-            thisItemElement.id = `${thisItem}Span`;
-            thisItemElement.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
-            inventoryDiv.appendChild(thisItemElement);
-        } else {
-            thisSpan.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
         }
     }
 }

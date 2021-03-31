@@ -8,14 +8,21 @@
     flex-direction: column;
 }
 #skillCategories {
-    align-self: flex-start;
+    display: flex;
+    align-self: center;
 }
 #skills {
     display: flex;
     width: 10em;
+    align-self: center;
     flex-direction: column;
 }
 #inventory {
     display: flex;
     flex-direction: column;
+}
+
+#interaction {
+    display: flex;
+    align-self: center;
 }
