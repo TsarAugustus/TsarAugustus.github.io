@@ -5,10 +5,10 @@ export function updateInventory() {
         const thisItem = Object.keys(Player.inventory)[i];
         const thisItemAmount = Object.values(Player.inventory)[i];
         const inventoryDiv = document.getElementById('inventory');
-        const thisSpan = document.getElementById(`${thisItem}Span`);
+        const thisSpan = document.getElementById(`${thisItem.replace(/\s+/g, '-')}Span`);
         if(!thisSpan) {
             const thisItemElement = document.createElement('span');
-            thisItemElement.id = `${thisItem}Span`;
+            thisItemElement.id = `${thisItem.replace(/\s+/g, '-')}Span`;
             thisItemElement.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
             inventoryDiv.appendChild(thisItemElement);
         } else {

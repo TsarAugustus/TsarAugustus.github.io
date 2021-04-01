@@ -15,6 +15,10 @@ export let Forage = {
             Forage.level++;
             Forage.currentXP = 0;
             Forage.XPToLevel *= 2;
+            if(!Player.inventory['Free Land']) {
+                Player.inventory['Free Land'] = { amount: 0 };
+            }
+            Player.inventory['Free Land'].amount++;
         }
         if(!Player.inventory.Seed) {
             Player.inventory.Seed = { amount: 0 };

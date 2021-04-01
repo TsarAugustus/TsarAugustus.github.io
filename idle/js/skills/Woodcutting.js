@@ -8,7 +8,7 @@ export let Woodcutting = {
     level: 0,
     currentXP: 0,
     XPToLevel: 100,
-    category: 'Wood',
+    category: 'Basic',
     requirements: {
         skill: { Forage: 1 }
     },

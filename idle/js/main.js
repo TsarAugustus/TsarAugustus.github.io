@@ -57,7 +57,17 @@ function createCategoryButtons(skill, New) {
         }
         document.getElementById('skillCategories').appendChild(categoryButton);
     } else if(New) {
-        thisSkillButton.classList.add('New');
+
+        //gets the name of the CategoryFocus
+        const currentCategoryFocus = document.getElementsByClassName('CategoryFocus');
+        const currentCategoryFocusName = currentCategoryFocus[0].id.slice(0, -6);
+        
+        if(skill.category === currentCategoryFocusName) {
+            createSkillButtons(skill);
+
+        } else {
+            thisSkillButton.classList.add('New');
+        }
     }
 }
 
