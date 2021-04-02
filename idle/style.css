@@ -34,6 +34,11 @@ button:focus {
     background-color: #2c2d2e;
 }
 
+button:disabled {
+    cursor: not-allowed;
+    opacity: 50%;
+}
+
 /* Area specific */
 
 @media screen and (max-width: 600px) {
@@ -177,5 +182,8 @@ button:focus {
         flex-basis: 10%;
         margin: 0.1em;
         line-height: 1.5em;
+    }
+    #interaction button:active {
+        background-color: #2c2d2e;
     }
 }

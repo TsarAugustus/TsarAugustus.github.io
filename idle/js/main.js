@@ -1,5 +1,6 @@
 import { Player } from './Player.js';
 import { returnButtonInfo } from './returnButtonInfo.js';   
+import { checkButtonStatus } from './checkButtonStatus.js';
 
 //displayName
     //sets the display name for the skill button
@@ -20,6 +21,7 @@ import { returnButtonInfo } from './returnButtonInfo.js';
 import { Forage } from './skills/Forage.js';
 import { Woodcutting } from './skills/Woodcutting.js';
 import { Woodcrafting } from './skills/Woodcrafting.js';
+import { updateInventory } from './updateInventory.js';
 
 let skills = {
     Forage,
@@ -134,6 +136,11 @@ function checkSkills() {
 
 function tick() {
     checkSkills();
+    const viewedSkill = document.getElementsByClassName('ViewedSkill');
+    if(viewedSkill.length > 0) {    
+        const viewedSkillName = skills[viewedSkill[0].id.slice(0, -6)];
+        checkButtonStatus(viewedSkillName);
+    }
     //perhaps should only be called seldomly
     // updateInventory();
 }
