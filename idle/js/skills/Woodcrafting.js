@@ -56,7 +56,7 @@ export let Woodcrafting = {
                                 Player.inventory[craftKey[j]].amount -= craftValue[j];
                             }
                             if(!Player.inventory[craftKeys[i]]) {
-                                Player.inventory[craftKeys[i]] = { amount: 0 }
+                                Player.inventory[craftKeys[i]] = { amount: 0 , type: 'Woodcrafts'}
                             }
                             Player.inventory[craftKeys[i]].amount++;
                             updateInventory();

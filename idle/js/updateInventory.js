@@ -1,18 +1,28 @@
 import { Player } from './Player.js';
 
 export function updateInventory() {
-    for(let i=0; i<Object.keys(Player.inventory).length; i++) {
-        const thisItem = Object.keys(Player.inventory)[i];
-        const thisItemAmount = Object.values(Player.inventory)[i];
-        const inventoryDiv = document.getElementById('inventory');
-        const thisSpan = document.getElementById(`${thisItem.replace(/\s+/g, '-')}Span`);
-        if(!thisSpan) {
-            const thisItemElement = document.createElement('span');
-            thisItemElement.id = `${thisItem.replace(/\s+/g, '-')}Span`;
-            thisItemElement.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
-            inventoryDiv.appendChild(thisItemElement);
+    for(let item in Player.inventory) {
+        const itemInfo = Player.inventory[item];
+        if(!document.getElementById(`${itemInfo.type}InventoryHeader`)) {
+            const typeDiv = document.createElement('div');
+            typeDiv.id = `${itemInfo.type}InventoryWrapper`;
+
+            const typeHeader = document.createElement('h3');
+            typeHeader.id = `${itemInfo.type}InventoryHeader`;
+            typeHeader.innerHTML = `${itemInfo.type}`;
+            typeDiv.appendChild(typeHeader);
+            
+            document.getElementById('inventory').appendChild(typeDiv);
+        }
+        // console.log(item)
+        const itemSpanDiv = document.getElementById(`${item.replace(/\s+/g, '-')}Span`);
+        if(!itemSpanDiv) {
+            const itemSpan = document.createElement('span');
+            itemSpan.id = `${item.replace(/\s+/g, '-')}Span`;
+            itemSpan.innerHTML = `${item}: ${itemInfo.amount}`;
+            document.getElementById(`${itemInfo.type}InventoryWrapper`).appendChild(itemSpan);
         } else {
-            thisSpan.innerHTML = `${thisItem}: ${thisItemAmount.amount}`;
+            itemSpanDiv.innerHTML = `${item}: ${itemInfo.amount}`;
         }
     }
 }
