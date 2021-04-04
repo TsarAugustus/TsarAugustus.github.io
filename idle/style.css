@@ -80,14 +80,16 @@ button:disabled {
     }
     
     #skillArea {
-        flex-basis: 50%;
+        height: 30vh;
+        /* max-height: 30vh; */
     }
     
     #inventory {
         display: flex;
         flex-basis: 49%;
         align-items: flex-start;
-        flex-direction: column;
+        /* justify-content: flex-end; */
+        /* flex-direction: column; */
         /* align-self: flex-end; */
         font-family: 'Courier New', Courier, monospace;
         font-size: smaller;
@@ -96,6 +98,10 @@ button:disabled {
         display: inline-block;
         width: 10em;
         text-align: left;
+    }
+    #inventory div {
+        display: flex;
+        flex-direction: column;
     }
     
     #interaction {
