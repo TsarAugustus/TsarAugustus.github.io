@@ -1,6 +1,7 @@
-import { Player } from '../../Player.js';
 import { updateButton } from '../../updateButton.js';
 import { updateInventory } from '../../updateInventory.js';
+import { items } from './items.js';
+import { collectItems } from '../collectItems.js';
 
 export let Woodcutting = {
     displayName: 'Woodcutting',
@@ -9,6 +10,7 @@ export let Woodcutting = {
     currentXP: 0,
     XPToLevel: 100,
     category: 'Basic',
+    collectable: items,
     requirements: {
         skill: { Forage: 1 }
     },
@@ -20,11 +22,8 @@ export let Woodcutting = {
             Woodcutting.currentXP = 0;
             Woodcutting.XPToLevel *= 2;
         }
-        if(!Player.inventory.Wood) {
-            Player.inventory.Wood = { amount: 0 };
-        }
-        Player.inventory.Wood.amount++;
 
+        collectItems(Woodcutting)
         updateButton(Woodcutting);
         updateInventory();
     }
