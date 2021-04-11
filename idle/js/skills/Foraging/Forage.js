@@ -1,6 +1,8 @@
-import { Player } from '../Player.js';
-import { updateButton } from '../updateButton.js';
-import { updateInventory } from '../updateInventory.js';
+import { Player } from '../../Player.js';
+import { updateButton } from '../../updateButton.js';
+import { updateInventory } from '../../updateInventory.js';
+import { items } from './items.js';
+
 export let Forage = {
     displayName: 'Foraging',
     active: true,
@@ -8,7 +10,7 @@ export let Forage = {
     currentXP: 0,
     XPToLevel: 100,
     category: 'Basic',
-    collectable:['Seed', 'Stone', 'Wood', 'Leaf', 'Food'],
+    collectable: items,
     onclick: function() {
         Forage.currentXP += 25;
         if(Forage.currentXP >= Forage.XPToLevel) {
@@ -20,7 +22,17 @@ export let Forage = {
             }
             Player.inventory['Free Land'].amount++;
         }
-        const newItem = Forage.collectable[Math.floor(Math.random() * Forage.collectable.length)];
+
+        let availableItems = [];
+        for(let items in Forage.collectable) {
+            if(Forage.level >= parseInt(items)) {
+                console.log(Forage.collectable[items])
+                availableItems = availableItems.concat(Forage.collectable[items])
+            }
+        }
+
+
+        const newItem = availableItems[Math.floor(Math.random() * availableItems.length)];
         if(!Player.inventory[newItem]) {
             Player.inventory[newItem] = { amount: 0, type: 'Basic' };
         }

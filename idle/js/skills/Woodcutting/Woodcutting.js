@@ -1,6 +1,6 @@
-import { Player } from '../Player.js';
-import { updateButton } from '../updateButton.js';
-import { updateInventory } from '../updateInventory.js';
+import { Player } from '../../Player.js';
+import { updateButton } from '../../updateButton.js';
+import { updateInventory } from '../../updateInventory.js';
 
 export let Woodcutting = {
     displayName: 'Woodcutting',

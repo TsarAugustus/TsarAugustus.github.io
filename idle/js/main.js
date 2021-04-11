@@ -1,6 +1,7 @@
 import { Player } from './Player.js';
 import { returnButtonInfo } from './returnButtonInfo.js';   
 import { checkButtonStatus } from './checkButtonStatus.js';
+import { skills } from './skills/skills.js';
 
 //displayName
     //sets the display name for the skill button
@@ -17,18 +18,6 @@ import { checkButtonStatus } from './checkButtonStatus.js';
 //category
     //category to sort the skills by
 
-
-import { Forage } from './skills/Forage.js';
-import { Woodcutting } from './skills/Woodcutting.js';
-import { Woodcrafting } from './skills/Woodcrafting.js';
-import { updateInventory } from './updateInventory.js';
-
-let skills = {
-    Forage,
-    Woodcutting,
-    //CRAFTING BASED SKILLS
-    Woodcrafting
-}
 
 function createCategoryButtons(skill, New) {
     const thisSkillButton = document.getElementById(`${skill.category}Button`);

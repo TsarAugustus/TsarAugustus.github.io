@@ -38,6 +38,11 @@ button:disabled {
     cursor: not-allowed;
     opacity: 50%;
 }
+#ticker {
+    height: 1em;
+    display: flex;
+    flex-basis: 100%;
+}
 
 /* Area specific */
 
@@ -80,17 +85,13 @@ button:disabled {
     }
     
     #skillArea {
-        height: 30vh;
-        /* max-height: 30vh; */
+        height: 35vh;
     }
     
     #inventory {
         display: flex;
-        flex-basis: 49%;
         align-items: flex-start;
-        /* justify-content: flex-end; */
-        /* flex-direction: column; */
-        /* align-self: flex-end; */
+        flex-wrap: wrap;
         font-family: 'Courier New', Courier, monospace;
         font-size: smaller;
     }
@@ -101,6 +102,7 @@ button:disabled {
     }
     #inventory div {
         display: flex;
+        flex: 1;
         flex-direction: column;
     }
     
@@ -158,6 +160,7 @@ button:disabled {
     }
     
     #skillArea {
+        /* display: flex; */
         flex-basis: 50%;
     }
     
@@ -192,7 +195,7 @@ button:disabled {
     }
     #interaction button {
         border: none;
-        flex-basis: 10%;
+        flex-shrink: 1;
         margin: 0.1em;
         line-height: 1.5em;
     }
