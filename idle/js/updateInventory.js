@@ -14,7 +14,7 @@ export function updateInventory() {
             
             document.getElementById('inventory').appendChild(typeDiv);
         }
-        // console.log(item)
+        
         const itemSpanDiv = document.getElementById(`${item.replace(/\s+/g, '-')}Span`);
         if(!itemSpanDiv) {
             const itemSpan = document.createElement('span');

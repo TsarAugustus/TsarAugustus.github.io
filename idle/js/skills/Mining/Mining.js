@@ -4,8 +4,8 @@ import { updateInventory } from '../../updateInventory.js';
 import { items } from './items.js';
 import { collectItems } from '../collectItems.js';
 
-export let Woodcutting = {
-    displayName: 'Woodcutting',
+export let Mining = {
+    displayName: 'Mining',
     active: undefined,
     level: 0,
     currentXP: 0,
@@ -13,23 +13,23 @@ export let Woodcutting = {
     category: 'Basic',
     collectable: items,
     requirements: {
-        skill: { Forage: 1 }
+        itemType: { Axe: 1 }
+        // item: { Stone: 1 }
     },
     onclick: function() {
-        Woodcutting.currentXP += 25;
-
-        if(Woodcutting.currentXP >= Woodcutting.XPToLevel) {
-            Woodcutting.level++;
-            Woodcutting.currentXP = 0;
-            Woodcutting.XPToLevel *= 2;
+        Mining.currentXP += 25;
+        if(Mining.currentXP >= Mining.XPToLevel) {
+            Mining.level++;
+            Mining.currentXP = 0;
+            Mining.XPToLevel *= 2;
             if(!Player.inventory['Free Land']) {
                 Player.inventory['Free Land'] = { amount: 0, type: 'Land' };
             }
             Player.inventory['Free Land'].amount++;
         }
-
-        collectItems(Woodcutting)
-        updateButton(Woodcutting);
+        
+        collectItems(Mining);
+        updateButton(Mining);
         updateInventory();
     }
 };

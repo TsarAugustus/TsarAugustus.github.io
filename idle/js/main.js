@@ -77,13 +77,14 @@ function createSkillButtons(skill) {
 function checkIfSkillShouldBeActive(thisSkill) {
     let fullSkillCounter = 0;
     let fullItemCounter = 0;
-    for(let k=0; k<Object.keys(thisSkill.requirements).length; k++) {
-        if(Object.keys(thisSkill.requirements)[k] === 'skill') {
+
+    for(let skillRequirements in thisSkill.requirements) {
+        if(skillRequirements === 'skill') {
             const skillReq = thisSkill.requirements;
             let skillReqCounter = 0;
-            for(let j=0; j<Object.keys(skillReq.skill).length; j++) {
-                const skillName = Object.keys(skillReq.skill)[j];
-                const skillLevel = Object.values(skillReq.skill)[j]
+            for(let items in skillReq) {
+                const skillName = Object.keys(skillReq[items]);
+                const skillLevel = Object.values(skillReq[items]);
                 if(skills[skillName].level >= skillLevel) {
                     skillReqCounter++;
                 }
@@ -91,12 +92,12 @@ function checkIfSkillShouldBeActive(thisSkill) {
             if(skillReqCounter === Object.keys(skillReq.skill).length) {
                 fullSkillCounter++; 
             }
-        } else if(Object.keys(thisSkill.requirements)[k] === 'item') {
+        } else if(skillRequirements === 'item') {
             const itemReq = thisSkill.requirements;
             let itemReqCounter = 0;
-            for(let j=0; j<Object.keys(itemReq.item).length; j++) {
-                const itemName = Object.keys(itemReq.item)[j];
-                const itemAmount = Object.values(itemReq.item)[j];
+            for(let items in itemReq) {
+                const itemName = Object.keys(itemReq[items]);
+                const itemAmount = Object.values(itemReq[items]);
                 if(Player.inventory[itemName] && Player.inventory[itemName].amount>=itemAmount) {
                     itemReqCounter++
                 }
@@ -104,8 +105,15 @@ function checkIfSkillShouldBeActive(thisSkill) {
             if(itemReqCounter === Object.keys(itemReq.item).length) {
                 fullItemCounter++;
             }
+        } else if(skillRequirements === 'itemType') {
+            const itemTypeReq = thisSkill.requirements;
+            let itemTypeReqCounter = 0;
+            for(let items in itemTypeReq) {
+                // console.log(items, itemTypeReq, itemTypeReq[items])
+            }
         }
     }
+
     if(Object.keys(thisSkill.requirements).length === fullSkillCounter+fullItemCounter){
         thisSkill.active = true;
         createCategoryButtons(thisSkill, true)
