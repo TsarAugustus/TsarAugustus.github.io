@@ -33,6 +33,13 @@ button:focus {
 .ViewedSkill {
     background-color: #2c2d2e;
 }
+.ViewedSubSkill {
+    background-color: #2c2d2e;
+}
+
+.subCraft {
+    /* border: 1px solid red !important; */
+}
 
 button:disabled {
     cursor: not-allowed;
@@ -201,5 +208,15 @@ button:disabled {
     }
     #interaction button:active {
         background-color: #2c2d2e;
+    }
+
+    #subCraftDiv {
+        /* border: 1px solid red; */
+        display: flex;
+        flex-basis: 100%;
+    }
+
+    #subCraftItemsDiv {
+        padding-top: 1em;
     }
 }

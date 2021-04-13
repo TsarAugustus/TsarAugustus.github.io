@@ -37,7 +37,7 @@ export let Stonecrafting = {
                 interaction.removeChild(interaction.lastChild);
             }
             createCraftButtons(Stonecrafting);
-            checkButtonStatus(Stonecrafting);
+            // checkButtonStatus(Stonecrafting);
         }
     }
 };

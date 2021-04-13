@@ -1,6 +1,10 @@
 export let items = {
-    "Wood Log": { Wood: 2 },
-    "Wood Plank": { Wood: 2 },
-    "Wood Chair": { "Wood Log": 4, "Wood Plank": 2 },
-    "Wood Axe": { Wood: 5, type: 'Tools', category: 'Axe'}
+    "Carpentry": {
+        "Wood Plank": { requirements: {Wood: 2} },
+        "Wood Chair": { requirements: { "Wood Log": 4, "Wood Plank": 2 } },
+        "Wood Axe": { requirements: { Wood: 5 }, type: 'Tools', category: 'Axe'}
+    },
+    "Wood Turning": {
+        "Wood Log": { requirements: { Wood: 2 } }
+    }
 };

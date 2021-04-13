@@ -148,17 +148,20 @@ function checkSkills() {
 
 function tick() {
     checkSkills();
-    const viewedSkill = document.getElementsByClassName('ViewedSkill');
-    if(viewedSkill.length > 0) {    
-        const viewedSkillName = skills[viewedSkill[0].id.slice(0, -6)];
-        checkButtonStatus(viewedSkillName);
+    const viewedMainSkill = document.getElementsByClassName('ViewedSkill')
+    const viewedSubSkill = document.getElementsByClassName('ViewedSubSkill');
+    if(viewedSubSkill.length > 0) {
+        const mainSkillName = viewedMainSkill[0].id.slice(0, -6).replace(/-/g, ' ');
+        const subSkillName = viewedSubSkill[0].id.slice(0, -6).replace(/-/g, ' ');
+        for(let item in skills[mainSkillName].craftItems[subSkillName]) {
+            checkButtonStatus(skills[mainSkillName], subSkillName, item)
+        }
     }
-    //perhaps should only be called seldomly
-    // updateInventory();
 }
 
 function init() {
     console.log('Initialized');
+    checkSkills();
     setInterval(function() {
         tick();
     }, 1000)

@@ -13,7 +13,7 @@ export let Mining = {
     category: 'Basic',
     collectable: items,
     requirements: {
-        itemType: { Axe: 1 }
+        itemType: { Pick: 1 }
     },
     onclick: function() {
         Mining.currentXP += 25;

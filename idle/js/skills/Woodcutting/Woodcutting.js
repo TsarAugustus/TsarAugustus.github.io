@@ -13,7 +13,7 @@ export let Woodcutting = {
     category: 'Basic',
     collectable: items,
     requirements: {
-        skill: { Forage: 1 }
+        itemType: { Axe: 1 }
     },
     onclick: function() {
         Woodcutting.currentXP += 25;
