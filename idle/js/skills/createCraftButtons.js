@@ -1,6 +1,7 @@
 import { checkButtonStatus } from '../checkButtonStatus.js';
 import { Player } from '../Player.js';
 import { updateInventory } from '../updateInventory.js';
+import { updateButton } from '../updateButton.js';
 
 function createItemButtonOnClickFunction(skill, item, subCraft) {
     let craftCounter = 0;
@@ -24,6 +25,13 @@ function createItemButtonOnClickFunction(skill, item, subCraft) {
             }
         }
         Player.inventory[item].amount++;
+        skill.currentXP += skill.craftItems[subCraft][item].XP;
+        if(skill.currentXP >= skill.XPToLevel) {
+            skill.level++;
+            skill.currentXP = 0;
+            skill.XPToLevel *= 1.6;
+        }
+        updateButton(skill);
         updateInventory();
     }
     checkButtonStatus(skill, subCraft, item, true);
