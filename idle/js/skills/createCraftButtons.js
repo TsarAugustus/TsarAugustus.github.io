@@ -3,41 +3,46 @@ import { Player } from '../Player.js';
 import { updateInventory } from '../updateInventory.js';
 import { updateButton } from '../updateButton.js';
 
-function createItemButtonOnClickFunction(skill, item, subCraft) {
+function createItemButtonOnClickFunction(skill, item, subCraft, level) {
     let craftCounter = 0;
-    const craftRequirementNumber = Object.keys(skill.craftItems[subCraft][item].requirements).length;
-    const itemReq = skill.craftItems[subCraft][item].requirements;
-    for(let req in skill.craftItems[subCraft][item].requirements) {
+    const craftRequirementNumber = Object.keys(skill.craftItems[level][subCraft][item].requirements).length;
+    const itemReq = skill.craftItems[level][subCraft][item].requirements;
+    for(let req in skill.craftItems[level][subCraft][item].requirements) {
         const inventoryItem = Player.inventory[req];
         if(inventoryItem && inventoryItem.amount >= itemReq[req]) {
             craftCounter++;
         }
     }
     if(craftCounter === craftRequirementNumber) {
-        for(let thisItem in skill.craftItems[subCraft][item].requirements) {
+        for(let thisItem in skill.craftItems[level][subCraft][item].requirements) {
             Player.inventory[thisItem].amount -= itemReq[thisItem];
         }
         if(!Player.inventory[item]) {
             Player.inventory[item] = {
                 amount: 0,
-                type: (skill.craftItems[subCraft][item].type ? skill.craftItems[subCraft][item].type : 'Crafts'),
-                category: (skill.craftItems[subCraft][item].category ? skill.craftItems[subCraft][item].category : false)
+                type: (skill.craftItems[level][subCraft][item].type ? skill.craftItems[level][subCraft][item].type : 'Crafts'),
+                category: (skill.craftItems[level][subCraft][item].category ? skill.craftItems[level][subCraft][item].category : false)
             }
         }
         Player.inventory[item].amount++;
-        skill.currentXP += skill.craftItems[subCraft][item].XP;
+        skill.currentXP += skill.craftItems[level][subCraft][item].XP;
         if(skill.currentXP >= skill.XPToLevel) {
             skill.level++;
             skill.currentXP = 0;
             skill.XPToLevel *= 1.6;
+            if(skill.craftItems[skill.level]) {
+                for(let craftName in skill.craftItems[skill.level]) {
+                    createSubCraftCategoryButtons(craftName, skill, skill.level);
+                }
+            }
         }
         updateButton(skill);
         updateInventory();
     }
-    checkButtonStatus(skill, subCraft, item, true);
+    checkButtonStatus(skill, subCraft, item, level, true);
 }
 
-function createSubCraftItemButtons(item, skill, subCraft) {
+function createSubCraftItemButtons(item, skill, subCraft, level) {
     const itemName = item.replace(/\s+/g, '-');
     const thisSubCraftButton = document.getElementById(`${subCraft.replace(/\s+/g, '-')}Button`);
     if(!document.getElementById(`${itemName}Button`) && thisSubCraftButton.classList.contains('ViewedSubSkill')) {
@@ -46,23 +51,23 @@ function createSubCraftItemButtons(item, skill, subCraft) {
         newItemButton.innerHTML = item;
         
         //appends requirement info for craft
-        for(let attributes in skill.craftItems[subCraft][item].requirements) {
+        for(let attributes in skill.craftItems[level][subCraft][item].requirements) {
             if(attributes !== 'type' && attributes !== 'category') {
-                newItemButton.innerHTML += `<br>${attributes}: ${skill.craftItems[subCraft][item].requirements[attributes]}`;
+                newItemButton.innerHTML += `<br>${attributes}: ${skill.craftItems[level][subCraft][item].requirements[attributes]}`;
             }
         }
         
         newItemButton.onclick = function() {
-            createItemButtonOnClickFunction(skill, item, subCraft);
+            createItemButtonOnClickFunction(skill, item, subCraft, level);
         }
         
         const subCraftItemsDiv = document.getElementById('subCraftItemsDiv');
         subCraftItemsDiv.appendChild(newItemButton)
-        checkButtonStatus(skill, subCraft, item);
+        checkButtonStatus(skill, subCraft, item, level);
     }
 }
 
-function subCraftButtonLogic(subCraft, skill) {
+function subCraftButtonLogic(subCraft, skill, level) {
     const subCraftItemsDiv = document.getElementById('subCraftItemsDiv');
     
     const thisButton = document.getElementById(`${subCraft.replace(/\s+/g, '-')}Button`);
@@ -85,12 +90,12 @@ function subCraftButtonLogic(subCraft, skill) {
         interactionDiv.appendChild(subCraftItemsDiv);
     }
     
-    for(let item in skill.craftItems[subCraft]) {
-        createSubCraftItemButtons(item, skill, subCraft);
+    for(let item in skill.craftItems[level][subCraft]) {
+        createSubCraftItemButtons(item, skill, subCraft, level);
     }
 }
 
-function createSubCraftCategoryButtons(subCraft, skill) {
+function createSubCraftCategoryButtons(subCraft, skill, level) {
     const interactionDiv = document.getElementById('interaction');
     const subCraftDiv = document.getElementById('subCraftDiv');
     const subCraftName = subCraft.replace(/\s+/g, '-');
@@ -119,7 +124,7 @@ function createSubCraftCategoryButtons(subCraft, skill) {
                     subCraftItemsDiv.removeChild(subCraftItemsDiv.lastChild);
                 }
             }
-            subCraftButtonLogic(subCraft, skill)
+            subCraftButtonLogic(subCraft, skill, level)
         }
         
         subCraftDiv.appendChild(newSubCraftButton);
@@ -127,7 +132,11 @@ function createSubCraftCategoryButtons(subCraft, skill) {
 }
 
 export function createCraftButtons(skill) {
-    for(let subCraft in skill.craftItems) {
-        createSubCraftCategoryButtons(subCraft, skill);
+    for(let subCraftLevel in skill.craftItems) {
+        if(skill.level >= parseInt(subCraftLevel)) {
+            for(let craft in skill.craftItems[subCraftLevel]) {
+                createSubCraftCategoryButtons(craft, skill, parseInt(subCraftLevel));
+            }
+        }
     }
 }

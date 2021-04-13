@@ -13,7 +13,7 @@ export let Stonecrafting = {
     category: 'Crafting',
     craftItems: items,
     requirements: {
-        item: { Stone: 1 }
+        item: { Stone: 5 }
     },
     onclick: function() {
         const interaction = document.getElementById('interaction');

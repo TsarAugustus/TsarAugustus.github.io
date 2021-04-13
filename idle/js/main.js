@@ -2,6 +2,7 @@ import { Player } from './Player.js';
 import { returnButtonInfo } from './returnButtonInfo.js';   
 import { checkButtonStatus } from './checkButtonStatus.js';
 import { skills } from './skills/skills.js';
+import { updateInventory } from './updateInventory.js';
 
 //displayName
     //sets the display name for the skill button
@@ -153,8 +154,8 @@ function tick() {
     if(viewedSubSkill.length > 0) {
         const mainSkillName = viewedMainSkill[0].id.slice(0, -6).replace(/-/g, ' ');
         const subSkillName = viewedSubSkill[0].id.slice(0, -6).replace(/-/g, ' ');
-        for(let item in skills[mainSkillName].craftItems[subSkillName]) {
-            checkButtonStatus(skills[mainSkillName], subSkillName, item)
+        for(let i=0; i<=skills[mainSkillName].level; i++) {
+            checkButtonStatus(skills[mainSkillName], subSkillName, undefined, i, true);
         }
     }
 }

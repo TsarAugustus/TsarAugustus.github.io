@@ -11,7 +11,7 @@ export let Woodcrafting = {
     category: 'Crafting',
     craftItems: items,
     requirements: {
-        // item: { Wood: 1 }
+        item: { Wood: 2 }
     },
     onclick: function() {
         const interaction = document.getElementById('interaction');
