@@ -58,6 +58,7 @@ button:disabled {
         display: flex;
         align-self: flex-start;
         flex-direction: column;
+        height: 100vh;
     }
     #skillCategories {
         display: flex;
@@ -92,7 +93,7 @@ button:disabled {
     }
     
     #skillArea {
-        height: 35vh;
+        flex-grow: 0;
     }
     
     #inventory {
@@ -118,11 +119,26 @@ button:disabled {
         align-self: center;
         flex-wrap: wrap;
         justify-content: flex-start;
+        flex-direction: column;
     }
     #interaction button {
         border: none;
         flex-grow: 1;
         margin: 0.1em;
+    }
+    #subCraftItemsDiv {
+        padding-top: 1em;
+        display: flex;
+        justify-content: center;
+        
+        flex-wrap: wrap;
+    }
+    #subCraftItemsDiv button {
+        display: flex;
+        max-width: 32%;
+        justify-content: center;
+        align-items: center;
+        /* text-align: center; */
     }
 }
 
@@ -131,8 +147,6 @@ button:disabled {
         height: 100vh;
         display: flex;
         align-self: flex-start;
-        /* border: 1px solid red; */
-        /* flex-direction: column; */
     }
     #skillCategories {
         display: flex;
