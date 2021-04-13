@@ -40,8 +40,10 @@ export function createCraftButtons(skill) {
                         }
                     }
                     if(!Player.inventory[craft]) {
-                        
-                        Player.inventory[craft] = { amount: 0 , type: (craftKey.length > 1 ? craftValue[2] : 'Crafts')}
+                        console.log(craftValue)
+                        Player.inventory[craft] = { amount: 0,
+                                                    type: (craftKey.length > 1 ? craftValue[1] : 'Crafts'),
+                                                    category: (craftKey.length > 1 ? craftValue[2] : false)}
                     }
                     Player.inventory[craft].amount++;
                     updateInventory();

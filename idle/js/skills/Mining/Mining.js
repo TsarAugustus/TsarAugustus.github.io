@@ -14,7 +14,6 @@ export let Mining = {
     collectable: items,
     requirements: {
         itemType: { Axe: 1 }
-        // item: { Stone: 1 }
     },
     onclick: function() {
         Mining.currentXP += 25;

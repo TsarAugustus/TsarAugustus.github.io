@@ -106,10 +106,15 @@ function checkIfSkillShouldBeActive(thisSkill) {
                 fullItemCounter++;
             }
         } else if(skillRequirements === 'itemType') {
-            const itemTypeReq = thisSkill.requirements;
+            const itemTypeReq = thisSkill.requirements.itemType;
             let itemTypeReqCounter = 0;
             for(let items in itemTypeReq) {
-                // console.log(items, itemTypeReq, itemTypeReq[items])
+                if(findItemTypeOnPlayer(items)) {
+                    itemTypeReqCounter++;
+                }
+            }
+            if(itemTypeReqCounter === Object.keys(itemTypeReq).length) {
+                fullItemCounter++;
             }
         }
     }
@@ -118,6 +123,15 @@ function checkIfSkillShouldBeActive(thisSkill) {
         thisSkill.active = true;
         createCategoryButtons(thisSkill, true)
     }
+}
+
+function findItemTypeOnPlayer(itemType) {
+    for(let items in Player.inventory) {
+        if(Player.inventory[items].category && Player.inventory[items].category === itemType) {
+            return true
+        }
+    }
+    return false;
 }
 
 function checkSkills() {
