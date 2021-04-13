@@ -5,31 +5,25 @@ import { updateInventory } from '../updateInventory.js';
 //PRETTY MUCH JUST FIX THIS FUNCTION
 export function createCraftButtons(skill) {
     for(let craft in skill.craftItems) {
-        // console.log(craft, skill.craftItems, skill.craftItems[craft])
+        
         if(!document.getElementById(craft)) {
             const thisCraftItem = document.createElement('button');
             thisCraftItem.id = craft;
             thisCraftItem.innerHTML = `<b>${craft}</b><br>`;
             
-            //FIX INTO BETTER LOOP
-            for(let j=0; j<Object.keys(skill.craftItems[craft]).length; j++) {
-                if(Object.keys(skill.craftItems[craft])[j] !== 'type' && Object.keys(skill.craftItems[craft])[j] !== 'category') {
-                    thisCraftItem.innerHTML += `${Object.keys(skill.craftItems[craft])[j]}:
-                                                ${Object.values(skill.craftItems[craft])[j]}<br>`;
+            for(let attributes in skill.craftItems[craft]) {
+                if(attributes !== 'type' && attributes !== 'category') {
+                    thisCraftItem.innerHTML += `${attributes}: ${skill.craftItems[craft][attributes]}<br>`;
                 }
             }
+
             thisCraftItem.onclick = function() {
                 let craftCounter = 0;
                 const craftKey = Object.keys(skill.craftItems[craft]);
                 const craftValue = Object.values(skill.craftItems[craft]);
                 for(let j=0; j<craftKey.length; j++) {
 
-                    if((craftKey[j] !== 'type' || craftKey[j] !== 'category') && Player.inventory[craftKey[j]] && Player.inventory[craftKey[j]].amount >= craftValue[j]) {
-                        craftCounter++;
-                    }
-
-                    //TODO: FIX THIS, BAD DESIGN
-                    if(craftKey[j] === 'type' || craftKey[j] === 'category') {
+                    if((craftKey[j] === 'type' || craftKey[j] === 'category') || Player.inventory[craftKey[j]] && Player.inventory[craftKey[j]].amount >= craftValue[j]) {
                         craftCounter++;
                     }
                 }
@@ -40,7 +34,6 @@ export function createCraftButtons(skill) {
                         }
                     }
                     if(!Player.inventory[craft]) {
-                        console.log(craftValue)
                         Player.inventory[craft] = { amount: 0,
                                                     type: (craftKey.length > 1 ? craftValue[1] : 'Crafts'),
                                                     category: (craftKey.length > 1 ? craftValue[2] : false)}

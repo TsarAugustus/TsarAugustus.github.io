@@ -34,6 +34,7 @@ function createCategoryButtons(skill, New) {
             }
 
             const previousFocus = document.getElementsByClassName('CategoryFocus');
+
             for(let i=0; i<previousFocus.length; i++) {
                 previousFocus[i].classList.remove('CategoryFocus');
             }
@@ -135,8 +136,8 @@ function findItemTypeOnPlayer(itemType) {
 }
 
 function checkSkills() {
-    for(let i=0; i<Object.keys(skills).length; i++) {
-        const thisSkill = Object.values(skills)[i];
+    for(let skill in skills) {
+        const thisSkill = skills[skill];
         if(thisSkill.active) {
             createCategoryButtons(thisSkill);
         } else {
