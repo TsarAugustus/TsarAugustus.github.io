@@ -158,6 +158,16 @@ function tick() {
             checkButtonStatus(skills[mainSkillName], subSkillName, undefined, i, true);
         }
     }
+
+    if(Player.Well && Player.Well.current < Player.Well.capacity) {
+        Player.Well.current += Player.Well.change;
+        if (Player.Well && Player.Well.current > Player.Well.capacity) {
+            Player.Well.current = Player.Well.capacity;
+        }
+    } else if (Player.Well && Player.Well.current > Player.Well.capacity) {
+        Player.Well.current = Player.Well.capacity;
+    }
+    updateInventory(true);
 }
 
 function init() {

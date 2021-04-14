@@ -17,12 +17,28 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
         for(let thisItem in skill.craftItems[level][subCraft][item].requirements) {
             Player.inventory[thisItem].amount -= itemReq[thisItem];
         }
+        //deals with wells and fires
+        const thisItem = skill.craftItems[level][subCraft][item];
+        if(thisItem.capacity) {
+            if(!Player[thisItem.category]) {
+                Player[thisItem.category] = {
+                    change: 0,
+                    current: 0,
+                    capacity: 0
+                }
+            }
+            
+            Player[thisItem.category].change += thisItem.change;
+            Player[thisItem.category].capacity += thisItem.capacity;
+        }
+
         if(!Player.inventory[item]) {
             Player.inventory[item] = {
                 amount: 0,
                 type: (skill.craftItems[level][subCraft][item].type ? skill.craftItems[level][subCraft][item].type : 'Crafts'),
                 category: (skill.craftItems[level][subCraft][item].category ? skill.craftItems[level][subCraft][item].category : false)
             }
+            
         }
         Player.inventory[item].amount++;
         skill.currentXP += skill.craftItems[level][subCraft][item].XP;

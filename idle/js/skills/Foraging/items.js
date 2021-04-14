@@ -3,7 +3,7 @@
 // IE better seeds, stone or food.
 
 export let items = {
-    //LevelRequirement: [list of items]
+    //LevelRequirement: { itemName: { probability } }
     0: {
         'Seed': { chance: 100 },
         'Stone': { chance: 100 },

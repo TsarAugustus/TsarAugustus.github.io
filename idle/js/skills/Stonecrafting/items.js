@@ -6,13 +6,10 @@ export let items = {
             "Hammerpick": { requirements: { Hammerstone: 1, Stone: 5 }, type: 'Tools', category: 'Pick', XP: 25 },
             "Hammerhoe": { requirements: { Hammerstone: 1, Stone: 5 }, type: 'Tools', category: 'Hoe', XP: 25 },
         }
+    },
+    1: {
+        "Masonry": {
+            "Stone Well": { requirements: { Stone: 2 }, capacity: 100, change: 1, type: 'Wells', category: 'Well', XP: 25 }
+        }
     }
-    // 1: {
-    //     "Masonry": {
-    //         "Stone Log": { requirements: { Stone: 2 }, XP: 25 },
-    //         "Stone Plank": { requirements: { Stone: 2 }, XP: 25 },
-    //         "Stone Chair": { requirements: { "Stone Log": 4, "Stone Plank": 2 }, XP: 25 },
-    //         "Stone Pick": { requirements: { Stone: 5 }, type: "Tools", category: "Pick", XP: 25 }
-    //     }
-    // }
 };
