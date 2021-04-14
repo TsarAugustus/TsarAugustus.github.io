@@ -136,9 +136,9 @@ button:disabled {
     #subCraftItemsDiv button {
         display: flex;
         max-width: 32%;
+        max-height: 5em;
         justify-content: center;
         align-items: center;
-        /* text-align: center; */
     }
 }
 
@@ -232,5 +232,10 @@ button:disabled {
 
     #subCraftItemsDiv {
         padding-top: 1em;
+        display: flex;
+    }
+    #subCraftItemsDiv button {
+        display: flex;
+        align-items: center;
     }
 }

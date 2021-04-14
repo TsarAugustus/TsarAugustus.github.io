@@ -4,11 +4,11 @@
 
 export let items = {
     //LevelRequirement: [list of items]
-    0: [
-        'Seed',
-        'Stone',
-        'Wood',
-        'Leaf',
-        'Food'
-    ]
+    0: {
+        'Seed': { chance: 100 },
+        'Stone': { chance: 100 },
+        'Wood': { chance: 100 },
+        'Leaf': { chance: 100 },
+        'Food': { chance: 100 }
+    }
 }
