@@ -1,7 +1,7 @@
 export let items = {
     0: {
         "Flintknapping": {
-            "Hammerstone": { requirements: { Stone: 5 }, XP: 25 },
+            "Hammerstone": { requirements: { Stone: 5 }, type: 'Tools', category: 'Hammer', XP: 25 },
             "Hammeraxe": { requirements: { Hammerstone: 1, Stone: 5 }, type: 'Tools', category: 'Axe', XP: 25 },
             "Hammerpick": { requirements: { Hammerstone: 1, Stone: 5 }, type: 'Tools', category: 'Pick', XP: 25 },
             "Hammerhoe": { requirements: { Hammerstone: 1, Stone: 5 }, type: 'Tools', category: 'Hoe', XP: 25 },

@@ -167,7 +167,8 @@ function tick() {
     } else if (Player.Well && Player.Well.current > Player.Well.capacity) {
         Player.Well.current = Player.Well.capacity;
     }
-    updateInventory(true);
+
+    updateInventory();
 }
 
 function init() {

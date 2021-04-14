@@ -27,8 +27,10 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
                     capacity: 0
                 }
             }
-            
-            Player[thisItem.category].change += thisItem.change;
+
+            if(thisItem.change) {
+                Player[thisItem.category].change += thisItem.change;
+            }
             Player[thisItem.category].capacity += thisItem.capacity;
         }
 
@@ -75,6 +77,7 @@ function createSubCraftItemButtons(item, skill, subCraft, level) {
         
         newItemButton.onclick = function() {
             createItemButtonOnClickFunction(skill, item, subCraft, level);
+            updateInventory()
         }
         
         const subCraftItemsDiv = document.getElementById('subCraftItemsDiv');
