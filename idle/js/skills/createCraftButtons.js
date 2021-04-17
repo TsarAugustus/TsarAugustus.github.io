@@ -66,14 +66,16 @@ function createSubCraftItemButtons(item, skill, subCraft, level) {
     if(!document.getElementById(`${itemName}Button`) && thisSubCraftButton.classList.contains('ViewedSubSkill')) {
         const newItemButton = document.createElement('button');
         newItemButton.id = `${itemName}Button`;
-        newItemButton.innerHTML = item;
+        let newItemButtonString = ``;
+        newItemButtonString += `<b>${item}</b>`;
         
         //appends requirement info for craft
         for(let attributes in skill.craftItems[level][subCraft][item].requirements) {
             if(attributes !== 'type' && attributes !== 'category') {
-                newItemButton.innerHTML += `<br>${attributes}: ${skill.craftItems[level][subCraft][item].requirements[attributes]}`;
+                newItemButtonString += `<br>${attributes}: ${skill.craftItems[level][subCraft][item].requirements[attributes]}`;
             }
         }
+        newItemButton.innerHTML = newItemButtonString;
         
         newItemButton.onclick = function() {
             createItemButtonOnClickFunction(skill, item, subCraft, level);

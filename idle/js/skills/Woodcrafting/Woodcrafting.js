@@ -1,6 +1,5 @@
 import { items } from './items.js';
 import { createCraftButtons } from '../createCraftButtons.js';
-import { checkButtonStatus } from '../../checkButtonStatus.js';
 
 export let Woodcrafting = {
     displayName: 'Woodcrafting',
@@ -11,7 +10,7 @@ export let Woodcrafting = {
     category: 'Crafting',
     craftItems: items,
     requirements: {
-        item: { Wood: 2 }
+        skill: { Forage: 2 }
     },
     onclick: function() {
         const interaction = document.getElementById('interaction');

@@ -1,9 +1,7 @@
 import { items } from './items.js'
 import { createCraftButtons } from '../createCraftButtons.js';
-import { checkButtonStatus } from '../../checkButtonStatus.js';
 
 
-//TEMPORARY TESTING SKILL
 export let Stonecrafting = {
     displayName: 'Stonecrafting',
     active: undefined,
@@ -13,7 +11,7 @@ export let Stonecrafting = {
     category: 'Crafting',
     craftItems: items,
     requirements: {
-        item: { Stone: 5 }
+        skill: { Forage: 1 }
     },
     onclick: function() {
         const interaction = document.getElementById('interaction');
