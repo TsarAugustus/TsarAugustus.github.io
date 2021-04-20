@@ -1,86 +1,86 @@
-{
-    {
-        "name": "Hydrogen",
-        "symbol": "H",
-        "atomicNumber": 1,
-        "atomicWeight": 1.008,
-        "density": 0.0899,
-        "meltingPoint": -259.16,
-        "boilingPoint": -252.879,
-        "state": "Gas"
-    },
-    {
-        "name": "Helim",
-        "symbol": 2,
-        "atomicNumber": "He",
-        "atomicWeight": 4.002,
-        "density": 0.1785,
-        "meltingPoint": -272.20,
-        "boilingPoint": -268.928,
-        "state": "Gas",
-    },
-    {
-        "name": "Lithium",
-        "symbol": "Li",
-        "atomicNumber": 3,
-        "atomicWeight":  6.94,
-        "density": 0.534,
-        "meltingPoint": 180.50,
-        "boilingPoint": 1330,
-        "state": "Solid"
-    },
-    {
-        "name": "Beryllium",
-        "symbol": "Be",
-        "atomicNumber": 4,
-        "atomicWeight": 9.012,
-        "density": 1.85,
-        "meltingPoint": 1287,
-        "boilingPoint": 2469,
-        "state": "Solid"
-    },   
-    {
-        "name": "Boron",
-        "symbol": "B",
-        "atomicNumber": 5,
-        "atomicWeight": 10.81,
-        "density": 2.08 ,
-        "meltingPoint": 2076,
-        "boilingPoint": 4200,
-        "state": "Solid"
-    },
-    //AMORPHOUS/GRAPHITE/DIAMOND NEEDED
-    {
-        "name": "Carbon",
-        "symbol": "C",
-        "atomicNumber": 6,
-        "atomicWeight": 12.011,
-        "density": 2.1,
-        "meltingPoint": undefined,
-        "boilingPoint": undefined,
-        "state": "Solid"
-    },
-    {
-        "name": "Nitrogen",
-        "symbol": "N",
-        "atomicNumber": 7,
-        "atomicWeight": 14.007,
-        "density": 1.2506,
-        "meltingPoint": 209.86,
-        "boilingPoint": 195.795,
-        "state": "Gas"
-    },
-}
+// {
+//     {
+//         "name": "Hydrogen",
+//         "symbol": "H",
+//         "atomicNumber": 1,
+//         "atomicWeight": 1.008,
+//         "density": 0.0899,
+//         "meltingPoint": -259.16,
+//         "boilingPoint": -252.879,
+//         "state": "Gas"
+//     },
+//     {
+//         "name": "Helim",
+//         "symbol": 2,
+//         "atomicNumber": "He",
+//         "atomicWeight": 4.002,
+//         "density": 0.1785,
+//         "meltingPoint": -272.20,
+//         "boilingPoint": -268.928,
+//         "state": "Gas",
+//     },
+//     {
+//         "name": "Lithium",
+//         "symbol": "Li",
+//         "atomicNumber": 3,
+//         "atomicWeight":  6.94,
+//         "density": 0.534,
+//         "meltingPoint": 180.50,
+//         "boilingPoint": 1330,
+//         "state": "Solid"
+//     },
+//     {
+//         "name": "Beryllium",
+//         "symbol": "Be",
+//         "atomicNumber": 4,
+//         "atomicWeight": 9.012,
+//         "density": 1.85,
+//         "meltingPoint": 1287,
+//         "boilingPoint": 2469,
+//         "state": "Solid"
+//     },   
+//     {
+//         "name": "Boron",
+//         "symbol": "B",
+//         "atomicNumber": 5,
+//         "atomicWeight": 10.81,
+//         "density": 2.08 ,
+//         "meltingPoint": 2076,
+//         "boilingPoint": 4200,
+//         "state": "Solid"
+//     },
+//     //AMORPHOUS/GRAPHITE/DIAMOND NEEDED
+//     {
+//         "name": "Carbon",
+//         "symbol": "C",
+//         "atomicNumber": 6,
+//         "atomicWeight": 12.011,
+//         "density": 2.1,
+//         "meltingPoint": undefined,
+//         "boilingPoint": undefined,
+//         "state": "Solid"
+//     },
+//     {
+//         "name": "Nitrogen",
+//         "symbol": "N",
+//         "atomicNumber": 7,
+//         "atomicWeight": 14.007,
+//         "density": 1.2506,
+//         "meltingPoint": 209.86,
+//         "boilingPoint": 195.795,
+//         "state": "Gas"
+//     },
+// }
 
-{
-    "name":,
-    "symbol":,
-    "atomicNumber":,
-    "atomicWeight": ,
-    "density":,
-    "meltingPoint":,
-    "boilingPoint":,
-    "state":
-},
+// {
+//     "name":,
+//     "symbol":,
+//     "atomicNumber":,
+//     "atomicWeight": ,
+//     "density":,
+//     "meltingPoint":,
+//     "boilingPoint":,
+//     "state":
+// },
 
-//IN C AND GRAMS
+// //IN C AND GRAMS

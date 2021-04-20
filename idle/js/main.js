@@ -171,9 +171,23 @@ function tick() {
     updateInventory();
 }
 
+function checkNation() {
+    if(!Player.Nation) {
+        Player.Nation = {
+            name: '',
+            population: 0
+        };
+    }
+    if(Player.Nation.name === '') {
+        let nationName = prompt('What is the name of your Nation?');
+        Player.Nation.name = nationName;
+    }
+}
+
 function init() {
     console.log('Initialized');
     checkSkills();
+    checkNation();
     setInterval(function() {
         tick();
     }, 1000)
