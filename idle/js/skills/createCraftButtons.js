@@ -20,19 +20,21 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
         //deals with wells and fires
         const thisItem = skill.craftItems[level][subCraft][item];
         if(thisItem.capacity) {
-            if(!Player[thisItem.category]) {
-                Player[thisItem.category] = {
-                    change: 0,
-                    current: 0,
-                    capacity: 0
+            if(thisItem.category === 'House') {
+                Player.Nation.maxPopulation += thisItem.capacity;
+            } else if(thisItem.category === 'Well') {
+                if(!Player.Well) {
+                    Player.Well = {
+                        current: 0,
+                        change: 0,
+                        capacity: 0
+                    }
                 }
+                Player.Well.change = thisItem.change;
+                Player.Well.capacity += thisItem.capacity;
             }
-
-            if(thisItem.change) {
-                Player[thisItem.category].change += thisItem.change;
-            }
-            Player[thisItem.category].capacity += thisItem.capacity;
         }
+
 
         if(!Player.inventory[item]) {
             Player.inventory[item] = {
@@ -40,8 +42,7 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
                 type: (skill.craftItems[level][subCraft][item].type ? skill.craftItems[level][subCraft][item].type : 'Crafts'),
                 category: (skill.craftItems[level][subCraft][item].category ? skill.craftItems[level][subCraft][item].category : false),
                 efficiency: (skill.craftItems[level][subCraft][item].efficiency ? skill.craftItems[level][subCraft][item].efficiency : 0)
-            }
-            
+            }   
         }
         Player.inventory[item].amount++;
         skill.currentXP += skill.craftItems[level][subCraft][item].XP;

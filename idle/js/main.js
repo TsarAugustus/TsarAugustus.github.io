@@ -173,6 +173,26 @@ function checkSkills() {
     }
 }
 
+function calculateMigrationThresh() {
+    const base = 0.9;
+    let additiveThresh = 0;
+    for(let item in Player.inventory) {
+        if(Player.inventory[item].category === 'Well') {
+            additiveThresh += Player.inventory[item].amount * Player.inventory[item].efficiency;
+        }
+        if(Player.inventory[item].category === "House") {
+            additiveThresh += Player.Nation.maxPopulation - Player.Nation.population;
+        }
+    }
+
+    let newThresh = Math.log(additiveThresh) / 10;
+    if(!isFinite(newThresh)) {
+        newThresh = 0;
+    }
+
+    return base - newThresh;
+}
+
 function tick() {
     checkSkills();
     const viewedMainSkill = document.getElementsByClassName('ViewedSkill')
@@ -194,10 +214,19 @@ function tick() {
         Player.Well.current = Player.Well.capacity;
     }
 
+    if(Player.Nation.maxPopulation > Player.Nation.population) {
+        const migrationChance = Math.random();
+        const migrationThresh = calculateMigrationThresh();
+        if(migrationChance > migrationThresh) {
+            Player.Nation.population++;
+        }
+    }
+
     updateInventory();
+    checkNation(true);
 }
 
-function checkNation() {
+function checkNation(tick) {
     const nationTitles = [
         //Rural
         {name: "Roadhouse", population: 0},
@@ -215,6 +244,7 @@ function checkNation() {
         {name: "Subdistrict", population: 10000},
         {name: "Shire", population: 50000},
         {name: "Town", population: 100000},
+
         //Medium Density
         {name: "Borough", population: 125000},
         {name: "District", population: 175000},
@@ -230,14 +260,17 @@ function checkNation() {
         {name: "Global City", population: 5500000},
         {name: "Megacity", population: 7000000},
         {name: "Megalopolis", population: 10000000},
+
         //Extreme Density
         {name: "Ecumenopolis", population: 1000000000}
         
-    ]
+    ];
+
     if(!Player.Nation) {
         Player.Nation = {
             name: '',
-            population: 0
+            population: 0,
+            maxPopulation: 0
         };
     }
     if(Player.Nation.name === '') {
@@ -250,8 +283,18 @@ function checkNation() {
             }
         }
         const nationNameHeader = document.createElement('p');
+        nationNameHeader.id = 'NationNameHeader';
         nationNameHeader.innerHTML = `The ${nationTitle} of ${nationName}`;
         document.getElementById('nation').appendChild(nationNameHeader)
+    }
+    if(tick) {
+        let nationTitle;
+        for(let title in nationTitles) {
+            if(Player.Nation.population >= nationTitles[title].population) {
+                nationTitle = nationTitles[title].name;
+            }
+        }
+        document.getElementById('NationNameHeader').innerHTML = `The ${nationTitle} of ${Player.Nation.name}`;
     }
 }
 

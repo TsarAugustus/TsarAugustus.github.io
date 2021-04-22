@@ -12,14 +12,14 @@ export function updateInventory() {
         document.getElementById('WellSpan').innerHTML = `Water: ${Player.Well.current}/${Player.Well.capacity} +${Player.Well.change}/s`;
     }
 
-    if(Player.House && !document.getElementById('HouseSpan')) {
+    if(Player.Nation.population && !document.getElementById('HouseSpan')) {
         const houseSpan = document.createElement('span');
         houseSpan.id = 'HouseSpan';
-        houseSpan.innerHTML = `Houses: ${Player.House.current}/${Player.House.capacity}`;
+        houseSpan.innerHTML = `Houses: ${Player.Nation.population}/${Player.Nation.maxPopulation}`;
         info.appendChild(houseSpan);
 
-    } else if (Player.House && document.getElementById('HouseSpan')) {
-        document.getElementById('HouseSpan').innerHTML = `Houses: ${Player.House.current}/${Player.House.capacity}`;
+    } else if (Player.Nation && document.getElementById('HouseSpan')) {
+        document.getElementById('HouseSpan').innerHTML = `Houses: ${Player.Nation.population}/${Player.Nation.maxPopulation}`;
     }
     
     for(let item in Player.inventory) {

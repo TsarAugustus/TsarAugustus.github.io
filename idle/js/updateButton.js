@@ -4,7 +4,7 @@ export function updateButton(skill) {
                             Level: ${skill.level}`;
 
     const skillInfo = document.getElementById(`${skill.displayName}BarInfo`);
-    skillInfo.innerHTML = `${Math.round(skill.currentXP * 10) / 10}/${skill.XPToLevel} ${(skill.XPThisClick ? `+${skill.XPThisClick}` : '')}`;
+    skillInfo.innerHTML = `${Math.round(skill.currentXP * 10) / 10}/${Math.round(skill.XPToLevel * 10) / 10} ${(skill.XPThisClick ? `+${skill.XPThisClick}` : '')}`;
     
     const skillBar = document.getElementById(`${skill.displayName}Bar`);
     const width = (skill.currentXP / skill.XPToLevel) * 100;
