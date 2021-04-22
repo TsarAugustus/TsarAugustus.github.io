@@ -1,5 +1,14 @@
 import { Player } from './Player.js';
 
+function checkHouseState() {
+    for(let item in Player.inventory) {
+        if(Player.inventory[item].category === 'House') {
+            return true;
+        }
+    }
+    return false
+}
+
 export function updateInventory() {
     const info = document.getElementById('info');
     if(Player.Well && !document.getElementById('WellSpan')) {
@@ -12,7 +21,7 @@ export function updateInventory() {
         document.getElementById('WellSpan').innerHTML = `Water: ${Player.Well.current}/${Player.Well.capacity} +${Player.Well.change}/s`;
     }
 
-    if(Player.Nation.population && !document.getElementById('HouseSpan')) {
+    if(checkHouseState() && !document.getElementById('HouseSpan')) {
         const houseSpan = document.createElement('span');
         houseSpan.id = 'HouseSpan';
         houseSpan.innerHTML = `Houses: ${Player.Nation.population}/${Player.Nation.maxPopulation}`;

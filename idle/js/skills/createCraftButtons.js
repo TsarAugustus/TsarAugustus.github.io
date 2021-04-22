@@ -30,7 +30,7 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
                         capacity: 0
                     }
                 }
-                Player.Well.change = thisItem.change;
+                Player.Well.change += thisItem.change;
                 Player.Well.capacity += thisItem.capacity;
             }
         }

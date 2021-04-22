@@ -5,10 +5,9 @@
 export let items = {
     //LevelRequirement: { itemName: { probability } }
     0: {
-        'Seed': { chance: 100 },
         'Stone': { chance: 100 },
         'Wood': { chance: 100 },
         'Leaf': { chance: 100 },
-        'Food': { chance: 100 }
+        'Seed': { chance: 100, type: 'Food' }
     }
 }
