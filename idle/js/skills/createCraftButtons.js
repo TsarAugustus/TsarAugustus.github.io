@@ -38,7 +38,8 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
             Player.inventory[item] = {
                 amount: 0,
                 type: (skill.craftItems[level][subCraft][item].type ? skill.craftItems[level][subCraft][item].type : 'Crafts'),
-                category: (skill.craftItems[level][subCraft][item].category ? skill.craftItems[level][subCraft][item].category : false)
+                category: (skill.craftItems[level][subCraft][item].category ? skill.craftItems[level][subCraft][item].category : false),
+                efficiency: (skill.craftItems[level][subCraft][item].efficiency ? skill.craftItems[level][subCraft][item].efficiency : 0)
             }
             
         }
@@ -46,7 +47,9 @@ function createItemButtonOnClickFunction(skill, item, subCraft, level) {
         skill.currentXP += skill.craftItems[level][subCraft][item].XP;
         if(skill.currentXP >= skill.XPToLevel) {
             skill.level++;
+            const remainder = Math.round(skill.currentXP - skill.XPToLevel);
             skill.currentXP = 0;
+            skill.currentXP += remainder;
             skill.XPToLevel *= 1.6;
             if(skill.craftItems[skill.level]) {
                 for(let craftName in skill.craftItems[skill.level]) {

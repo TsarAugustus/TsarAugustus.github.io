@@ -1,5 +1,4 @@
-import { Player } from './Player.js';
-import { returnButtonInfo } from './returnButtonInfo.js';   
+import { Player } from './Player.js'; 
 import { checkButtonStatus } from './checkButtonStatus.js';
 import { skills } from './skills/skills.js';
 import { updateInventory } from './updateInventory.js';
@@ -65,14 +64,41 @@ function createCategoryButtons(skill, New) {
 }
 
 function createSkillButtons(skill) {
-    if(!document.getElementById(`${skill.displayName}Button`)) {
-        const buttonInfo = returnButtonInfo(skill, true);
-        const newSkillButton = document.createElement('button');
+    if(!document.getElementById(`${skill.displayName}ButtonDiv`)) {
 
-        newSkillButton.id = buttonInfo.id;
-        newSkillButton.innerHTML = buttonInfo.innerHTML;
-        newSkillButton.onclick = buttonInfo.onclick;
-        document.getElementById('skills').appendChild(newSkillButton);
+        const newSkillButtonDiv = document.createElement('div');
+        newSkillButtonDiv.id = `${skill.displayName}ButtonDiv`;
+        newSkillButtonDiv.classList.add('skill')
+
+        const newSkillButton = document.createElement('button');
+        newSkillButton.id = `${skill.displayName}Button`;
+        newSkillButton.innerHTML = `${skill.displayName}<br>
+                                    Level: ${skill.level}`;
+        newSkillButton.onclick = skill.onclick;
+        
+        //progress bar stuff
+        const newSkillBarWrapper = document.createElement('div');
+        newSkillBarWrapper.id = `${skill.displayName}BarWrapper`;
+        newSkillBarWrapper.classList.add('BarWrapper');
+
+        const newSkillBarInfo = document.createElement('span');
+        newSkillBarInfo.id = `${skill.displayName}BarInfo`;
+        newSkillBarInfo.innerHTML = `${Math.round(skill.currentXP * 10) / 10}/${skill.XPToLevel} ${(skill.XPThisClick ? `+${skill.XPThisClick}` : '')}`;
+        
+        newSkillBarInfo.classList.add('SkillInfo');
+        newSkillBarWrapper.appendChild(newSkillBarInfo);
+
+        const newSkillBar = document.createElement('div');
+        newSkillBar.id = `${skill.displayName}Bar`;
+        newSkillBar.classList.add('bar');
+        newSkillBarWrapper.appendChild(newSkillBar);
+
+        const width = (skill.currentXP / skill.XPToLevel) * 100;
+        newSkillBar.style.width = `${width}%`;
+
+        newSkillButtonDiv.appendChild(newSkillButton);
+        newSkillButtonDiv.appendChild(newSkillBarWrapper)
+        document.getElementById('skills').appendChild(newSkillButtonDiv);
     }
 }
 
