@@ -198,6 +198,42 @@ function tick() {
 }
 
 function checkNation() {
+    const nationTitles = [
+        //Rural
+        {name: "Roadhouse", population: 0},
+        {name: "Homestead", population: 5},
+        {name: "Neighbourhood", population: 25},
+        {name: "Band", population: 50},
+        {name: "Hamlet", population: 100},
+        {name: "Tribe", population: 125},
+        {name: "Village", population: 150},
+
+        //Low Density
+        {name:"Locality", population: 250},
+        {name: "Suburb", population: 500},
+        {name: "Township", population: 1000},
+        {name: "Subdistrict", population: 10000},
+        {name: "Shire", population: 50000},
+        {name: "Town", population: 100000},
+        //Medium Density
+        {name: "Borough", population: 125000},
+        {name: "District", population: 175000},
+        {name: "County", population: 200000},
+        {name: "Prefecture", population: 300000},
+        {name: "City", population: 500000},
+        {name: "Regiopolis", population: 850000},
+
+        //High Density
+        {name: "Municipality", population: 1000000},
+        {name: "Metropolis", population: 3000000},
+        {name: "Conurbation", population: 4000000},
+        {name: "Global City", population: 5500000},
+        {name: "Megacity", population: 7000000},
+        {name: "Megalopolis", population: 10000000},
+        //Extreme Density
+        {name: "Ecumenopolis", population: 1000000000}
+        
+    ]
     if(!Player.Nation) {
         Player.Nation = {
             name: '',
@@ -207,6 +243,15 @@ function checkNation() {
     if(Player.Nation.name === '') {
         let nationName = prompt('What is the name of your Nation?');
         Player.Nation.name = nationName;
+        let nationTitle; 
+        for(let title in nationTitles) {
+            if(Player.Nation.population >= nationTitles[title].population) {
+                nationTitle = nationTitles[title].name;
+            }
+        }
+        const nationNameHeader = document.createElement('p');
+        nationNameHeader.innerHTML = `The ${nationTitle} of ${nationName}`;
+        document.getElementById('nation').appendChild(nationNameHeader)
     }
 }
 
