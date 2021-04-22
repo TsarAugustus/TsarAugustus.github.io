@@ -18,7 +18,7 @@ export function updateInventory() {
         info.appendChild(wellSpan);
 
     } else if (Player.Well && document.getElementById('WellSpan')) {
-        document.getElementById('WellSpan').innerHTML = `Water: ${Player.Well.current}/${Player.Well.capacity} +${Player.Well.change}/s`;
+        document.getElementById('WellSpan').innerHTML = `Water: ${Math.floor(Player.Well.current * 10) / 10}/${Player.Well.capacity} +${Math.floor(Player.Well.change * 10) / 10}/s`;
     }
 
     if(checkHouseState() && !document.getElementById('HouseSpan')) {
@@ -28,7 +28,7 @@ export function updateInventory() {
         info.appendChild(houseSpan);
 
     } else if (Player.Nation && document.getElementById('HouseSpan')) {
-        document.getElementById('HouseSpan').innerHTML = `Houses: ${Player.Nation.population}/${Player.Nation.maxPopulation}`;
+        document.getElementById('HouseSpan').innerHTML = `Population: ${Player.Nation.population}/${Player.Nation.maxPopulation}`;
     }
     
     for(let item in Player.inventory) {

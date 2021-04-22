@@ -2,6 +2,7 @@ import { Player } from './Player.js';
 import { checkButtonStatus } from './checkButtonStatus.js';
 import { skills } from './skills/skills.js';
 import { updateInventory } from './updateInventory.js';
+import { ticker } from './ticker.js';
 
 //displayName
     //sets the display name for the skill button
@@ -17,7 +18,6 @@ import { updateInventory } from './updateInventory.js';
     //item: item requirements require items to exists in the Players inventory before activating 
 //category
     //category to sort the skills by
-
 
 function createCategoryButtons(skill, New) {
     const thisSkillButton = document.getElementById(`${skill.category}Button`);
@@ -83,7 +83,7 @@ function createSkillButtons(skill) {
 
         const newSkillBarInfo = document.createElement('span');
         newSkillBarInfo.id = `${skill.displayName}BarInfo`;
-        newSkillBarInfo.innerHTML = `${Math.round(skill.currentXP * 10) / 10}/${skill.XPToLevel} ${(skill.XPThisClick ? `+${skill.XPThisClick}` : '')}`;
+        newSkillBarInfo.innerHTML = `${Math.round(skill.currentXP * 10) / 10}/${Math.round(skill.XPToLevel * 10) / 10} ${(skill.XPThisClick ? `+${skill.XPThisClick}` : '')}`;
         
         newSkillBarInfo.classList.add('SkillInfo');
         newSkillBarWrapper.appendChild(newSkillBarInfo);
@@ -193,6 +193,24 @@ function calculateMigrationThresh() {
     return base - newThresh;
 }
 
+function populationLeech() {
+    let populationEmigration = 0;
+    if(!Player.Well) {
+        populationEmigration += Player.Nation.population;
+    } else if (Player.Well && Player.Well.current === 0 || Player.Well.change < 0) {
+        populationEmigration += Player.Nation.population;
+    }
+    if(populationEmigration >= Player.Nation.population) {
+        Player.Nation.population--;
+        if(Player.Nation.population < 0) {
+            Player.Nation.population = 0;
+        }
+        ticker('I should build a Well to increase immigration');
+    } else {
+        ticker('I should look to expand our Nations skills and resources.')
+    }
+}
+
 function tick() {
     checkSkills();
     const viewedMainSkill = document.getElementsByClassName('ViewedSkill')
@@ -206,7 +224,18 @@ function tick() {
     }
 
     if(Player.Well && Player.Well.current < Player.Well.capacity) {
-        Player.Well.current += Player.Well.change;
+        //this should be handled better when Firemaking is added.
+        let wellDefault = 0;
+        for(let item in Player.inventory) {
+            if(Player.inventory[item].category === 'Well') {
+                wellDefault = Player.inventory[item].amount * Player.inventory[item].efficiency;
+            }
+        }
+
+        const oldCurrent = Player.Well.current;
+        Player.Well.current += (wellDefault - (Math.floor(Player.Nation.population * 10) / 100));
+        Player.Well.change = Player.Well.current - oldCurrent;
+        
         if (Player.Well && Player.Well.current > Player.Well.capacity) {
             Player.Well.current = Player.Well.capacity;
         }
@@ -217,11 +246,12 @@ function tick() {
     if(Player.Nation.maxPopulation > Player.Nation.population) {
         const migrationChance = Math.random();
         const migrationThresh = calculateMigrationThresh();
+        populationLeech();
         if(migrationChance > migrationThresh) {
             Player.Nation.population++;
         }
     }
-
+    
     updateInventory();
     checkNation(true);
 }
@@ -302,6 +332,7 @@ function init() {
     console.log('Initialized');
     checkSkills();
     checkNation();
+    ticker('I should Forage for materials.')
     setInterval(function() {
         tick();
     }, 1000)

@@ -42,6 +42,7 @@ button:focus {
     display: flex;
     justify-content: space-evenly;
     border-bottom: 1px solid black;
+    font-family: 'Courier New', Courier, monospace;
 }
 #nation h3 {
     padding: 0;
@@ -56,15 +57,34 @@ button:disabled {
     cursor: not-allowed;
     opacity: 50%;
 }
-#ticker {
-    height: 1em;
-    display: flex;
-    flex-basis: 100%;
-}
+
 
 /* Area specific */
 
 @media screen and (max-width: 702px) {
+    #ticker {
+        height: 1em;
+        display: flex;
+        flex-basis: 100%;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    #tickInfo {
+        animation: 10s linear 0s infinite normal tick;
+    }
+    @keyframes tick {
+        0% {
+            transform: translateX(105%);
+        }
+        80% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-400%);
+        }
+    }
+
     #wrapper {
         display: flex;
         align-self: flex-start;
@@ -182,6 +202,28 @@ button:disabled {
 }
 
 @media screen and (min-width: 703px) {
+    #ticker {
+        height: 1em;
+        display: flex;
+        flex-basis: 100%;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    #tickInfo {
+        animation: 20s linear 0s infinite normal tick;
+    }
+    @keyframes tick {
+        0% {
+            transform: translateX(105%);
+        }
+        80% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-1000%);
+        }
+    }
     #wrapper {
         height: 100vh;
         display: flex;
