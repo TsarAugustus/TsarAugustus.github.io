@@ -4,6 +4,7 @@ import { skills } from './skills/skills.js';
 import { updateInventory } from './updateInventory.js';
 import { ticker } from './ticker.js';
 import { updateButton } from './updateButton.js';
+import { createItemButtonOnClickFunction } from './skills/createCraftButtons.js';
 
 //displayName
     //sets the display name for the skill button
@@ -20,7 +21,7 @@ import { updateButton } from './updateButton.js';
 //category
     //category to sort the skills by
 
-let workingPopulationSkills = [];
+export let workingPopulationSkills = [];
 
 function createCategoryButtons(skill, New) {
     const thisSkillButton = document.getElementById(`${skill.category}Button`);
@@ -84,7 +85,8 @@ function createSkillButtons(skill) {
         //This could be done better
         const nonAutomatableSkills = [
             'Woodcrafting',
-            'Stonecrafting'
+            'Stonecrafting',
+            'Textile'
         ];
 
         const isSkillAutomatable = nonAutomatableSkills.find(skillName => skillName === skill.displayName);
@@ -362,14 +364,22 @@ function tick() {
 
     //REFACTOR ASAP
     if(workingPopulationSkills.length > 0) {
-        for(let skillObject in skills) {
-            if(skills[skillObject].active) {
-                for(let workingSkill of workingPopulationSkills) {
-                    if(workingSkill === skills[skillObject].displayName) {
-                        for(let i = 0; i < skills[skillObject].workingPopulation; i++) {
-                            skills[skillObject].onclick();
+        for(let workingSkill of workingPopulationSkills) {
+            if(typeof workingSkill === 'string') { //skill
+                for(let skillName in skills) {
+                    if(skills[skillName].displayName === workingSkill) {
+                        for(let i=0; i<skills[skillName].workingPopulation; i++) {
+                            skills[skillName].onclick();
                         }
                     }
+                }
+            } else if(typeof workingSkill === 'object') { //craft
+                const mainSkill = workingSkill[0];
+                const itemName = workingSkill[2];
+                const subCraftName = workingSkill[3];
+                const level = workingSkill[1];
+                for(let i=0; i<skills[mainSkill][subCraftName].workingPopulation; i++) {
+                    createItemButtonOnClickFunction(skills[mainSkill], itemName, subCraftName, level);
                 }
             }
         }

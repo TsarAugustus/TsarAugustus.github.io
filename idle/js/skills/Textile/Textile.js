@@ -1,8 +1,8 @@
 import { items } from './items.js';
 import { createCraftButtons } from '../createCraftButtons.js';
 
-export let Woodcrafting = {
-    displayName: 'Woodcrafting',
+export let Textile = {
+    displayName: 'Textile',
     active: undefined,
     level: 0,
     currentXP: 0,
@@ -10,7 +10,7 @@ export let Woodcrafting = {
     category: 'Crafting',
     craftItems: items,
     requirements: {
-        skill: { Stonecrafting: 1 }
+        item: { Bobbin: 1 }
     },
     onclick: function() {
         const interaction = document.getElementById('interaction');
@@ -27,14 +27,13 @@ export let Woodcrafting = {
                 interaction.removeChild(interaction.lastChild);
             }
         } else {
-            const craftKeys = Object.keys(Woodcrafting.craftItems);
+            const craftKeys = Object.keys(Textile.craftItems);
             //should make this redundant
             while(interaction.lastChild) {
                 interaction.removeChild(interaction.lastChild);
             }
 
-            createCraftButtons(Woodcrafting);
-            // checkButtonStatus(Woodcrafting);
+            createCraftButtons(Textile);
         }
     }
 };

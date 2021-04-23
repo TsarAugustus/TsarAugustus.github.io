@@ -5,13 +5,13 @@ function disableOrEnableButton(skill, subCraft, item, level) {
     let itemReqCounter = 0;
     for(let req in skill.craftItems[level][subCraft][item].requirements) {
         const reqValue = skill.craftItems[level][subCraft][item].requirements[req];
-        if(Player.inventory[req] && Player.inventory[req].amount < reqValue || !Player.inventory[req]) {
+        if(craftButton && Player.inventory[req] && Player.inventory[req].amount < reqValue || !Player.inventory[req]) {
             craftButton.disabled = true;
         } else {
             itemReqCounter++;
         }
     }
-    if(itemReqCounter === Object.keys(skill.craftItems[level][subCraft][item].requirements).length) {
+    if(itemReqCounter === Object.keys(skill.craftItems[level][subCraft][item].requirements).length && craftButton) {
         craftButton.disabled = false;
     }
 }

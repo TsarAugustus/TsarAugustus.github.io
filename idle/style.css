@@ -297,12 +297,12 @@ button:disabled {
     }
     #inventory span {
         display: inline-block;
-        width: 10em;
         text-align: left;
     }
     #inventory div {
-        /* height: 100%; */
         display: flex;
+        flex-shrink: 1;
+        padding: 1em;
         flex-direction: column;
     }
     

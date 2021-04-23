@@ -5,7 +5,8 @@ export let items = {
             "Cabin": { requirements: { "Wood Log": 4, "Wood Plank": 5, "Free Land": 1 }, capacity: 2, type: 'Houses', category: 'House', XP: 25, efficiency: 1 }
         },
         "Wood Turning": {
-            "Wood Log": { requirements: { Wood: 2 }, XP: 25 }
+            "Wood Log": { requirements: { Wood: 2 }, XP: 25 },
+            "Bobbin": { requirements: { Wood: 3 }, XP: 25}
         }
     }
 };

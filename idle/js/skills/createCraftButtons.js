@@ -2,8 +2,9 @@ import { checkButtonStatus } from '../checkButtonStatus.js';
 import { Player } from '../Player.js';
 import { updateInventory } from '../updateInventory.js';
 import { updateButton } from '../updateButton.js';
+import { workingPopulationSkills } from '../main.js';
 
-function createItemButtonOnClickFunction(skill, item, subCraft, level) {
+export function createItemButtonOnClickFunction(skill, item, subCraft, level) {
     let craftCounter = 0;
     const craftRequirementNumber = Object.keys(skill.craftItems[level][subCraft][item].requirements).length;
     const itemReq = skill.craftItems[level][subCraft][item].requirements;
@@ -87,7 +88,62 @@ function createSubCraftItemButtons(item, skill, subCraft, level) {
         }
         
         const subCraftItemsDiv = document.getElementById('subCraftItemsDiv');
-        subCraftItemsDiv.appendChild(newItemButton)
+
+        //REFACTOR ASAP
+        subCraftItemsDiv.appendChild(newItemButton);
+
+        const increaseDecreaseDiv = document.createElement('div');
+        increaseDecreaseDiv.id = `${skill.displayName}IncDecDiv`;
+        increaseDecreaseDiv.classList.add('IncDecDiv');
+
+        const increaseButton = document.createElement('button');
+        increaseButton.disabled = (Player.Nation.population === 0 ? true : false)
+        increaseButton.id = `${skill.displayName}Increase`;
+        increaseButton.classList.add('Increase');
+        increaseButton.innerHTML = '+';
+        increaseButton.onclick = function() {
+            if(Player.Nation.ablePopulation > 0) {
+                Player.Nation.ablePopulation--;
+                Player.Nation.unablePopulation++;
+                if(!skill[subCraft]) {
+                    skill[subCraft] = {
+                        workingPopulation: 0
+                    }
+                    // skill[subCraft].workingPopulation = 0;
+                }
+                skill[subCraft].workingPopulation++;
+                const skillWorkListFind = workingPopulationSkills.find(el => el[2] === item);
+                if(skillWorkListFind === undefined) {
+                    workingPopulationSkills.push([skill.displayName, level, item, subCraft]);
+                }
+            }
+            updateButton(skill);
+        }
+        increaseDecreaseDiv.appendChild(increaseButton);
+        
+        const decreaseButton = document.createElement('button');
+        decreaseButton.disabled = (Player.Nation.population === 0 ? true : false)
+        decreaseButton.id = `${skill.displayName}decrease`;
+        decreaseButton.classList.add('Decrease');
+        decreaseButton.innerHTML = '-';
+        decreaseButton.onclick = function() {
+            if(Player.Nation.unablePopulation > 0) {
+                Player.Nation.ablePopulation++;
+                Player.Nation.unablePopulation--;
+            }
+            if(skill[subCraft].workingPopulation > 0) {
+                skill[subCraft].workingPopulation--;
+            }
+            
+            if(skill[subCraft].workingPopulation === 0) {
+                const skillIndex = workingPopulationSkills.indexOf(skill.displayName);
+                workingPopulationSkills.splice(skillIndex, 1);
+            }
+            updateButton(skill);
+        }
+        increaseDecreaseDiv.appendChild(decreaseButton);
+        subCraftItemsDiv.appendChild(increaseDecreaseDiv);
+
         checkButtonStatus(skill, subCraft, item, level);
     }
 }
