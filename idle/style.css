@@ -44,8 +44,10 @@ button:focus {
     border-bottom: 1px solid black;
     font-family: 'Courier New', Courier, monospace;
 }
-#nation h3 {
-    padding: 0;
+#nation {
+    text-align: center;
+}
+#nation p {
     margin: 0;
 }
 
@@ -175,8 +177,19 @@ button:disabled {
         border: 2px solid #37393A;
     }
     
+    .skill {
+        display: flex;
+        flex-wrap: wrap;
+    }
     .skill button {
-        width: 100%;
+        justify-content: center;
+    }
+    .skill > button:first-child {
+        flex-grow: 1;
+    }
+    .IncDecDiv {
+        display: flex;
+        flex-direction: column;
     }
     .BarWrapper {
         width: 100%;
@@ -332,14 +345,19 @@ button:disabled {
 
     .skill {
         display: flex;
-        flex-direction: column;
-        /* background-color: #313134; */
-        /* background-color: blue; */
+        flex-wrap: wrap;
         flex-shrink: 1;
         padding: 0.1em;
     }
     .skill button {
         justify-content: center;
+    }
+    .skill > button:first-child {
+        flex-grow: 1;
+    }
+    .IncDecDiv {
+        display: flex;
+        flex-direction: column;
     }
 
     .BarWrapper {

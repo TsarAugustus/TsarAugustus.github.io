@@ -3,6 +3,7 @@ import { checkButtonStatus } from './checkButtonStatus.js';
 import { skills } from './skills/skills.js';
 import { updateInventory } from './updateInventory.js';
 import { ticker } from './ticker.js';
+import { updateButton } from './updateButton.js';
 
 //displayName
     //sets the display name for the skill button
@@ -18,6 +19,8 @@ import { ticker } from './ticker.js';
     //item: item requirements require items to exists in the Players inventory before activating 
 //category
     //category to sort the skills by
+
+let workingPopulationSkills = [];
 
 function createCategoryButtons(skill, New) {
     const thisSkillButton = document.getElementById(`${skill.category}Button`);
@@ -75,7 +78,68 @@ function createSkillButtons(skill) {
         newSkillButton.innerHTML = `${skill.displayName}<br>
                                     Level: ${skill.level}`;
         newSkillButton.onclick = skill.onclick;
-        
+        newSkillButtonDiv.appendChild(newSkillButton);
+
+        //AUTOMATION
+        //This could be done better
+        const nonAutomatableSkills = [
+            'Woodcrafting',
+            'Stonecrafting'
+        ];
+
+        const isSkillAutomatable = nonAutomatableSkills.find(skillName => skillName === skill.displayName);
+        if(isSkillAutomatable === undefined) {
+            const increaseDecreaseDiv = document.createElement('div');
+            increaseDecreaseDiv.id = `${skill.displayName}IncDecDiv`;
+            increaseDecreaseDiv.classList.add('IncDecDiv');
+
+            const increaseButton = document.createElement('button');
+            increaseButton.disabled = (Player.Nation.population === 0 ? true : false)
+            increaseButton.id = `${skill.displayName}Increase`;
+            increaseButton.classList.add('Increase');
+            increaseButton.innerHTML = '+';
+            increaseButton.onclick = function() {
+                if(Player.Nation.ablePopulation > 0) {
+                    Player.Nation.ablePopulation--;
+                    Player.Nation.unablePopulation++;
+                    if(!skill.workingPopulation) {
+                        skill.workingPopulation = 0;
+                    }
+                    skill.workingPopulation++;
+                    const skillWorkListFind = workingPopulationSkills.find(el => el === skill.displayName);
+                    if(skillWorkListFind === undefined) {
+                        workingPopulationSkills.push(skill.displayName);
+                    }
+                }
+                updateButton(skill);
+            }
+            increaseDecreaseDiv.appendChild(increaseButton);
+            
+            const decreaseButton = document.createElement('button');
+            decreaseButton.disabled = (Player.Nation.population === 0 ? true : false)
+            decreaseButton.id = `${skill.displayName}decrease`;
+            decreaseButton.classList.add('Decrease');
+            decreaseButton.innerHTML = '-';
+            decreaseButton.onclick = function() {
+                if(Player.Nation.unablePopulation > 0) {
+                    Player.Nation.ablePopulation++;
+                    Player.Nation.unablePopulation--;
+                }
+                if(skill.workingPopulation > 0) {
+                    skill.workingPopulation--;
+                }
+                
+                if(skill.workingPopulation === 0) {
+                    const skillIndex = workingPopulationSkills.indexOf(skill.displayName);
+                    workingPopulationSkills.splice(skillIndex, 1);
+                }
+                updateButton(skill);
+            }
+            increaseDecreaseDiv.appendChild(decreaseButton);
+
+            newSkillButtonDiv.appendChild(increaseDecreaseDiv);
+        }
+
         //progress bar stuff
         const newSkillBarWrapper = document.createElement('div');
         newSkillBarWrapper.id = `${skill.displayName}BarWrapper`;
@@ -95,11 +159,11 @@ function createSkillButtons(skill) {
 
         const width = (skill.currentXP / skill.XPToLevel) * 100;
         newSkillBar.style.width = `${width}%`;
+        newSkillButtonDiv.appendChild(newSkillBarWrapper);
 
-        newSkillButtonDiv.appendChild(newSkillButton);
-        newSkillButtonDiv.appendChild(newSkillBarWrapper)
         document.getElementById('skills').appendChild(newSkillButtonDiv);
     }
+    updateButton(skill);
 }
 
 function checkIfSkillShouldBeActive(thisSkill) {
@@ -202,6 +266,27 @@ function populationLeech() {
     }
     if(populationEmigration >= Player.Nation.population) {
         Player.Nation.population--;
+        //this could cause bugs
+        Player.Nation.ablePopulation--;
+
+        //check workingPopulation
+        let workingPops = 0;
+        for(let workingSkill of workingPopulationSkills) {
+            for(let skillName in skills) {
+                if(workingSkill === skills[skillName].displayName) {
+                    workingPops += skills[skillName].workingPopulation;
+                }
+            }
+        }
+        //remove a working populationa if the population is smaller
+        if(workingPops > Player.Nation.population) {
+            for(let skillName in skills) {
+                if(skills[skillName].workingPopulation && skills[skillName].workingPopulation > 0) {
+                    skills[skillName].workingPopulation--;
+                }
+            }
+        }
+
         if(Player.Nation.population < 0) {
             Player.Nation.population = 0;
         }
@@ -246,9 +331,47 @@ function tick() {
     if(Player.Nation.maxPopulation > Player.Nation.population) {
         const migrationChance = Math.random();
         const migrationThresh = calculateMigrationThresh();
-        populationLeech();
         if(migrationChance > migrationThresh) {
             Player.Nation.population++;
+            Player.Nation.ablePopulation++;
+        }
+    }
+    if(Player.Nation.population > 0) {
+        populationLeech();
+    }
+
+    if(document.getElementsByClassName('IncDecDiv').length > 0) {
+        if(!Player.Nation.ablePopulation) {
+            Player.Nation.ablePopulation = 0;
+        }
+        if(!Player.Nation.unablePopulation) {
+            Player.Nation.unablePopulation = 0;
+        }
+
+        if(Player.Nation.population > 0) {
+            for(let button of document.getElementsByClassName('Decrease')){
+                button.disabled = false;
+            }
+        }
+        if(Player.Nation.ablePopulation > 0) {
+            for(let button of document.getElementsByClassName('Increase')){
+                button.disabled = false;
+            }
+        }
+    }
+
+    //REFACTOR ASAP
+    if(workingPopulationSkills.length > 0) {
+        for(let skillObject in skills) {
+            if(skills[skillObject].active) {
+                for(let workingSkill of workingPopulationSkills) {
+                    if(workingSkill === skills[skillObject].displayName) {
+                        for(let i = 0; i < skills[skillObject].workingPopulation; i++) {
+                            skills[skillObject].onclick();
+                        }
+                    }
+                }
+            }
         }
     }
     
