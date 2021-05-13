@@ -4,6 +4,7 @@ import { Woodcutting } from './Woodcutting/Woodcutting.js';
 import { Woodcrafting } from './Woodcrafting/Woodcrafting.js';
 import { Stonecrafting } from './Stonecrafting/Stonecrafting.js';
 import { Textile } from './Textile/Textile.js';
+import { Farming } from './Farming/Farming.js';
 
 export let skills = {
     Forage,
@@ -12,5 +13,6 @@ export let skills = {
     //CRAFTING BASED SKILLS
     Woodcrafting,
     Stonecrafting,
-    Textile
+    Textile,
+    Farming
 }

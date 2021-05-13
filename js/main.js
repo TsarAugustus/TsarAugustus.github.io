@@ -158,6 +158,7 @@ function tick() {
     if(focusList.length > 0) {
         for(let item of focusList) {
             if(item.functionToClick.length > 1) {
+                console.log(item)
                 let [itemPassed, newItem, mainSkill] = item.functionParams;
                 item.functionToClick(itemPassed, newItem, mainSkill)
             } else {
@@ -169,6 +170,7 @@ function tick() {
 }
 
 function init() {  
+    const gameSpeed = 500;
 
     if(!document.getElementById('time')) {
         let timeDoc = document.createElement('span');
@@ -188,7 +190,7 @@ function init() {
 
     setInterval(function() {
         tick();
-    }, 1000)
+    }, gameSpeed)
 }
 
 window.onload = function() {
