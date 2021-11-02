@@ -33,14 +33,32 @@ export let Farming = {
                 if(Player.inventory['Free Land'] && Player.inventory['Free Land'].amount >= plotThresh) {
                     if(!Player.inventory['Arable Land']) {
                         Player.inventory['Arable Land'] = { amount: 0, type: 'Land' }
-                        Player.inventory['Arable Land'].amount++;
-                        Player.inventory['Free Land'].amount--;
                     }
+                    Player.inventory['Arable Land'].amount++;
+                    Player.inventory['Free Land'].amount--;
                 }
                 
                 updateInventory();
             }
             farmingStuffDiv.appendChild(createPlot);
+        }
+        function createFarmPlot() {
+            if(!document.getElementById('FarmPlot')) {
+                const farmPlot = document.createElement('button');
+                farmPlot.id = 'FarmPlot';
+                farmPlot.innerHTML = `<b>Farm Plot</b><br>
+                                        Cost: 1 Seed`;
+                farmPlot.onclick = function() {
+                    if(Player.inventory['Seed'] && Player.inventory['Seed'].amount >= 1) {
+                        if(!Player.inventory['Wheat']) {
+                            Player.inventory['Wheat'] = { amount: 0, type: 'Food' }
+                        }
+                        Player.inventory['Wheat'].amount++;
+                        Player.inventory['Seed'].amount--;
+                    }
+                }
+                farmingStuffDiv.appendChild(farmPlot);
+            }
         }
     }
 };
