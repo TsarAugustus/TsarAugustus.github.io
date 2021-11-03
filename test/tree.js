@@ -31,7 +31,15 @@ let list = [
         id: "UPGRADE_3",
         locked: true,
         available: false,
-        previousUnlocks: ["UPGRADE_1", "UPGRADE_2"],
+        previousUnlocks: ["UPGRADE_1"],
+        cost: 10
+    },
+    {
+        name: "Thing 4",
+        id: "UPGRADE_4",
+        locked: true,
+        available: false,
+        previousUnlocks: ["UPGRADE_0", "UPGRADE_3"],
         cost: 10
     }
 ];
@@ -61,33 +69,34 @@ function createItemButton(item) {
 }
 
 function getButtonStatus(item, itemButton) {
-    console.log(item)
+    //Can iterate through an array of Booleans and will only return True if
+    //all values in the array are True
+    let checker = arr => arr.every(Boolean);
+    let check = [
+        (money >= item.cost  ? true : false)        
+    ];
+
+    item.previousUnlocks.forEach(previousUnlocks => {
+        let unlockCheck = [];
+        list.forEach(listItem => {
+            if(listItem.id === previousUnlocks) {
+                if(listItem.locked === false) {
+                    unlockCheck.push(true)
+                } else {
+                    unlockCheck.push(false)
+                }
+            }
+        });
+
+        checker(unlockCheck) ? check.push(true) : check.push(false);
+    });
+    checker(check) ? item.available = true : item.available = false;
+
     if(item.available && item.locked && itemButton) {
         money = money - item.cost;
         item.locked = false;
         document.getElementById('money').innerHTML = money;
     }
-    let checker = arr => arr.every(Boolean);
-    let check = [
-        (money >= item.cost ? true : false)        
-    ];
-    //check if there are previousUnlocks required
-        //if so, check if they are locked
-            //if they are unlocked, this must return true
-            //if one or more are locked, this must return false
-    //if no previousUnlocks, return true
-    item.previousUnlocks.forEach(previousUnlocks => {
-        let unlockCheck = [];
-        list.forEach(listItem => {
-            if(listItem.id === previousUnlocks && !listItem.locked) {
-                unlockCheck.push(true);
-            } else {
-                unlockCheck.push(false);
-            }
-        });
-        checker(unlockCheck) ? check.push(true) : check.push(false);
-    });
-    checker(check) ? item.available = true : item.available = false;
 
     //Apply styling
     if(item.locked) {
