@@ -8,7 +8,8 @@ let list = [
         locked: true,
         available: false,
         previousUnlocks: [],
-        cost: 10
+        cost: 10,
+        GUILevel: 0
     },
     {
         name: "Thing 1",
@@ -16,7 +17,8 @@ let list = [
         locked: true,
         available: false,
         previousUnlocks: ["UPGRADE_0"],
-        cost: 10
+        cost: 10,
+        GUILevel: 1
     },
     {
         name: "Thing 2",
@@ -24,7 +26,8 @@ let list = [
         locked: true,
         available: false,
         previousUnlocks: ["UPGRADE_1"],
-        cost: 10
+        cost: 10,
+        GUILevel: 2
     },
     {
         name: "Thing 3",
@@ -32,7 +35,8 @@ let list = [
         locked: true,
         available: false,
         previousUnlocks: ["UPGRADE_1"],
-        cost: 10
+        cost: 10,
+        GUILevel: 2
     },
     {
         name: "Thing 4",
@@ -40,7 +44,8 @@ let list = [
         locked: true,
         available: false,
         previousUnlocks: ["UPGRADE_0", "UPGRADE_3"],
-        cost: 10
+        cost: 10,
+        GUILevel: 3
     }
 ];
 
@@ -51,21 +56,24 @@ function init() {
 
 
     list.forEach(item => {
-        // let itemButton = createItemButton(item);
-        document.getElementById('tree').append(createItemButton(item));
-        getButtonStatus(item);
+        createItemButton(item);
     })
-
-
 }
 
 function createItemButton(item) {
+    let itemDiv = document.getElementById(`GUILevel${item.GUILevel}`);
+    if(!itemDiv) {
+        itemDiv = document.createElement('div');
+        itemDiv.id = `GUILevel${item.GUILevel}`;
+        document.getElementById('tree').appendChild(itemDiv);
+    }
     let newItemButton = document.createElement('button');
     newItemButton.id = item.id;
     newItemButton.innerHTML = item.name;
     newItemButton.addEventListener("click", function() { getButtonStatus(item, true) });
+    itemDiv.appendChild(newItemButton);
 
-    return newItemButton;
+    getButtonStatus(item);
 }
 
 function getButtonStatus(item, itemButton) {
@@ -75,45 +83,50 @@ function getButtonStatus(item, itemButton) {
     let check = [
         (money >= item.cost  ? true : false)        
     ];
-
+    
     item.previousUnlocks.forEach(previousUnlocks => {
         let unlockCheck = [];
-        list.forEach(listItem => {
+        list.forEach(listItem => {  
             if(listItem.id === previousUnlocks) {
-                if(listItem.locked === false) {
-                    unlockCheck.push(true)
-                } else {
-                    unlockCheck.push(false)
-                }
+                (listItem.locked) ? unlockCheck.push(false) : unlockCheck.push(true);
             }
         });
-
+        
         checker(unlockCheck) ? check.push(true) : check.push(false);
     });
-    checker(check) ? item.available = true : item.available = false;
 
+    //Final check
+    checker(check) ? item.available = true : item.available = false;
+    
     if(item.available && item.locked && itemButton) {
         money = money - item.cost;
         item.locked = false;
         document.getElementById('money').innerHTML = money;
+        list.forEach(item => getButtonStatus(item));
     }
-
-    //Apply styling
-    if(item.locked) {
-        document.getElementById(item.id).style.backgroundColor = 'red';
-    } 
-    if(item.available) {
-        document.getElementById(item.id).style.backgroundColor = 'blue';
-    }
-    if(!item.locked) {
-        document.getElementById(item.id).style.backgroundColor = 'yellow';
-    }
+    styleButtons(item);
 }
 
 function getMoney() {
     money++;
     document.getElementById('money').innerHTML = money;
     list.forEach(item => getButtonStatus(item));
+}
+
+function styleButtons(item) {
+    //Apply styling
+    const itemDoc = document.getElementById(item.id);
+
+    //Temp styling
+    if(item.locked) {
+        itemDoc.style.backgroundColor = 'RED';
+    }
+    if(item.available) {
+        itemDoc.style.backgroundColor = 'GREEN';
+    }
+    if(!item.locked){
+        itemDoc.style.backgroundColor = 'WHITE';
+    }
 }
 
 
